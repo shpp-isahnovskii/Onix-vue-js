@@ -1,0 +1,129 @@
+@media (max-width: 767px) {
+
+  body {
+    margin: 20px 20px 0 20px;
+  }
+  /*--Navigation--*/
+  nav {
+    padding-top: 14px;
+    flex-direction: column;
+  }
+  /*hamburger*/
+  nav .hamburger-box {
+    margin-left: 18px;
+    position: absolute;
+    width: 20px;
+  }
+  .hamburger-line::after {
+    top: 8px;
+  }
+  .hamburger-line::before {
+    top: 4px;
+  }
+  /*logo*/
+  nav .logo {
+    font-size: 1.2em;
+  }
+  /*menu*/
+  nav .nav-menu {
+    display: flex;
+    justify-content: space-around;
+    font-size: 0.67em;
+    padding-top: 10px;
+  }
+  nav .nav-menu li {
+    margin: 0;
+  }
+  nav .nav-menu li:last-child {
+    margin-right: 0;
+  }
+  /*--end of Navigation--*/
+
+  /*--Carousel--*/
+  /*text*/
+  .carousel .carousel-text-wrap {
+    padding-top: 20px;
+    padding-bottom: 10px;
+  }
+  .carousel .carousel-text {
+    margin-left: 20px;
+  }
+  .carousel .carousel-text h3 {
+    font-size: 0.6em;
+  }
+  .carousel .carousel-text span {
+    font-size: 0.8em;
+    margin-top: 10px;
+  }
+  /*navigation dots*/
+  .carousel .carousel-nav {
+    margin-top: 10px;
+  }
+  /*--end of Carousel--*/
+
+
+  /*--Footer--*/
+  footer {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+  }
+  footer .left-side-wrapper {
+    font-size: 0.8em;
+    width: 45%;
+  }
+  footer .left-side-wrapper .text {
+    padding-right: 10px;
+  }
+  footer .right-side-wrapper {
+    width: 55%;
+    line-height: 1em;
+    padding-top: 0;
+  }
+  footer .right-side-wrapper p {
+    padding-top: 0;
+  }
+  footer .learn-more-wrapper {
+    margin: 10px auto 0;
+  }
+  /*--end of Footer--*/
+}
+@media (min-width: 425px) {
+    /*Carousel*/
+    .carousel .carousel-text {
+      margin-left: 50%;
+    }
+}
+@media (min-width: 475px) and (max-width: 767px) {
+  /*--Navigation--*/
+  nav .nav-menu {
+    font-size: 1em;
+  }
+   nav .logo {
+    font-size: 1.6em;
+  }
+  .carousel .carousel-text h3 {
+    font-size: 0.7em;
+  }
+  .carousel .carousel-text span {
+    font-size: 0.9em;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1024px) {
+  /*--Navigation--*/
+  nav .nav-menu li {
+    margin-right: 10px;
+  }
+   /*--Footer--*/
+  footer .right-side-wrapper {
+    max-width: 300px;
+  }
+  footer .learn-more-wrapper {
+    margin-top: 10px;
+    margin-left: auto;
+  }
+  footer .learn-more {
+    margin-right: 40px;
+  }
+}
