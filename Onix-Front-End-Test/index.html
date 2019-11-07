@@ -10,9 +10,9 @@
 </head>
 
 <body>
-  <div class="sidebar">
-    <div class="sidebar__search"> 
-      <img class="btn -pointer"src="./images/site/side-burger.svg" alt="menu button">
+  <div id="toggleBar" class="sidebar"> <!-- toggle-bar -->
+    <div class="sidebar__search">
+      <img id="toggleButton" onClick="toggle()" class="btn -pointer sidebar-opener" src="./images/site/side-burger.svg" alt="menu button"> <!-- toggle button -->
       <p>PROJECTUS</p>
       <img class="search__icon" src="./images/site/search.svg" alt="search">
     </div>
@@ -38,66 +38,72 @@
     </div>
     <div class="sidebar__menu">
       <ul>
-          <li class="sidebar__menu--active"><a href="#">MENU</a></li>
-          <li><a href="#">Home</a></li>
-          <li><a href="#">My Tasks</a></li>
-          <li><a href="#">Notofications<div class="menu__notifications btn -small -rounded -yellow">3</div></a></li>
+        <li class="sidebar__menu--active"><a href="#">MENU</a></li>
+        <li><a href="#">Home</a></li>
+        <li><a href="#">My Tasks</a></li>
+        <li><a href="#">Notofications<div class="menu__notifications btn -small -rounded -yellow">3</div></a></li>
       </ul>
     </div>
   </div>
-    <div class="mainbar">
+  <div class="mainbar">
 
     <div class="header">
       <div class="header__logo">
         <img class="logo__img" src="./images/site/logo.png" alt="site logo">
         <h1>Website Redesign</h1>
-        <div class="btn -medium -gray -rounded -dotted -pointer">
+        <div class="btn -gray -rounded -dotted -pointer">
           <div class="btn__dots">...</div>
         </div>
       </div>
-    <div class="header__chat">
-      <div class="chat__imgs">
-        <img class="btn -medium -rounded -pointer" src="./images/people/1.jpg" alt="person1">
-        <img class="btn -medium -rounded -pointer" src="./images/people/2.jpg" alt="person2">
-        <img class="btn -medium -rounded -pointer" src="./images/people/3.jpg" alt="person3">
+      <div class="header__chat">
+        <div class="chat__imgs">
+          <img class="btn -medium -rounded -pointer" src="./images/people/1.jpg" alt="person1">
+          <img class="btn -medium -rounded -pointer" src="./images/people/2.jpg" alt="person2">
+          <img class="btn -medium -rounded -pointer" src="./images/people/3.jpg" alt="person3">
+        </div>
+        <div class="btn -gray -pointer btn__share">Share</div>
+        <div class="btn -lightyellow -pointer  btn__chat">
+          <img src="./images/site/chats.svg" alt="chat image">
+          <p>Chat</p>
+        </div>
       </div>
-      <div class="btn -gray -pointer btn__share">Share</div>
-      <div class="btn -lightyellow -pointer  btn__chat">
-        <img src="./images/site/chats.svg" alt="chat image">
-        <p>Chat</p>
-      </div>
-    </div>
-    <ul class="header__navigation">
-      <li><a href="#">Tasks</a></li>
-      <li><a href="#">Kanban</a></li>
-      <li class="header__navigation--active"><a href="#">Activity</a></li>
-      <li><a href="#">Calendar</a></li>
-      <li><a href="#">Files</a></li>
-    </ul>
+      <ul class="header__navigation">
+        <li><a href="#">Tasks</a></li>
+        <li><a href="#">Kanban</a></li>
+        <li class="header__navigation--active"><a href="#">Activity</a></li>
+        <li><a href="#">Calendar</a></li>
+        <li><a href="#">Files</a></li>
+      </ul>
     </div>
 
     <div class="article">
       <div class="article__wrapper">
         <div class="article__item -header">Today</div>
         <div class="article__item">
-          <div class="item__logo btn -rounded -big -lightgreen"><img class="icon" src="./images/site/check.svg" alt="check"></div>
-          <div class="item__text">Darika Samak mark as done Listing on Product Hunt so that we can reach as many potential
+          <div class="item__logo btn -rounded -big -lightgreen"><img class="icon" src="./images/site/check.svg"
+              alt="check"></div>
+          <div class="item__text">Darika Samak mark as done Listing on Product Hunt so that we can reach as many
+            potential
             users</div>
           <div class="item__time">8:40PM</div>
         </div>
         <div class="article__item">
-          <div class="item__logo btn -rounded -big -lightyellow"><img class="icon" src="./images/site/chat.svg" alt="chat"></div>
+          <div class="item__logo btn -rounded -big -lightyellow"><img class="icon" src="./images/site/chat.svg"
+              alt="chat"></div>
           <div class="item__text">Emilee Simchenko commented on Account for teams and personal in bottom style</div>
           <div class="item__time">7:32PM</div>
-          
-          <div class="item__comment">During a project build, it is necessary to evaluate the product design and development
+
+          <div class="item__comment">During a project build, it is necessary to evaluate the product design and
+            development
             against project requirements and outcomes</div>
         </div>
         <div class="article__item">
-          <div class="item__logo btn -rounded -big -lightblue"><img class="icon files" src="./images/site/files.svg" alt="files"></div>
-          <div class="item__text">Darika Samak uploaded 4 files on An option to search in current projects or in all projects</div>
+          <div class="item__logo btn -rounded -big -lightblue"><img class="icon files" src="./images/site/files.svg"
+              alt="files"></div>
+          <div class="item__text">Darika Samak uploaded 4 files on An option to search in current projects or in all
+            projects</div>
           <div class="item__time">6:02PM</div>
-          
+
           <div class="item__images">
             <div class="cell"><img src="./images/temporary/0.jpg" alt="first file"></div>
             <div class="cell"><img src="./images/temporary/1.jpg" alt="second file"></div>
@@ -108,6 +114,7 @@
       </div>
     </div>
   </div>
+  <script src="./script/script.js"></script>
 </body>
 
 </html>

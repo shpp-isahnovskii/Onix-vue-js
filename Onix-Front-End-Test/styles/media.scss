@@ -1,6 +1,12 @@
+$sidebarWidth: 286px;
+
+
 @media screen and (min-width: 320px) {
   /*head*/
   .header {
+    display: flex;
+    flex-wrap: wrap;
+    min-width: 670px;
     padding-top: 0.5rem;
     .header__logo .logo__img {
       width: 25px;
@@ -12,14 +18,16 @@
     }
     .header__chat {
       margin-top: 0.5rem;
-      margin-left: 10px;
+      margin-left: auto;
     }
     /*sidebar*/
   }
   .sidebar {
+    min-width: $sidebarWidth;
+    overflow-x: hidden;
     & > * {
       display: flex;
-      flex-basis: 40%;
+      //min-width: $sidebarWidth;
     }
     & > * > *:first-child {
       margin-left: 0.2rem;
@@ -27,59 +35,83 @@
     .menu__notifications {
       font-size: 0.6rem;
     }
+
+    & > * > *:first-child { //all elements aligin left
+      margin-left: 2.4rem;
+    }
+
+    .sidebar__search {
+      .search__icon {
+        margin-right: 1.4rem;
+      }
+    }
+    .menu__notifications {
+      font-size: 1rem;
+    }
+
+    &.hidden {
+      min-width: 80px;
+      width: 80px;
+      & > * > *:first-child { //all elements aligin left
+        margin-left: 1.8rem;
+      }
+      & > *:not(:first-child) {
+       display: none;
+      }
+      & > *:first-child > *:not(:first-child) {
+        display: none;
+      }
+    }
   }
-  /*mainbar*/
+
+  //main bar
   .mainbar {
-    .article__item {
-      .item__logo {
-        order: 1;
-      }
-      .item__text {
-        margin-top: 0.5rem;
-        order: 3;
-      }
-      .item__time {
-        order: 2;
-      }
-      .item__images, .item__comment {
-        order: 4;
-      }
-    }
-    .article {
-      padding-bottom: 0;
-    }
     .article__wrapper {
-      border-radius: 0px;
+      margin: 30px 10px;
+      flex-basis: 770px;
+      min-width: 570px;
+
     }
+    .item__text {
+      flex-basis: 380px;
+    }
+    
+    .article {
+      padding-bottom: 100px;
+    }
+  
   }
-  /*buttons*/
+    /*buttons*/
   .btn {
     //sizes
     &.-small {
-      width: 12px;
-      height: 12px;
+      width: 20px;
+      height: 20px;
     }
-
     &.-medium {
-      width: 18px;
-      height: 18px;
-    }
-    &.-big {
       width: 30px;
       height: 30px;
     }
-
-    .btn__dots {
-      margin-top: -5px;
-      font-size: 1.2rem;
+    &.-big {
+      width: 40px;
+      height: 40px;
+    }
+    &.-dotted {
+      margin-top: 4px;
+      width: 24px;
+      height: 24px;
+      .btn__dots {
+        margin-top: -7px;
+        font-size: 1.4rem;
+      }
     }
     img.icon.files {
-      margin: 0;
+      margin: 30% 30%;
     }
   }
 }
 
-@media screen and (min-width: 1024px) {
+@media screen and (min-width: 1100px) {
   /*header*/
   .header {
     display: flex;
@@ -103,101 +135,29 @@
     .header__navigation {
       flex-basis: 100%;
     }
-
-  }
-  /*sidebar*/
-  .sidebar {
-    flex-basis: 19%;
-
-    & > * > *:first-child { //all elements aligin left
-      margin-left: 1.0rem;
-    }
-
-    .sidebar__search {
-      .search__icon {
-        margin-right: 1.4rem;
-      }
-    }
-    .menu__notifications {
-      font-size: 1rem;
-    }
-  }
-  .mainbar {
-    flex-basis: 81%;
     .item__text {
-      flex-basis: 60%;
-    }
-    .article {
-      padding-bottom: 100px;
-    }
-    .article__wrapper {
-      border-radius: 8px;
-    }
-    
-    .article__wrapper {
-      flex-basis: 82%;
-    }
-    .article__item {
-      .item__logo {
-        order: 1;
-      }
-      .item__text {
-        margin-top: 0rem;
-        order: 2;
-      }
-      .item__time {
-        order: 3;
-      }
-      .item__images, .item__comment {
-        order: 4;
-      }
+      flex-basis: 490px;
     }
   }
-  /*buttons*/
   .btn {
     //sizes
-    &.-small {
-      width: 20px;
-      height: 20px;
-    }
-    &.-medium {
+    &.-dotted {
       width: 30px;
       height: 30px;
-    }
-    &.-big {
-      width: 40px;
-      height: 40px;
-    }
-    &.-dotted {
       .btn__dots {
-        margin-top: -10px;
+        margin-top: -11px;
         font-size: 1.9rem;
       }
     }
-    img.icon.files {
-      margin: 30% 30%;
-    }
   }
 }
+
+
 @media screen and(min-width: 1440px) {
-  .sidebar {
-    & > * > *:first-child { //all elements aligin left
-      margin-left: 2.4rem;
-    }
-  }
+
   .mainbar {
-    .article__wrapper {
-      flex-basis: 62%;
-    }
     .article {
       padding-bottom: 150px;
-    }
-  }
-}
-@media screen and (min-width: 4000px) {
-  .article__item {
-    .item__text {
-      flex-basis: 90%;
     }
   }
 }
