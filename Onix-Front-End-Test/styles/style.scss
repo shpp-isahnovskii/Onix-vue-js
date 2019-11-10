@@ -160,6 +160,9 @@ body {
     .tasks__open {
       margin-left: 1.3rem;
     }
+    .tasks__open:hover {
+      cursor: pointer;
+    }
   }
   .sidebar__menu {
     ul {

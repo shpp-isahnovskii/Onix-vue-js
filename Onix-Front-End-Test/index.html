@@ -10,9 +10,9 @@
 </head>
 
 <body>
-  <div id="toggleBar" class="sidebar"> <!-- toggle-bar -->
+  <div id="sidebar" class="sidebar"> <!-- toggle-bar -->
     <div class="sidebar__search">
-      <img id="toggleButton" onClick="toggle()" class="btn -pointer sidebar-opener" src="./images/site/side-burger.svg" alt="menu button"> <!-- toggle button -->
+      <img id="toggleButton" class="btn -pointer sidebar-opener" src="./images/site/side-burger.svg" alt="menu button"> <!-- toggle button -->
       <p>PROJECTUS</p>
       <img class="search__icon" src="./images/site/search.svg" alt="search">
     </div>
@@ -28,11 +28,11 @@
     </div>
     <div class="sidebar__tasks">
       <div class="tasks__closed">
-        <p>372</p>
+        <p id="tasksClosed">372</p> <!-- tasks closed -->
         <p>Completed Tasks</p>
       </div>
-      <div class="tasks__open">
-        <p>11</p>
+      <div class="tasks__open" >
+        <p id="tasksOpen">11</p> <!-- tasks open -->
         <p>Open Tasks</p>
       </div>
     </div>

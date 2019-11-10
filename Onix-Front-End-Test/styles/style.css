@@ -175,6 +175,10 @@ body {
   margin-left: 1.3rem;
 }
 
+.sidebar .sidebar__tasks .tasks__open:hover {
+  cursor: pointer;
+}
+
 .sidebar .sidebar__menu ul {
   margin-top: 1.5rem;
   padding: 0;
