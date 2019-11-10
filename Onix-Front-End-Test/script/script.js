@@ -38,7 +38,6 @@ window.onload = () => {
   /* Change tasks counters */
   function closeTheTask() {
     if(confirm(CLOSE_THE_TASK) ) {
-      console.log(tasksClosed.innerHTML);
       
       if (tasksOpen.innerHTML > 0) {
         tasksOpen.innerHTML--;
