@@ -175,7 +175,7 @@ body {
   margin-left: 1.3rem;
 }
 
-.sidebar .sidebar__tasks .tasks__open:hover {
+.sidebar .sidebar__tasks .tasks__open:hover, .sidebar .sidebar__tasks .tasks__closed:hover {
   cursor: pointer;
 }
 
@@ -216,10 +216,6 @@ body {
   margin-left: 0.6rem;
   color: #131313;
   font-weight: bold;
-}
-
-.sidebar.sidebar--hidden {
-  background-color: tomato;
 }
 
 /* end of side menu */

@@ -18,12 +18,12 @@ window.onload = () => {
   
 
   const imagesArr = document.querySelectorAll('.item__images > div');
-  const sidemenuNotifications = document.querySelector('.menu__notifications');
+  const menuNotifications = document.querySelector('.menu__notifications');
 
   /*Event: change notification counter to the image index number*/
   imagesArr.forEach( (element, index) => {
     element.addEventListener('click', () => {
-      sidemenuNotifications.innerHTML = index;
+      menuNotifications.innerHTML = index;
    });
   });
 
@@ -32,7 +32,7 @@ window.onload = () => {
   const tasksClosed = document.getElementById('tasksClosed');
 
   /*Event: ask user to close a task*/
-  tasksOpen.addEventListener('click', closeTheTask);
+  tasksClosed.addEventListener('click', closeTheTask);
 
 
   /* Change tasks counters */
