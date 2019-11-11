@@ -36,13 +36,9 @@ body {
 }
 
 /* header */
-.header {
+header {
   background-color: $white;
-
-  .header > * {
-    display: flex;
-  }
-
+  
   .header__logo {
     display: flex;
     align-items: center;
@@ -160,7 +156,7 @@ body {
     .tasks__open {
       margin-left: 1.3rem;
     }
-    .tasks__open:hover, .tasks__closed:hover {
+    .tasks__open:hover, .tasks__closed {
       cursor: pointer;
     }
   }
@@ -200,12 +196,12 @@ body {
 /* end of side menu */
 
 /* main section */
-.article {
+.section__wrapper {
   display: flex;
   align-items: center;
   justify-content: center;
 }
-.article__wrapper {
+section {
   display: flex;
   flex-direction: column;
   margin-top: 30px;
@@ -213,29 +209,33 @@ body {
   padding-bottom: 26px;
   border-radius: 8px;
 
-  .article__item {
+  h3 {
+    margin: 40px 32px 18px;
+    text-transform: uppercase;
+    opacity: 0.5;
+    font-size: $secondFontSize;
+  }
+
+  .article {
     display: flex;
     flex-wrap: wrap;
     margin: 16px 26px 16px 34px;
     line-height: 1.25em;
 
-    &.-header {
-      margin: 40px 32px 20px;
-      text-transform: uppercase;
-      opacity: 0.5;
-      font-size: $secondFontSize;
-    }
     .item__logo {
       margin-right: 20px;
     }
-    .item__time {
+    .article__time {
       font-size: $secondFontSize;
       opacity: 0.7;
       float: right;
       margin-left: auto; //how it work's: https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Flexible_Box_Layout/Aligning_Items_in_a_Flex_Container
       margin-right: 10px;
     }
-    .item__comment {
+    p {
+      margin: 0;
+    }
+    .article__comment {
       border-radius: 10px;
       background-color: $item-comment;
       margin: 25px 70px 0 62px;
@@ -255,8 +255,27 @@ body {
         border-radius: 8px;
       }
     }
+
+    //icons for articles
+    &.article__icon::before {
+      margin-right: 22px;
+      border-radius: 50%;
+      text-align: center;
+    }
+    &.icon-lightgreen::before {
+      content: url('../images/site/check.svg');
+      background-color: $lightgreen;
+    }
+    &.icon-lightyellow::before {
+      content: url('../images/site/chat.svg');
+      background-color: $lightyellow;
+    }
+    &.icon-lightblue::before {
+      content: url('../images/site/files.svg');
+      background-color: $lightblue;
+    }
   }
-  .article__item:last-child {
+  .article:last-child {
     margin-bottom: 60px;
   }
 }
@@ -316,8 +335,10 @@ body {
     width: 81px;
     margin-right: 33px;
     color: $yellow;
-    img {
-      margin-right: 4px;
-    }
+  }
+  &.btn__chat::before {
+    content: url("../images/site/chats.svg");
+    margin-left: 16px;
+    margin-right: 4px;
   }
 }

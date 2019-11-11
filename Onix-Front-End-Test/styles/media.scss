@@ -3,7 +3,7 @@ $sidebarWidth: 286px;
 
 @media screen and (min-width: 320px) {
   /*head*/
-  .header {
+  header {
     display: flex;
     flex-wrap: wrap;
     min-width: 670px;
@@ -63,20 +63,30 @@ $sidebarWidth: 286px;
 
   //main bar
   .mainbar {
-    .article__wrapper {
+    section {
       margin: 30px 10px;
       flex-basis: 770px;
       min-width: 570px;
 
     }
-    .item__text {
+    p {
       flex-basis: 380px;
     }
     
-    .article {
+    .section__wrapper {
       padding-bottom: 100px;
     }
-  
+
+    .article {
+      &.article__icon::before {
+        height: 40px;
+        width: 40px;
+        line-height: 40px;
+      }
+      &.icon-lightblue::before {
+        line-height: 43px;
+      }
+    }
   }
     /*buttons*/
   .btn {
@@ -88,10 +98,6 @@ $sidebarWidth: 286px;
     &.-medium {
       width: 30px;
       height: 30px;
-    }
-    &.-big {
-      width: 40px;
-      height: 40px;
     }
     &.-dotted {
       margin-top: 4px;
@@ -110,7 +116,7 @@ $sidebarWidth: 286px;
 
 @media screen and (min-width: 1100px) {
   /*header*/
-  .header {
+  header {
     display: flex;
     flex-wrap: wrap;
     min-height: 115px;
@@ -132,10 +138,16 @@ $sidebarWidth: 286px;
     .header__navigation {
       flex-basis: 100%;
     }
-    .item__text {
-      flex-basis: 490px;
+  }
+  //main section
+  .mainbar {
+    section {
+      p {
+        flex-basis: 490px;
+      }
     }
   }
+
   .btn {
     //sizes
     &.-dotted {
@@ -147,13 +159,13 @@ $sidebarWidth: 286px;
       }
     }
   }
+  
 }
-
 
 @media screen and(min-width: 1440px) {
 
   .mainbar {
-    .article {
+    .section__wrapper {
       padding-bottom: 150px;
     }
   }

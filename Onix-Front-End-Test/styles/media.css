@@ -1,6 +1,6 @@
 @media screen and (min-width: 320px) {
   /*head*/
-  .header {
+  header {
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
@@ -10,14 +10,14 @@
     padding-top: 0.5rem;
     /*sidebar*/
   }
-  .header .header__logo .logo__img {
+  header .header__logo .logo__img {
     width: 25px;
     margin-left: 10px;
   }
-  .header h1 {
+  header h1 {
     font-size: 1.5em;
   }
-  .header .header__chat {
+  header .header__chat {
     margin-top: 0.5rem;
     margin-left: auto;
   }
@@ -53,18 +53,26 @@
   .sidebar.hidden > *:first-child > *:not(:first-child) {
     display: none;
   }
-  .mainbar .article__wrapper {
+  .mainbar section {
     margin: 30px 10px;
     -ms-flex-preferred-size: 770px;
         flex-basis: 770px;
     min-width: 570px;
   }
-  .mainbar .item__text {
+  .mainbar p {
     -ms-flex-preferred-size: 380px;
         flex-basis: 380px;
   }
-  .mainbar .article {
+  .mainbar .section__wrapper {
     padding-bottom: 100px;
+  }
+  .mainbar .article.article__icon::before {
+    height: 40px;
+    width: 40px;
+    line-height: 40px;
+  }
+  .mainbar .article.icon-lightblue::before {
+    line-height: 43px;
   }
   /*buttons*/
   .btn.-small {
@@ -74,10 +82,6 @@
   .btn.-medium {
     width: 30px;
     height: 30px;
-  }
-  .btn.-big {
-    width: 40px;
-    height: 40px;
   }
   .btn.-dotted {
     margin-top: 4px;
@@ -95,7 +99,7 @@
 
 @media screen and (min-width: 1100px) {
   /*header*/
-  .header {
+  header {
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
@@ -104,24 +108,24 @@
     min-height: 115px;
     padding-top: 30px;
   }
-  .header .header__logo {
+  header .header__logo {
     min-height: 60px;
   }
-  .header .header__logo .logo__img {
+  header .header__logo .logo__img {
     width: 40px;
     margin-left: 30px;
   }
-  .header h1 {
+  header h1 {
     font-size: 2em;
   }
-  .header .header__chat {
+  header .header__chat {
     margin-left: auto;
   }
-  .header .header__navigation {
+  header .header__navigation {
     -ms-flex-preferred-size: 100%;
         flex-basis: 100%;
   }
-  .header .item__text {
+  .mainbar section p {
     -ms-flex-preferred-size: 490px;
         flex-basis: 490px;
   }
@@ -136,7 +140,7 @@
 }
 
 @media screen and (min-width: 1440px) {
-  .mainbar .article {
+  .mainbar .section__wrapper {
     padding-bottom: 150px;
   }
 }
