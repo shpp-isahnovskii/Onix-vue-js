@@ -156,9 +156,10 @@ header {
     .tasks__open {
       margin-left: 1.3rem;
     }
-    .tasks__open:hover, .tasks__closed {
-      cursor: pointer;
-    }
+  }
+  .tasks__open:hover, .tasks__closed:hover {
+    cursor: pointer;
+    color: $yellow;
   }
   .sidebar__menu {
     ul {

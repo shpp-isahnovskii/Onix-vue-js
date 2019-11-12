@@ -29,22 +29,20 @@ window.onload = () => {
 
 
   const tasksOpen = document.getElementById('tasksOpen');
-  const tasksClosed = document.getElementById('tasksClosed');
+  const innerTasksClosed = document.getElementById('tasksClosed'); //num amount
+  const outertTaskClosed = document.querySelector('.tasks__closed'); //outer block
 
   /*Event: ask user to close a task*/
-  tasksClosed.addEventListener('click', closeTheTask);
-
-
-  /* Change tasks counters */
-  function closeTheTask() {
-    if(confirm(CLOSE_THE_TASK) ) {
-      
-      if (tasksOpen.innerHTML > 0) {
+  outertTaskClosed.addEventListener( 'click', () => {
+    if( (tasksOpen.innerHTML > 0) ) { //if have open tasks
+      if( confirm(CLOSE_THE_TASK) ) { //if change confirmed
         tasksOpen.innerHTML--;
+        innerTasksClosed.innerHTML++;
       }
-      tasksClosed.innerHTML++;
+    } else { 
+      alert("You have no tasks to close"); //if no tasks
     }
-  }
+  });
 }
 
 

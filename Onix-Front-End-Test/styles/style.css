@@ -169,8 +169,9 @@ header .header__navigation .header__navigation--active a {
   margin-left: 1.3rem;
 }
 
-.sidebar .sidebar__tasks .tasks__open:hover, .sidebar .sidebar__tasks .tasks__closed {
+.sidebar .tasks__open:hover, .sidebar .tasks__closed:hover {
   cursor: pointer;
+  color: #ffc200;
 }
 
 .sidebar .sidebar__menu ul {
