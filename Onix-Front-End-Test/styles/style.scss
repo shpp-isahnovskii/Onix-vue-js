@@ -250,10 +250,13 @@ section {
       .cell {
         width: 105px;
         margin: 10px 5px 0;
-      }
-      .cell img {
-        width: 100%;
-        border-radius: 8px;
+        img {
+          width: 100%;
+          border-radius: 8px;
+        }
+        img:hover {
+            cursor: pointer;
+        }
       }
     }
 

@@ -304,6 +304,10 @@ section .article .item__images .cell img {
   border-radius: 8px;
 }
 
+section .article .item__images .cell img:hover {
+  cursor: pointer;
+}
+
 section .article.article__icon::before {
   margin-right: 22px;
   border-radius: 50%;
