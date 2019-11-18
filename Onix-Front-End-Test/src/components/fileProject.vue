@@ -1,23 +1,13 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <link rel="stylesheet" href="./styles/index.css">
-  <title>Document</title>
-</head>
-
-<body>
-  <div id="sidebar" class="sidebar"> <!-- toggle-bar -->
+<template>
+  <div class="page">
+    <div id="sidebar" class="sidebar"> <!-- toggle-bar -->
     <div class="sidebar__search">
-      <img id="toggleButton" class="btn -pointer sidebar-opener" src="./images/site/side-burger.svg" alt="menu button"> <!-- toggle button -->
+      <img id="toggleButton" class="btn -pointer sidebar-opener" src="../assets/images/site/side-burger.svg" alt="menu button"> <!-- toggle button -->
       <p>PROJECTUS</p>
-      <img class="search__icon" src="./images/site/search.svg" alt="search">
+      <img class="search__icon" src="../assets/images/site/search.svg" alt="search">
     </div>
     <div class="sidebar__avatar btn -avatar">
-      <img src="./images/people/avatar.jpg" alt="avatar">
+      <img src="../assets/images/people/avatar.jpg" alt="avatar">
       <div class="avatar__details">
         <p class="avatar__name">Jean Gonzales</p>
         <p class="avatar__role">Product Ovner</p>
@@ -49,7 +39,7 @@
 
     <header>
       <div class="header__logo">
-        <img class="logo__img" src="./images/site/logo.png" alt="site logo">
+        <img class="logo__img" src="../assets/images/site/logo.png" alt="site logo">
         <h1>Website Redesign</h1>
         <div class="btn -gray -rounded -dotted -pointer">
           <div class="btn__dots">...</div>
@@ -57,9 +47,9 @@
       </div>
       <div class="header__chat">
         <div class="chat__imgs">
-          <img class="btn -medium -rounded -pointer" src="./images/people/1.jpg" alt="person1">
-          <img class="btn -medium -rounded -pointer" src="./images/people/2.jpg" alt="person2">
-          <img class="btn -medium -rounded -pointer" src="./images/people/3.jpg" alt="person3">
+          <img class="btn -medium -rounded -pointer" src="../assets/images/people/1.jpg" alt="person1">
+          <img class="btn -medium -rounded -pointer" src="../assets/images/people/2.jpg" alt="person2">
+          <img class="btn -medium -rounded -pointer" src="../assets/images/people/3.jpg" alt="person3">
         </div>
         <div class="btn -gray -pointer btn__share">Share</div>
         <div class="btn -lightyellow -pointer  btn__chat">
@@ -95,16 +85,68 @@
           <div class="article__time">6:02PM</div>
 
           <div class="item__images">
-            <div class="cell"><img src="./images/temporary/0.jpg" alt="first file"></div>
-            <div class="cell"><img src="./images/temporary/1.jpg" alt="second file"></div>
-            <div class="cell"><img src="./images/temporary/2.jpg" alt="third file"></div>
-            <div class="cell"><img src="./images/temporary/3.jpg" alt="fourth file"></div>
+            <div class="cell"><img src="../assets/images/temporary/0.jpg" alt="first file"></div>
+            <div class="cell"><img src="../assets/images/temporary/1.jpg" alt="second file"></div>
+            <div class="cell"><img src="../assets/images/temporary/2.jpg" alt="third file"></div>
+            <div class="cell"><img src="../assets/images/temporary/3.jpg" alt="fourth file"></div>
           </div>
         </div>
       </section>
     </div>
   </div>
-  <script src="./script/script.js"></script>
-</body>
+  </div>
+</template>
 
-</html>
+<script>
+export default {
+  //... some data for images up here
+}
+
+const CLOSE_THE_TASK = 'Are you sure you want to change the number of tasks?';
+
+window.onload = () => {
+
+  const sidebar = document.getElementById('sidebar');
+
+  //close sidebar if started window width less then 970px
+  if (window.innerWidth < 970) { 
+    sidebar.classList.add('hidden');
+  }
+
+  const toggleButton = document.getElementById('toggleButton');
+
+  /*Event: open/close sidebar menu */
+  toggleButton.addEventListener('click', () => { sidebar.classList.toggle("hidden"); });
+  
+
+  const imagesArr = document.querySelectorAll('.item__images > div');
+  const menuNotifications = document.querySelector('.menu__notifications');
+
+  /*Event: change notification counter to the image index number*/
+  imagesArr.forEach( (element, index) => {
+    element.addEventListener('click', () => {
+      menuNotifications.innerHTML = index;
+   });
+  });
+
+
+  const tasksOpen = document.getElementById('tasksOpen');
+  const innerTasksClosed = document.getElementById('tasksClosed'); //num amount
+  const outertTaskClosed = document.querySelector('.tasks__closed'); //outer block
+
+  /*Event: ask user to close a task*/
+  outertTaskClosed.addEventListener( 'click', () => {
+    if( (tasksOpen.innerHTML > 0) ) { //if have open tasks
+      if( confirm(CLOSE_THE_TASK) ) { //if change confirmed
+        tasksOpen.innerHTML--;
+        innerTasksClosed.innerHTML++;
+      }
+    } else { 
+      alert("You have no tasks to close"); //if no tasks
+    }
+  });
+}
+</script>
+<!-- Add "scoped" attribute to limit CSS to this component only -->
+<style>
+</style>
