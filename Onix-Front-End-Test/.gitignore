@@ -1,4 +1,6 @@
+.screens-test.png
 .vscode
+.prettierrc.js
 .DS_Store
 node_modules
 /dist

@@ -1,22 +1,42 @@
 <template>
   <div id="app">
-    <fileProject/>
+    <sidebarSection />
+    <div>
+      <headerSection />
+      <mainbarSection />
+    </div>
   </div>
 
 </template>
 
 <script>
-import fileProject from './components/fileProject';
+import sidebarSection from './components/sidebarSection';
+import headerSection from './components/headerSection';
+import mainbarSection from './components/mainbarSection';
+
 
 export default {
   name: 'App',
   components: {
-    fileProject
+    sidebarSection,
+    headerSection,
+    mainbarSection
   }
 }
 </script>
 
-<style lang="scss"> //can't add scss
-  @import './assets/styles/media.css';
-  @import './assets/styles/style.css';
+<style lang="scss">
+
+  body {
+    margin: 0;
+  }
+  #app {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    min-width: 800px;
+    font-family: $mainFont;
+    color: $mainFontColor;
+    background-color: $mainBGColor;
+  }
 </style>

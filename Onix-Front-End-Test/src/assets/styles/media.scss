@@ -1,6 +1,5 @@
 $sidebarWidth: 286px;
 
-
 @media screen and (min-width: 320px) {
   /*head*/
   header {
@@ -23,11 +22,10 @@ $sidebarWidth: 286px;
     /*sidebar*/
   }
   .sidebar {
-    min-width: $sidebarWidth;
+    min-width: 286px;
     overflow-x: hidden;
     & > * {
       display: flex;
-      //min-width: $sidebarWidth;
     }
     & > * > *:first-child {
       margin-left: 0.2rem;
@@ -163,7 +161,6 @@ $sidebarWidth: 286px;
 }
 
 @media screen and(min-width: 1440px) {
-
   .mainbar {
     .section__wrapper {
       padding-bottom: 150px;

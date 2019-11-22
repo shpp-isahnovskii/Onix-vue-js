@@ -24,7 +24,7 @@ $gray: #eaeaea;
 
 $item-comment: #f7f6f3;
 
-body, .page {
+body {
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
@@ -339,6 +339,7 @@ section {
     width: 81px;
     margin-right: 33px;
     color: $yellow;
+    @import "./src/assets/styles/buttons.scss";
   }
   &.btn__chat::before {
     content: url("../images/site/chats.svg");
