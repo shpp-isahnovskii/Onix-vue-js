@@ -1,35 +1,23 @@
 <template>
-  <div id="app">
-    <sidebarSection />
-    <div>
-      <headerSection />
-      <mainbarSection />
-    </div>
-  </div>
-
+    <Layout id="app"/>
 </template>
 
 <script>
-import sidebarSection from './components/sidebarSection';
-import headerSection from './components/headerSection';
-import mainbarSection from './components/mainbarSection';
-
+import Layout from './components/Layout';
 
 export default {
   name: 'App',
   components: {
-    sidebarSection,
-    headerSection,
-    mainbarSection
+    Layout
   }
 }
 </script>
 
 <style lang="scss">
-
   body {
     margin: 0;
   }
+    //page wrapper
   #app {
     display: flex;
     flex-direction: row;

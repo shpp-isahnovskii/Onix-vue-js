@@ -19,8 +19,6 @@
           <img v-bind:src="image.url" :alt="image.alt" />
         </div>
       </div>
-      <div v-else></div>
-
     </div>
     <!-- end of wrapper -->
   </section>
@@ -29,6 +27,7 @@
 
 <script>
   export default {
+    name: 'activity',
     data() {
       return {
         articles: [
@@ -51,20 +50,17 @@
             text: "Darika Samak uploaded 4 files on An option to search in current projectsor in all projects",
             time: "6:02PM",
             comment: '',
-            uploads: images
+            uploads: [ 
+                  { url: require("../../assets/images/temporary/0.jpg"), alt: 'first file' },
+                  { url: require("../../assets/images/temporary/1.jpg"), alt: 'second file'},
+                  { url: require("../../assets/images/temporary/2.jpg"), alt: 'third file' },
+                  { url: require("../../assets/images/temporary/3.jpg"), alt: 'fourth file'}]
           } 
         ],
       }
     }
   }
-    //images
-  let images = 
-    [ 
-      { url: require("../../assets/images/temporary/0.jpg"), alt: 'first file' },
-      { url: require("../../assets/images/temporary/1.jpg"), alt: 'second file'},
-      { url: require("../../assets/images/temporary/2.jpg"), alt: 'third file' },
-      { url: require("../../assets/images/temporary/3.jpg"), alt: 'fourth file'}
-    ]
+
 </script>
 
 

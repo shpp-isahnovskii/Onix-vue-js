@@ -9,26 +9,45 @@
       </div>
       <div class="header__chat">
         <div class="chat__imgs">
-          <img class="btn -medium -rounded -pointer" src="../assets/images/people/1.jpg" alt="person1">
-          <img class="btn -medium -rounded -pointer" src="../assets/images/people/2.jpg" alt="person2">
-          <img class="btn -medium -rounded -pointer" src="../assets/images/people/3.jpg" alt="person3">
+          <img v-for="(friend, n) in friends" v-bind:key="n" class="btn -medium -rounded -pointer" :src="friend.person" :alt=" friend.alt">
         </div>
         <div class="btn -gray -pointer btn__share">Share</div>
         <div class="btn -lightyellow -pointer  btn__chat">
           <p>Chat</p>
         </div>
       </div>
+      
       <ul class="header__navigation">
-        <li><a href="#">Tasks</a></li>
-        <li><a href="#">Kanban</a></li>
-        <li class="header__navigation--active"><a href="#">Activity</a></li>
-        <li><a href="#">Calendar</a></li>
-        <li><a href="#">Files</a></li>
+        <li v-for="(name, n) in pages" v-bind:key="n" v-bind:class="{'header__navigation--active' : (name === props[0])}">
+          <a @click="changePage(name)" href="#">{{name}}</a>
+        </li>
       </ul>
+
     </header>
 </template>
 
 <script>
+  export default {
+    data() {
+      return {
+        props: ['Activity'],
+        //curPage: 'Activity',
+        pages: ['Tasks', 'Kanban', 'Activity', 'Calendar', 'Files'],
+        friends: [
+          {person : require('../assets/images/people/1.jpg'), alt : "Matt"},
+          {person : require('../assets/images/people/2.jpg'), alt : "David"},
+          {person : require('../assets/images/people/3.jpg'), alt : "Katty"}
+        ]
+      }
+    },
+    methods: {
+      changePage(name) {
+        //this.curPage = name;
+        this.props = [name];
+        this.$root.$emit('content-changed', name);
+      }
+    }
+  }
 
 </script>
 
