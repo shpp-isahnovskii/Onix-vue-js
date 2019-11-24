@@ -9,6 +9,17 @@ export default {
   name: 'App',
   components: {
     Layout
+  },
+  data() {
+    return {
+      d : true
+    }
+  },
+  mounted() {
+    let width = window.innerWidth
+    if(width < 970) {
+      this.$root.$emit('hide-sidebar', true);
+    }
   }
 }
 </script>

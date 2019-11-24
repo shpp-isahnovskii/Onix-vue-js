@@ -1,5 +1,5 @@
 <template>
-  <div id="sidebar" class="sidebar"  v-bind:class="{ 'hidden' : sidebarStatus }"> <!-- toggle-bar -->
+  <div id="sidebar" class="sidebar"  v-bind:class="{ 'hidden' : hideSidebar }"> <!-- toggle-bar -->
     <div class="sidebar__search">
       <img @click="sidebarToggle()"
       class="btn -pointer sidebar-opener"
@@ -55,7 +55,7 @@
           },
           notifications: 3
         },
-        sidebarStatus: false
+        hideSidebar: false
       }
     },
     methods : {
@@ -74,13 +74,16 @@
       },
       //hide-show sidebar
       sidebarToggle() {
-        this.sidebarStatus = !this.sidebarStatus;
+        this.hideSidebar = !this.hideSidebar;
       }
     },
     //change image index event for notify element
     mounted() {
-      this.$root.$on('notify-index', (index)=> {
+      this.$root.$on('notify-index', (index) => {
         this.user.notifications = index;
+      });
+      this.$root.$on('hide-sidebar', (status) => {
+        this.hideSidebar = status;
       });
     }
   }

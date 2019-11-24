@@ -31,7 +31,6 @@
     data() {
       return {
         props: ['Activity'],
-        //curPage: 'Activity',
         pages: ['Tasks', 'Kanban', 'Activity', 'Calendar', 'Files'],
         friends: [
           { person : require('../assets/images/people/1.jpg'), alt : "Matt" },
@@ -42,7 +41,6 @@
     },
     methods: {
       changePage(name) {
-        //this.curPage = name;
         this.props = [name];
         this.$root.$emit('content-changed', name);
       }
