@@ -1,7 +1,7 @@
 <template>
   <div>
     <SideBar/>
-    <div class="rColumn">
+    <div class="column">
       <Header/>
       <Content/>
     </div>
@@ -25,7 +25,8 @@ import Content from './Content';
 </script>
 
 <style lang="scss">
-  .rColumn {
+  .column {
     width: 100%;
+    height: 100%;
   }
 </style>

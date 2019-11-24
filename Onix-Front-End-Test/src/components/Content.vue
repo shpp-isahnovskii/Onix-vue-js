@@ -1,21 +1,24 @@
 <template>
-  <div class="section__wrapper" v-if="pageContent === 'Activity'">
-    <activity/>
-  </div>
-  <div class="section__wrapper" v-else>
-    <tasks/>
+  <div class="section__wrapper">
+    <component :is="pageContent" /> <!--example: https://blog.logrocket.com/how-to-make-your-components-dynamic-in-vue-js/ -->
   </div>
 </template>
 
 <script>
-  import activity from './navigation/activity';
-  import tasks from './navigation/tasks';
+  import Activity from './navigation/activity';
+  import Tasks from './navigation/tasks';
+  import Kanban from './navigation/kanban';
+  import Calendar from './navigation/calendar';
+  import Files from './navigation/files';
   
   export default {
     name: 'Content',
     components: {
-      activity,
-      tasks
+      Activity,
+      Tasks,
+      Kanban,
+      Calendar,
+      Files
     },
     mounted() { //link for tutorial: https://flaviocopes.com/vue-components-communication/
       this.$root.$on('content-changed', (newContent) => {
@@ -26,7 +29,7 @@
       return {
         pageContent: 'Activity'
       }
-    },
+    }
   }
 
 </script>
@@ -38,6 +41,7 @@
       margin: 30px 10px;
       flex-basis: 770px;
       min-width: 570px;
+      align-self: flex-start;
     }
     p {
       flex-basis: 380px;
@@ -76,7 +80,7 @@
   /* main section */
   .section__wrapper {
     display: flex;
-    align-items: center;
+    min-height: 600px;
     justify-content: center;
   }
   section {

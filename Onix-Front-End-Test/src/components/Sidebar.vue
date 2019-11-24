@@ -1,15 +1,17 @@
 <template>
-  <div id="sidebar" class="sidebar"> <!-- toggle-bar -->
+  <div id="sidebar" class="sidebar"  v-bind:class="{ 'hidden' : sidebarStatus }"> <!-- toggle-bar -->
     <div class="sidebar__search">
-      <img id="toggleButton" class="btn -pointer sidebar-opener" src="../assets/images/site/side-burger.svg" alt="menu button"> <!-- toggle button -->
-      <p>PROJECTUS</p>
+      <img @click="sidebarToggle()"
+      class="btn -pointer sidebar-opener"
+      src="../assets/images/site/side-burger.svg" alt="menu button"> <!-- toggle button -->
+      <p>{{user.company}}</p>
       <img class="search__icon" src="../assets/images/site/search.svg" alt="search">
     </div>
     <div class="sidebar__avatar btn -avatar">
-      <img src="../assets/images/people/avatar.jpg" alt="avatar">
+      <img :src="user.personal.avatar" alt="avatar">
       <div class="avatar__details">
-        <p class="avatar__name">Jean Gonzales</p>
-        <p class="avatar__role">Product Ovner</p>
+        <p class="avatar__name">{{user.personal.name}}</p>
+        <p class="avatar__role">{{user.personal.role}}</p>
       </div>
       <div class="btn -medium -rounded -dotted -pointer">
         <div class="btn__dots">...</div>
@@ -17,11 +19,11 @@
     </div>
     <div class="sidebar__tasks">
       <div class="tasks__closed">
-        <p id="tasksClosed">372</p> <!-- tasks closed -->
+        <p id="tasksClosed">{{user.tasks.closed}}</p> <!-- tasks closed -->
         <p>Completed Tasks</p>
       </div>
       <div class="tasks__open" >
-        <p id="tasksOpen">3</p> <!-- tasks open -->
+        <p id="tasksOpen" @click="changeCounter()" >{{user.tasks.open}}</p> <!-- tasks open -->
         <p>Open Tasks</p>
       </div>
     </div>
@@ -30,13 +32,58 @@
         <li class="sidebar__menu--active"><a href="#">MENU</a></li>
         <li><a href="#">Home</a></li>
         <li><a href="#">My Tasks</a></li>
-        <li><a href="#">Notofications<div class="menu__notifications btn -small -rounded -yellow">3</div></a></li>
+        <li><a href="#">Notofications<div class="menu__notifications btn -small -rounded -yellow">{{user.notifications}}</div></a></li>
       </ul>
     </div>
   </div>
 </template>
 
 <script>
+  export default {
+    data() {
+      return {
+        user : {
+          company: 'PROJECTUS',
+          personal: {
+            avatar: require('../assets/images/people/avatar.jpg'),
+            name: 'Jean Gonzales',
+            role: 'Product Ovner',
+          },
+          tasks: {
+            open: 11,
+            closed: 372
+          },
+          notifications: 3
+        },
+        sidebarStatus: false
+      }
+    },
+    methods : {
+      //close a task
+      changeCounter() {
+        let closeTheTask = 'Are you sure you want to change the number of tasks?';
+        if(this.user.tasks.open > 0) {
+          if(confirm(closeTheTask) ) {
+            this.user.tasks.open--;
+            this.user.tasks.closed++;
+          }
+        }
+        else {
+          alert("You have no tasks to close");
+        }
+      },
+      //hide-show sidebar
+      sidebarToggle() {
+        this.sidebarStatus = !this.sidebarStatus;
+      }
+    },
+    //change image index event for notify element
+    mounted() {
+      this.$root.$on('notify-index', (index)=> {
+        this.user.notifications = index;
+      });
+    }
+  }
 </script>
 
 
@@ -134,14 +181,14 @@
         font-size: 12px;
         color: $sidebar-color;
       }
+      p:first-child:hover {
+        cursor: pointer;
+        color: $yellow;
+      }
     }
     .tasks__open {
       margin-left: 1.3rem;
     }
-  }
-  .tasks__open:hover, .tasks__closed:hover {
-    cursor: pointer;
-    color: $yellow;
   }
   .sidebar__menu {
     ul {

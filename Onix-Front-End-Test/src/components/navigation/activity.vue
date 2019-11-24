@@ -15,7 +15,7 @@
       <div v-if="article.comment !==''" class="article__comment">{{ article.comment }}</div>
     <!-- image -->
       <div v-if="article.uploads !==''" class="item__images">
-        <div class="cell" v-for="(image, imageIndex) in article.uploads" v-bind:key="imageIndex">
+        <div class="cell" v-for="(image, imageIndex) in article.uploads" v-bind:key="imageIndex" @click="sendIndex(imageIndex)">
           <img v-bind:src="image.url" :alt="image.alt" />
         </div>
       </div>
@@ -56,7 +56,12 @@
                   { url: require("../../assets/images/temporary/2.jpg"), alt: 'third file' },
                   { url: require("../../assets/images/temporary/3.jpg"), alt: 'fourth file'}]
           } 
-        ],
+        ]
+      }
+    },
+    methods : {
+      sendIndex(index) {
+        this.$root.$emit('notify-index', index);
       }
     }
   }

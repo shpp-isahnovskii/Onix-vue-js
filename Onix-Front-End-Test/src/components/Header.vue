@@ -34,9 +34,9 @@
         //curPage: 'Activity',
         pages: ['Tasks', 'Kanban', 'Activity', 'Calendar', 'Files'],
         friends: [
-          {person : require('../assets/images/people/1.jpg'), alt : "Matt"},
-          {person : require('../assets/images/people/2.jpg'), alt : "David"},
-          {person : require('../assets/images/people/3.jpg'), alt : "Katty"}
+          { person : require('../assets/images/people/1.jpg'), alt : "Matt" },
+          { person : require('../assets/images/people/2.jpg'), alt : "David" },
+          { person : require('../assets/images/people/3.jpg'), alt : "Katty" }
         ]
       }
     },
@@ -145,12 +145,15 @@
       list-style-type: none;
       justify-content: flex-start;
       align-items: flex-end;
-      margin: 10px 0 0 12px;
+      margin: 10px 0 0 0;
       padding: 0;
       li {
         border-bottom: 2px solid transparent;
         padding: 0 18px 14px 18px;
         list-style-type: none;
+      }
+      li:first-child {
+        padding-left: 30px;
       }
       li:hover a {
         opacity: 1;
