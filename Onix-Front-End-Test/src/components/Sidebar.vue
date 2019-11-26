@@ -35,11 +35,32 @@
         <li><a href="#">Notofications<div class="menu__notifications btn -small -rounded -yellow">{{user.notifications}}</div></a></li>
       </ul>
     </div>
+    
+    <!-- look up here, works -->
+    <clickMe></clickMe>
+    <clickMe></clickMe>
+    <clickMe></clickMe>
+    <!--                     -->
+
   </div>
 </template>
 
 <script>
   export default {
+
+    /*-- look up here --*/
+    components: {
+      clickMe: {
+        template: '<div @click="counter++">{{counter}}</div>',
+        data() {
+          return {
+            counter: 0
+          }
+        }
+      }
+    },
+    /*--             --*/
+
     data() {
       return {
         user : {

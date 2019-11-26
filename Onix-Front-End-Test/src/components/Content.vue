@@ -4,6 +4,8 @@
   </div>
 </template>
 
+
+
 <script>
   import Activity from './navigation/activity';
   import Tasks from './navigation/tasks';

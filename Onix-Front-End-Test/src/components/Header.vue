@@ -18,16 +18,39 @@
       </div>
       
       <ul class="header__navigation">
+
         <li v-for="(name, n) in pages" v-bind:key="n" v-bind:class="{'header__navigation--active' : (name === props[0])}">
           <a @click="changePage(name)" href="#">{{name}}</a>
         </li>
       </ul>
 
+<!-- look up here, don't work -->
+      <plan></plan>
+      
+      <script type="text/x-template" id="hi-template">
+        <div @click="counter++">{{counter}}</div>
+      </script>
+<!--                          -->
     </header>
 </template>
 
+
 <script>
   export default {
+
+    /*-- look up here --*/
+    components: {
+      plan : {
+        template: '#hi-template', //<div>hi</div>
+        data() {
+          return {
+            counter: 0
+          }
+        }
+      }
+    /*--             --*/
+
+    },
     data() {
       return {
         props: ['Activity'],
@@ -43,7 +66,7 @@
       changePage(name) {
         this.props = [name];
         this.$root.$emit('content-changed', name);
-      }
+      },
     }
   }
 
@@ -172,4 +195,29 @@
     }
   }
   /* end of header */
+
+    //content element in the navigation bar
+/*  let navigationItem = {
+    tamplate: '#navigation-menu',
+    props: {
+      name: {
+        String,
+        required: true
+      },
+      select: {
+        type: String
+      }
+    },
+    computed: {
+      isSelected() {
+        return this.name;
+      }
+    },
+    methods: {
+      select() {
+        this.$emit('nav-item-selected', this.name)
+      }
+    }
+  }
+*/
 </style>
