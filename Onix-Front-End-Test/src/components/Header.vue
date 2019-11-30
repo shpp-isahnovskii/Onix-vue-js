@@ -1,56 +1,24 @@
-<template>
-    <header>
-      <div class="header__logo">
-        <img class="logo__img" src="../assets/images/site/logo.png" alt="site logo">
-        <h1>Website Redesign</h1>
-        <div class="btn -gray -rounded -dotted -pointer">
-          <div class="btn__dots">...</div>
-        </div>
-      </div>
-      <div class="header__chat">
-        <div class="chat__imgs">
-          <img v-for="(friend, n) in friends" v-bind:key="n" class="btn -medium -rounded -pointer" :src="friend.person" :alt=" friend.alt">
-        </div>
-        <div class="btn -gray -pointer btn__share">Share</div>
-        <div class="btn -lightyellow -pointer  btn__chat">
-          <p>Chat</p>
-        </div>
-      </div>
-      
-      <ul class="header__navigation">
-
-        <li v-for="(name, n) in pages" v-bind:key="n" v-bind:class="{'header__navigation--active' : (name === props[0])}">
-          <a @click="changePage(name)" href="#">{{name}}</a>
-        </li>
-      </ul>
-
-<!-- look up here, don't work -->
-      <plan></plan>
-      
-      <script type="text/x-template" id="hi-template">
-        <div @click="counter++">{{counter}}</div>
-      </script>
-<!--                          -->
-    </header>
+<template lang="pug">
+  header
+    .header__logo
+      img.logo__img(src='../assets/images/site/logo.png', alt='site logo')
+      h1 Website Redesign
+      .btn.-gray.-rounded.-dotted.-pointer
+        .btn__dots ...
+    .header__chat
+      .chat__imgs
+        img.btn.-medium.-rounded.-pointer(v-for='(friend, n) in friends', v-bind:key='n', :src='friend.person', :alt=' friend.alt')
+      .btn.-gray.-pointer.btn__share Share
+      .btn.-lightyellow.-pointer.btn__chat
+        p Chat
+    ul.header__navigation
+      li(v-for='(name, n) in pages', v-bind:key='n', v-bind:class="{'header__navigation--active' : (name === props[0])}")
+        a(@click='changePage(name)', href='#') {{name}}
 </template>
 
 
 <script>
   export default {
-
-    /*-- look up here --*/
-    components: {
-      plan : {
-        template: '#hi-template', //<div>hi</div>
-        data() {
-          return {
-            counter: 0
-          }
-        }
-      }
-    /*--             --*/
-
-    },
     data() {
       return {
         props: ['Activity'],

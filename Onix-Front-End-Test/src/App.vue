@@ -1,19 +1,14 @@
-<template>
-    <Layout id="app"/>
+<template lang="pug">
+    layoutConstruction#app
 </template>
 
 <script>
-import Layout from './components/Layout';
+import layoutConstruction from './components/Layout';
 
 export default {
   name: 'App',
   components: {
-    Layout
-  },
-  data() {
-    return {
-      d : true
-    }
+    layoutConstruction
   },
   mounted() {
     let width = window.innerWidth

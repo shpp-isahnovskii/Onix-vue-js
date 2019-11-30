@@ -1,11 +1,9 @@
-<template>
-  <section>
-    <h3>Today</h3>
-    <div class="article" v-for="(task, n) in tasks" v-bind:key="n">
-      <p>{{task.text}}</p>
-      <div class="article__time">{{ task.time }}</div>
-    </div>
-  </section>
+<template lang="pug">
+  section
+    h3 Today
+    .article(v-for='(task, n) in tasks', v-bind:key='n')
+      p {{task.text}}
+        .article__time {{ task.time }}
 </template>
 
 

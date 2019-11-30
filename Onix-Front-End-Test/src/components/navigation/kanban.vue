@@ -1,5 +1,4 @@
-<template>
-  <section>
-    <h3>Kanban</h3>
-  </section>
+<template lang="pug">
+  section
+    h3 Kanban
 </template>

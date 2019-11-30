@@ -1,35 +1,35 @@
-<template>
-  <div class="section__wrapper">
-    <component :is="pageContent" /> <!--example: https://blog.logrocket.com/how-to-make-your-components-dynamic-in-vue-js/ -->
-  </div>
+<template lang="pug">
+  .section__wrapper
+    component(:is='pageContent')
+    // example: https://blog.logrocket.com/how-to-make-your-components-dynamic-in-vue-js/
 </template>
 
 
 
 <script>
-  import Activity from './navigation/activity';
-  import Tasks from './navigation/tasks';
-  import Kanban from './navigation/kanban';
-  import Calendar from './navigation/calendar';
-  import Files from './navigation/files';
+  import activityPage from './navigation/activity';
+  import tasksPage from './navigation/tasks';
+  import kanbanPage from './navigation/kanban';
+  import calendarPage from './navigation/calendar';
+  import filesPage from './navigation/files';
   
   export default {
-    name: 'Content',
+    name: 'contentPart',
     components: {
-      Activity,
-      Tasks,
-      Kanban,
-      Calendar,
-      Files
+      activityPage,
+      tasksPage,
+      kanbanPage,
+      calendarPage,
+      filesPage
     },
     mounted() { //link for tutorial: https://flaviocopes.com/vue-components-communication/
       this.$root.$on('content-changed', (newContent) => {
-        this.pageContent = newContent;
+        this.pageContent = newContent.toLowerCase() + 'Page';
       });
     },
     data() {
       return {
-        pageContent: 'Activity'
+        pageContent: 'activityPage'
       }
     }
   }

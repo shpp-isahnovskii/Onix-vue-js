@@ -1,24 +1,22 @@
-<template>
-  <div>
-    <SideBar/>
-    <div class="column">
-      <Header/>
-      <Content/>
-    </div>
-  </div>
+<template lang="pug">
+  div
+    sidebarPart
+    .column
+      headerPart
+      contentPart
 </template>
 
 <script>
-import SideBar from './Sidebar';
-import Header from './Header';
-import Content from './Content';
+import sidebarPart from './Sidebar';
+import headerPart from './Header';
+import contentPart from './Content';
 
   export default {
     name: 'Layout',
     components: {
-      SideBar,
-      Header,
-      Content
+      sidebarPart,
+      headerPart,
+      contentPart
     }
   }
 

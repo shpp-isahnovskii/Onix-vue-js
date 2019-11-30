@@ -1,66 +1,43 @@
-<template>
-  <div id="sidebar" class="sidebar"  v-bind:class="{ 'hidden' : hideSidebar }"> <!-- toggle-bar -->
-    <div class="sidebar__search">
-      <img @click="sidebarToggle()"
-      class="btn -pointer sidebar-opener"
-      src="../assets/images/site/side-burger.svg" alt="menu button"> <!-- toggle button -->
-      <p>{{user.company}}</p>
-      <img class="search__icon" src="../assets/images/site/search.svg" alt="search">
-    </div>
-    <div class="sidebar__avatar btn -avatar">
-      <img :src="user.personal.avatar" alt="avatar">
-      <div class="avatar__details">
-        <p class="avatar__name">{{user.personal.name}}</p>
-        <p class="avatar__role">{{user.personal.role}}</p>
-      </div>
-      <div class="btn -medium -rounded -dotted -pointer">
-        <div class="btn__dots">...</div>
-      </div>
-    </div>
-    <div class="sidebar__tasks">
-      <div class="tasks__closed">
-        <p id="tasksClosed">{{user.tasks.closed}}</p> <!-- tasks closed -->
-        <p>Completed Tasks</p>
-      </div>
-      <div class="tasks__open" >
-        <p id="tasksOpen" @click="changeCounter()" >{{user.tasks.open}}</p> <!-- tasks open -->
-        <p>Open Tasks</p>
-      </div>
-    </div>
-    <div class="sidebar__menu">
-      <ul>
-        <li class="sidebar__menu--active"><a href="#">MENU</a></li>
-        <li><a href="#">Home</a></li>
-        <li><a href="#">My Tasks</a></li>
-        <li><a href="#">Notofications<div class="menu__notifications btn -small -rounded -yellow">{{user.notifications}}</div></a></li>
-      </ul>
-    </div>
-    
-    <!-- look up here, works -->
-    <clickMe></clickMe>
-    <clickMe></clickMe>
-    <clickMe></clickMe>
-    <!--                     -->
-
-  </div>
+<template lang='pug'>
+#sidebar.sidebar(v-bind:class="{ 'hidden' : hideSidebar }")
+  // toggle-bar
+  .sidebar__search
+    img.btn.-pointer.sidebar-opener(@click='sidebarToggle()', src='../assets/images/site/side-burger.svg', alt='menu button')
+    // toggle button
+    p {{user.company}}
+    img.search__icon(src='../assets/images/site/search.svg', alt='search')
+  .sidebar__avatar.btn.-avatar
+    img(:src='user.personal.avatar', alt='avatar')
+    .avatar__details
+      p.avatar__name {{user.personal.name}}
+      p.avatar__role {{user.personal.role}}
+    .btn.-medium.-rounded.-dotted.-pointer
+      .btn__dots ...
+  .sidebar__tasks
+    .tasks__closed
+      p#tasksClosed {{user.tasks.closed}}
+      // tasks closed
+      p Completed Tasks
+    .tasks__open
+      p#tasksOpen(@click='changeCounter()') {{user.tasks.open}}
+      // tasks open
+      p Open Tasks
+  .sidebar__menu
+    ul
+      li.sidebar__menu--active
+        a(href='#') MENU
+      li
+        a(href='#') Home
+      li
+        a(href='#') My Tasks
+      li
+        a(href='#')
+          | Notofications
+          .menu__notifications.btn.-small.-rounded.-yellow {{user.notifications}}
 </template>
 
 <script>
   export default {
-
-    /*-- look up here --*/
-    components: {
-      clickMe: {
-        template: '<div @click="counter++">{{counter}}</div>',
-        data() {
-          return {
-            counter: 0
-          }
-        }
-      }
-    },
-    /*--             --*/
-
     data() {
       return {
         user : {

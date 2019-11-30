@@ -1,10 +1,4 @@
-<template>
-  <section>
-    <h3>Files</h3>
-  </section>
+<template lang="pug">
+  section
+    h3 Files
 </template>
-
-
-<style lang="scss">
-
-</style>

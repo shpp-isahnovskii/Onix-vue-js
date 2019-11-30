@@ -1,27 +1,18 @@
-<template>
-  <section>
-    <h3>Today</h3>
-    <!-- class for icon + wrapper -->
-    <div 
-      v-for="(article, index) in articles" 
-      class="article article__icon" 
-      :class=" article.icon === 2 ? 'icon-lightblue' : article.icon === 1 ? 'icon-lightyellow' : 'icon-lightgreen' " 
-      v-bind:key="index"
-    >
-    <!-- text -->
-      <p>{{ article.text }}</p>
-      <div class="article__time">{{ article.time }}</div>
-    <!-- coment -->
-      <div v-if="article.comment !==''" class="article__comment">{{ article.comment }}</div>
-    <!-- image -->
-      <div v-if="article.uploads !==''" class="item__images">
-        <div class="cell" v-for="(image, imageIndex) in article.uploads" v-bind:key="imageIndex" @click="sendIndex(imageIndex)">
-          <img v-bind:src="image.url" :alt="image.alt" />
-        </div>
-      </div>
-    </div>
-    <!-- end of wrapper -->
-  </section>
+<template lang="pug">
+  section
+    h3 Today
+    // class for icon + wrapper
+    .article.article__icon(v-for='(article, index) in articles', :class=" article.icon === 2 ? 'icon-lightblue' : article.icon === 1 ? 'icon-lightyellow' : 'icon-lightgreen' ", v-bind:key='index')
+      // text
+      p {{ article.text }}
+      .article__time {{ article.time }}
+      // coment
+      .article__comment(v-if="article.comment !==''") {{ article.comment }}
+      // image
+      .item__images(v-if="article.uploads !==''")
+        .cell(v-for='(image, imageIndex) in article.uploads', v-bind:key='imageIndex', @click='sendIndex(imageIndex)')
+          img(v-bind:src='image.url', :alt='image.alt')
+    // end of wrapper
 </template>
 
 
@@ -65,10 +56,8 @@
       }
     }
   }
-
 </script>
 
 
 <style lang="scss">
-
 </style>

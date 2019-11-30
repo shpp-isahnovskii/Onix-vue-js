@@ -1,5 +1,4 @@
-<template>
-  <section>
-    <h3>Calendar</h3>
-  </section>
+<template lang="pug">
+  section
+    h3 Calendar
 </template>
