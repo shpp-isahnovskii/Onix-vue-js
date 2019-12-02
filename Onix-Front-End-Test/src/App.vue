@@ -1,29 +1,22 @@
 <template lang="pug">
-    layoutConstruction#app
+    layoutComponent#app
 </template>
 
-<script>
-import layoutConstruction from './components/Layout';
+<script lang="ts">
+import { Component, Vue } from 'vue-property-decorator';
+import layoutComponent from './components/Layout.vue';
 
-export default {
-  name: 'App',
-  components: {
-    layoutConstruction
-  },
-  mounted() {
-    let width = window.innerWidth
-    if(width < 970) {
-      this.$root.$emit('hide-sidebar', true);
-    }
-  }
-}
+@Component({
+  components: {layoutComponent}
+})
+export default class App extends Vue {}
 </script>
+
 
 <style lang="scss">
   body {
     margin: 0;
   }
-    //page wrapper
   #app {
     display: flex;
     flex-direction: row;

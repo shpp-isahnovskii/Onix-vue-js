@@ -6,20 +6,16 @@
       contentPart
 </template>
 
-<script>
-import sidebarPart from './Sidebar';
-import headerPart from './Header';
-import contentPart from './Content';
+<script lang="ts">
+  import sidebarPart from './Sidebar.vue';
+  import headerPart from './Header.vue';
+  import contentPart from './Content.vue';
 
-  export default {
-    name: 'Layout',
-    components: {
-      sidebarPart,
-      headerPart,
-      contentPart
-    }
-  }
-
+  import { Component, Vue } from 'vue-property-decorator';
+  @Component({
+    components: { headerPart, sidebarPart, contentPart }
+  })
+  export default class Layout extends Vue {}
 </script>
 
 <style lang="scss">

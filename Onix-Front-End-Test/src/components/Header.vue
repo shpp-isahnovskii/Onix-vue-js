@@ -17,24 +17,30 @@
 </template>
 
 
-<script>
-  export default {
-    data() {
-      return {
-        props: ['Activity'],
-        pages: ['Tasks', 'Kanban', 'Activity', 'Calendar', 'Files'],
-        friends: [
-          { person : require('../assets/images/people/1.jpg'), alt : "Matt" },
-          { person : require('../assets/images/people/2.jpg'), alt : "David" },
-          { person : require('../assets/images/people/3.jpg'), alt : "Katty" }
-        ]
-      }
-    },
-    methods: {
-      changePage(name) {
-        this.props = [name];
-        this.$root.$emit('content-changed', name);
-      },
+<script lang="ts">
+
+  import { Component, Vue, Prop } from 'vue-property-decorator';
+
+  @Component({})
+  export default class Header extends Vue {
+    props: String[];
+    pages: String[];
+    friends: { person: string, alt: string }[];
+
+    constructor() {
+      super();
+      this.props = ['Activity'];
+      this.pages = ['Tasks', 'Kanban', 'Activity', 'Calendar', 'Files'];
+      this.friends = [
+        { person : require('../assets/images/people/1.jpg'), alt : "Matt" },
+        { person : require('../assets/images/people/2.jpg'), alt : "David" },
+        { person : require('../assets/images/people/3.jpg'), alt : "Katty" }
+      ];
+    }
+
+    changePage(name:string): void {
+      this.props = [name];
+      this.$root.$emit('content-changed', name);
     }
   }
 
@@ -63,7 +69,6 @@
       }
     }
   }
-
   @media screen and (min-width: 1100px) {
   /*header*/
     header {
@@ -97,7 +102,6 @@
       margin-right: 4px;
     }
   }
-
   /* header */
   header {
     background-color: $white;
@@ -153,7 +157,6 @@
         opacity: 0.7;
         color: $mainFontColor;
       }
-
       .header__navigation--active {
         border-bottom: 2px solid $yellow;
         a {
@@ -162,30 +165,4 @@
       }
     }
   }
-  /* end of header */
-
-    //content element in the navigation bar
-/*  let navigationItem = {
-    tamplate: '#navigation-menu',
-    props: {
-      name: {
-        String,
-        required: true
-      },
-      select: {
-        type: String
-      }
-    },
-    computed: {
-      isSelected() {
-        return this.name;
-      }
-    },
-    methods: {
-      select() {
-        this.$emit('nav-item-selected', this.name)
-      }
-    }
-  }
-*/
 </style>

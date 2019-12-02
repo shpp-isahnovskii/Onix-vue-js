@@ -7,19 +7,25 @@
 </template>
 
 
-<script>
-  export default {
-    data() {
-      return {
-        tasks: [ 
+<script lang="ts">
+  import { Component, Vue, Prop } from 'vue-property-decorator';
+
+  export default class Tasks extends Vue {
+    tasks: {
+      text: string,
+      time: string
+    }[]
+
+    constructor() {
+      super();
+      this.tasks = [
           { text: "Making bed.", time: "7.00AM" },
           { text: "Washing face.", time: "7.05AM" },
           { text: "Drinking a pint of lemon water.", time: "7.10AM" },
           { text: "Maging breakfast", time: "7.15AM" },
           { text: "Reviewing my goals.", time: "7.45AM" },
           { text: "Writing down two to four important tasks for the day.", time: "7.50AM" }
-        ]
-      }
+      ]
     }
   }
 </script>

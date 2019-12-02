@@ -1,39 +1,39 @@
 <template lang="pug">
   .section__wrapper
     component(:is='pageContent')
-    // example: https://blog.logrocket.com/how-to-make-your-components-dynamic-in-vue-js/
+    //- example: https://blog.logrocket.com/how-to-make-your-components-dynamic-in-vue-js/
 </template>
 
 
 
-<script>
-  import activityPage from './navigation/activity';
-  import tasksPage from './navigation/tasks';
-  import kanbanPage from './navigation/kanban';
-  import calendarPage from './navigation/calendar';
-  import filesPage from './navigation/files';
-  
-  export default {
-    name: 'contentPart',
-    components: {
-      activityPage,
-      tasksPage,
-      kanbanPage,
-      calendarPage,
-      filesPage
-    },
-    mounted() { //link for tutorial: https://flaviocopes.com/vue-components-communication/
-      this.$root.$on('content-changed', (newContent) => {
-        this.pageContent = newContent.toLowerCase() + 'Page';
-      });
-    },
-    data() {
-      return {
-        pageContent: 'activityPage'
-      }
-    }
-  }
+<script lang="ts">
+  import activityPage from './navigation/activity.vue';
+  import tasksPage from './navigation/tasks.vue';
+  import kanbanPage from './navigation/kanban.vue';
+  import calendarPage from './navigation/calendar.vue';
+  import filesPage from './navigation/files.vue';
 
+  import { Component, Vue } from 'vue-property-decorator';
+
+  @Component({
+    // components: {
+    //   activityPage
+    // }
+  })
+  export default class Content extends Vue {
+    
+    pageContent: string;
+
+    constructor() {
+      super();
+      this.pageContent = 'activityPage';
+    }
+    // mounted() { //link for tutorial: https://flaviocopes.com/vue-components-communication/
+    //   this.$root.$on('content-changed', (newContent: string)=> {
+    //     this.pageContent = newContent.toLowerCase() + 'Page';
+    //   }
+    // }
+  }
 </script>
 
 <style lang="scss">

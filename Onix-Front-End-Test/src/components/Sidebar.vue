@@ -1,86 +1,106 @@
 <template lang='pug'>
-#sidebar.sidebar(v-bind:class="{ 'hidden' : hideSidebar }")
-  // toggle-bar
-  .sidebar__search
-    img.btn.-pointer.sidebar-opener(@click='sidebarToggle()', src='../assets/images/site/side-burger.svg', alt='menu button')
-    // toggle button
-    p {{user.company}}
-    img.search__icon(src='../assets/images/site/search.svg', alt='search')
-  .sidebar__avatar.btn.-avatar
-    img(:src='user.personal.avatar', alt='avatar')
-    .avatar__details
-      p.avatar__name {{user.personal.name}}
-      p.avatar__role {{user.personal.role}}
-    .btn.-medium.-rounded.-dotted.-pointer
-      .btn__dots ...
-  .sidebar__tasks
-    .tasks__closed
-      p#tasksClosed {{user.tasks.closed}}
-      // tasks closed
-      p Completed Tasks
-    .tasks__open
-      p#tasksOpen(@click='changeCounter()') {{user.tasks.open}}
-      // tasks open
-      p Open Tasks
-  .sidebar__menu
-    ul
-      li.sidebar__menu--active
-        a(href='#') MENU
-      li
-        a(href='#') Home
-      li
-        a(href='#') My Tasks
-      li
-        a(href='#')
-          | Notofications
-          .menu__notifications.btn.-small.-rounded.-yellow {{user.notifications}}
+  #sidebar.sidebar(v-bind:class="{ 'hidden' : hideSidebar }")
+    //- toggle-bar
+    .sidebar__search
+      img.btn.-pointer.sidebar-opener(@click='sidebarToggle()', src='../assets/images/site/side-burger.svg', alt='menu button')
+      //- toggle button
+      p {{user.company}}
+      img.search__icon(src='../assets/images/site/search.svg', alt='search')
+    .sidebar__avatar.btn.-avatar
+      img(:src='user.personal.avatar', alt='avatar')
+      .avatar__details
+        p.avatar__name {{user.personal.name}}
+        p.avatar__role {{user.personal.role}}
+      .btn.-medium.-rounded.-dotted.-pointer
+        .btn__dots ...
+    .sidebar__tasks
+      .tasks__closed
+        p#tasksClosed {{user.tasks.closed}}
+        //- tasks closed
+        p Completed Tasks
+      .tasks__open
+        p#tasksOpen(@click='changeCounter()') {{user.tasks.open}}
+        //- tasks open
+        p Open Tasks
+    .sidebar__menu
+      ul
+        li.sidebar__menu--active
+          a(href='#') MENU
+        li
+          a(href='#') Home
+        li
+          a(href='#') My Tasks
+        li
+          a(href='#')
+            | Notofications
+            .menu__notifications.btn.-small.-rounded.-yellow {{user.notifications}}
 </template>
 
-<script>
-  export default {
-    data() {
-      return {
-        user : {
-          company: 'PROJECTUS',
-          personal: {
-            avatar: require('../assets/images/people/avatar.jpg'),
-            name: 'Jean Gonzales',
-            role: 'Product Ovner',
-          },
-          tasks: {
-            open: 11,
-            closed: 372
-          },
-          notifications: 3
-        },
-        hideSidebar: false
-      }
-    },
-    methods : {
-      //close a task
-      changeCounter() {
-        let closeTheTask = 'Are you sure you want to change the number of tasks?';
-        if(this.user.tasks.open > 0) {
-          if(confirm(closeTheTask) ) {
-            this.user.tasks.open--;
-            this.user.tasks.closed++;
-          }
-        }
-        else {
-          alert("You have no tasks to close");
-        }
+<script lang="ts">
+
+  import { Component, Vue } from 'vue-property-decorator'
+
+  export default class SidebarVue extends Vue {
+
+    user: {
+      company: string;
+
+      personal: {
+        avatar: string;
+        name: string;
+        role: string;
       },
-      //hide-show sidebar
-      sidebarToggle() {
-        this.hideSidebar = !this.hideSidebar;
+
+      tasks: {
+        open: number;
+        closed: number;
+      },
+      notifications: number;
+    }
+
+    hideSidebar: boolean;
+
+    constructor() {
+      super();
+      this.user = {
+        company: 'PROJECTUS',
+        personal: {
+          avatar: require('../assets/images/people/avatar.jpg'),
+          name: 'Jean Gonzales',
+          role: 'Product Ovner'
+        },
+        tasks: {
+          open: 11,
+          closed: 372
+        },
+        notifications: 3
       }
-    },
+      this.hideSidebar = false;
+    }
+    //close a task
+    changeCounter(): void {
+      let closeTheTask = 'Are you sure you want to change the number of tasks?';
+      if(this.user.tasks.open > 0) {
+        if(confirm(closeTheTask) ) {
+          this.user.tasks.open--;
+          this.user.tasks.closed++;
+        }
+      }
+      else {
+        alert("You have no tasks to close");
+      }
+    }
+
+    //hide-show sidebar
+    sidebarToggle(): void {
+      this.hideSidebar = !this.hideSidebar;
+    }
     //change image index event for notify element
     mounted() {
-      this.$root.$on('notify-index', (index) => {
+      this.$root.$on('notify-index', (index : number) => {
         this.user.notifications = index;
       });
-      this.$root.$on('hide-sidebar', (status) => {
+      this.$root.$on('hide-sidebar', (status : boolean) => {
         this.hideSidebar = status;
       });
     }
