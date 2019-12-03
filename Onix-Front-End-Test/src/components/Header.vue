@@ -19,7 +19,7 @@
 
 <script lang="ts">
 
-  import { Component, Vue, Prop } from 'vue-property-decorator';
+  import { Component, Vue, Watch } from 'vue-property-decorator';
 
   @Component({})
   export default class Header extends Vue {
@@ -37,7 +37,6 @@
         { person : require('../assets/images/people/3.jpg'), alt : "Katty" }
       ];
     }
-
     changePage(name:string): void {
       this.props = [name];
       this.$root.$emit('content-changed', name);

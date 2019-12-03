@@ -38,8 +38,10 @@
 
 <script lang="ts">
 
-  import { Component, Vue } from 'vue-property-decorator'
+  import { Component, Vue, Watch } from 'vue-property-decorator'
+import Tasks from './navigation/tasks.vue';
 
+  @Component
   export default class SidebarVue extends Vue {
 
     user: {
@@ -57,11 +59,11 @@
       },
       notifications: number;
     }
-
     hideSidebar: boolean;
 
     constructor() {
       super();
+      
       this.user = {
         company: 'PROJECTUS',
         personal: {
@@ -90,8 +92,7 @@
         alert("You have no tasks to close");
       }
     }
-
-    //hide-show sidebar
+    //toggle sidebar
     sidebarToggle(): void {
       this.hideSidebar = !this.hideSidebar;
     }

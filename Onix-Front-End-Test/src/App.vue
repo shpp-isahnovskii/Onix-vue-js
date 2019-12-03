@@ -9,7 +9,14 @@ import layoutComponent from './components/Layout.vue';
 @Component({
   components: {layoutComponent}
 })
-export default class App extends Vue {}
+export default class App extends Vue {
+  mounted() {
+    let width = window.innerWidth
+    if(width < 970) {
+      this.$root.$emit('hide-sidebar', true);
+    }
+  }
+}
 </script>
 
 

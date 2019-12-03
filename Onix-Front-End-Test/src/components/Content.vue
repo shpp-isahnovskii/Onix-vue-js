@@ -16,9 +16,13 @@
   import { Component, Vue } from 'vue-property-decorator';
 
   @Component({
-    // components: {
-    //   activityPage
-    // }
+    components: {
+      activityPage,
+      tasksPage,
+      kanbanPage,
+      calendarPage,
+      filesPage
+    }
   })
   export default class Content extends Vue {
     
@@ -27,12 +31,13 @@
     constructor() {
       super();
       this.pageContent = 'activityPage';
+      
     }
-    // mounted() { //link for tutorial: https://flaviocopes.com/vue-components-communication/
-    //   this.$root.$on('content-changed', (newContent: string)=> {
-    //     this.pageContent = newContent.toLowerCase() + 'Page';
-    //   }
-    // }
+    mounted() { //link for tutorial: https://flaviocopes.com/vue-components-communication/
+      this.$root.$on('content-changed', (newContent: string) => {
+        this.pageContent = newContent.toLowerCase() + 'Page';
+      })
+    }
   }
 </script>
 

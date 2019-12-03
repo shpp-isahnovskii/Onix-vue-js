@@ -20,6 +20,7 @@
 
   import { Component, Vue } from 'vue-property-decorator';
 
+  @Component
   export default class Activity extends Vue {
     articles: {
       icon: number;
@@ -31,7 +32,7 @@
         alt: string;
       }[] | string;
     }[]
-
+  
     constructor() {
       super();
       this.articles = [
@@ -63,7 +64,6 @@
         } 
       ]
     }
-    
     sendIndex(index : number) {
       this.$root.$emit('notify-index', index);
     }
