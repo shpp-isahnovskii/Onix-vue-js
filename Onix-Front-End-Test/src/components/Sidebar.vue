@@ -140,7 +140,7 @@ import Tasks from './navigation/tasks.vue';
       width: 80px;
 
       & > *:not(:first-child) {
-       display: none;
+        display: none;
       }
       & > *:first-child > *:not(:first-child) {
         display: none;

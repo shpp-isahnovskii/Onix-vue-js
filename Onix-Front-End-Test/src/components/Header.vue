@@ -13,7 +13,10 @@
         p Chat
     ul.header__navigation
       li(v-for='(name, n) in pages', v-bind:key='n', v-bind:class="{'header__navigation--active' : (name === props[0])}")
-        a(@click='changePage(name)', href='#') {{name}}
+        router-link(:to='name.toLowerCase()') {{name}}
+
+
+      
 </template>
 
 
@@ -23,14 +26,14 @@
 
   @Component({})
   export default class Header extends Vue {
-    props: String[];
+    props: String;
     pages: String[];
     friends: { person: string, alt: string }[];
 
     constructor() {
       super();
-      this.props = ['Activity'];
       this.pages = ['Tasks', 'Kanban', 'Activity', 'Calendar', 'Files'];
+      this.props = this.pages[0];
       this.friends = [
         { person : require('../assets/images/people/1.jpg'), alt : "Matt" },
         { person : require('../assets/images/people/2.jpg'), alt : "David" },
@@ -38,8 +41,9 @@
       ];
     }
     changePage(name:string): void {
-      this.props = [name];
-      this.$root.$emit('content-changed', name);
+      this.props = name;
+      // eslint-disable-next-line no-console
+      console.log(name);
     }
   }
 

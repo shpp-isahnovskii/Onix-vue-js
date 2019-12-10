@@ -1,7 +1,6 @@
 <template lang="pug">
   .section__wrapper
-    component(:is='pageContent')
-    //- example: https://blog.logrocket.com/how-to-make-your-components-dynamic-in-vue-js/
+    <router-view></router-view>
 </template>
 
 
@@ -12,6 +11,7 @@
   import kanbanPage from './navigation/kanban.vue';
   import calendarPage from './navigation/calendar.vue';
   import filesPage from './navigation/files.vue';
+  import pageNotFound from './errors/pageNotFound.vue';
 
   import { Component, Vue } from 'vue-property-decorator';
 
@@ -21,23 +21,11 @@
       tasksPage,
       kanbanPage,
       calendarPage,
-      filesPage
+      filesPage,
+      pageNotFound
     }
   })
   export default class Content extends Vue {
-    
-    pageContent: string;
-
-    constructor() {
-      super();
-      this.pageContent = 'activityPage';
-      
-    }
-    mounted() { //link for tutorial: https://flaviocopes.com/vue-components-communication/
-      this.$root.$on('content-changed', (newContent: string) => {
-        this.pageContent = newContent.toLowerCase() + 'Page';
-      })
-    }
   }
 </script>
 
