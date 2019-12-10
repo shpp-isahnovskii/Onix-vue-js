@@ -83,6 +83,7 @@ import Tasks from './navigation/tasks.vue';
     changeCounter(): void {
       let closeTheTask = 'Are you sure you want to change the number of tasks?';
       if(this.user.tasks.open > 0) {
+        this.$router.push('/tasks'); //add router pushing
         if(confirm(closeTheTask) ) {
           this.user.tasks.open--;
           this.user.tasks.closed++;

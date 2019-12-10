@@ -12,8 +12,9 @@
       .btn.-lightyellow.-pointer.btn__chat
         p Chat
     ul.header__navigation
-      li(v-for='(name, n) in pages', v-bind:key='n', v-bind:class="{'header__navigation--active' : (name === props[0])}")
-        router-link(:to='name.toLowerCase()') {{name}}
+      li(v-for='(name, n) in pages', v-bind:key='n', v-bind:class="{'header__navigation--active' : (name === props)}")
+        router-link(:to='name.toLowerCase()') 
+          span {{name}} 
 
 
       
@@ -33,17 +34,21 @@
     constructor() {
       super();
       this.pages = ['Tasks', 'Kanban', 'Activity', 'Calendar', 'Files'];
-      this.props = this.pages[0];
+      this.props = '';
       this.friends = [
         { person : require('../assets/images/people/1.jpg'), alt : "Matt" },
         { person : require('../assets/images/people/2.jpg'), alt : "David" },
         { person : require('../assets/images/people/3.jpg'), alt : "Katty" }
       ];
     }
-    changePage(name:string): void {
+    /* change active page css (add yellow line to the bottom) */
+    changeActive(name:string): void {
       this.props = name;
-      // eslint-disable-next-line no-console
-      console.log(name);
+    }
+    /*@Watch example: https://stackoverflow.com/questions/51892100/watch-route-changes-in-vue-js-with-typescript */
+    @Watch('$route', { immediate: true, deep: true })
+      onUrlChange(link: any) {
+      this.props = link.name;
     }
   }
 
