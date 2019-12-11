@@ -17,11 +17,11 @@
 
 
 <script lang="ts">
-
+  import { ActivityInterface } from './navigationInterface/Activity'
   import { Component, Vue } from 'vue-property-decorator';
 
   @Component
-  export default class Activity extends Vue {
+  export default class Activity extends Vue implements ActivityInterface {
     articles: {
       icon: number;
       text: string;

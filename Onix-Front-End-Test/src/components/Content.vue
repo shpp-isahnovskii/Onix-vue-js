@@ -1,6 +1,6 @@
 <template lang="pug">
   .section__wrapper
-    <router-view></router-view>
+    router-view
 </template>
 
 

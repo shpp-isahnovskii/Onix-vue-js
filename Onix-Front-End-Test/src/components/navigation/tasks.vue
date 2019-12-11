@@ -8,10 +8,11 @@
 
 
 <script lang="ts">
+  import { TasksInterface } from './navigationInterface/Tasks'
   import { Component, Vue, Prop } from 'vue-property-decorator';
   
   @Component
-  export default class Tasks extends Vue {
+  export default class Tasks extends Vue implements TasksInterface {
     tasks: {
       text: string,
       time: string

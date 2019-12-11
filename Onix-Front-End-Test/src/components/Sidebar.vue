@@ -37,13 +37,12 @@
 </template>
 
 <script lang="ts">
-
+  import { SidebarInterface } from './componentInterface/Sidebar'
   import { Component, Vue, Watch } from 'vue-property-decorator'
 import Tasks from './navigation/tasks.vue';
 
   @Component
-  export default class SidebarVue extends Vue {
-
+  export default class SidebarVue extends Vue implements SidebarInterface {
     user: {
       company: string;
 

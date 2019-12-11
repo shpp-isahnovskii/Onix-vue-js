@@ -12,7 +12,7 @@
       .btn.-lightyellow.-pointer.btn__chat
         p Chat
     ul.header__navigation
-      li(v-for='(name, n) in pages', v-bind:key='n', v-bind:class="{'header__navigation--active' : (name === props)}")
+      li(v-for='(name, n) in pages', v-bind:key='n', v-bind:class="{'header__navigation--active' : (name === currentPage)}")
         router-link(:to='name.toLowerCase()') 
           span {{name}} 
 
@@ -22,19 +22,20 @@
 
 
 <script lang="ts">
-
+    import { HeaderInterface } from './componentInterface/Header';
   import { Component, Vue, Watch } from 'vue-property-decorator';
 
   @Component({})
-  export default class Header extends Vue {
-    props: String;
-    pages: String[];
+  export default class Header extends Vue implements HeaderInterface {
+
+    pages: string[];
+    currentPage: string;
     friends: { person: string, alt: string }[];
 
     constructor() {
       super();
       this.pages = ['Tasks', 'Kanban', 'Activity', 'Calendar', 'Files'];
-      this.props = '';
+      this.currentPage = '';
       this.friends = [
         { person : require('../assets/images/people/1.jpg'), alt : "Matt" },
         { person : require('../assets/images/people/2.jpg'), alt : "David" },
@@ -43,15 +44,14 @@
     }
     /* change active page css (add yellow line to the bottom) */
     changeActive(name:string): void {
-      this.props = name;
+      this.currentPage = name;
     }
     /*@Watch example: https://stackoverflow.com/questions/51892100/watch-route-changes-in-vue-js-with-typescript */
     @Watch('$route', { immediate: true, deep: true })
       onUrlChange(link: any) {
-      this.props = link.name;
+      this.currentPage = link.name;
     }
   }
-
 </script>
 
 <style lang="scss">
