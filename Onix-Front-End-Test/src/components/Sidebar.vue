@@ -37,27 +37,13 @@
 </template>
 
 <script lang="ts">
-  import { SidebarInterface } from './componentInterface/Sidebar'
+  import { UserInterface } from '../interfaces/UserInterface'
   import { Component, Vue, Watch } from 'vue-property-decorator'
 import Tasks from './navigation/tasks.vue';
 
   @Component
-  export default class SidebarVue extends Vue implements SidebarInterface {
-    user: {
-      company: string;
-
-      personal: {
-        avatar: string;
-        name: string;
-        role: string;
-      },
-
-      tasks: {
-        open: number;
-        closed: number;
-      },
-      notifications: number;
-    }
+  export default class SidebarVue extends Vue {
+    user: UserInterface;
     hideSidebar: boolean;
 
     constructor() {

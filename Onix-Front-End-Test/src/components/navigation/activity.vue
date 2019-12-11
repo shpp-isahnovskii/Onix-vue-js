@@ -17,22 +17,12 @@
 
 
 <script lang="ts">
-  import { ActivityInterface } from './navigationInterface/Activity'
+  import { ActivityInterface } from '../../interfaces/ActivityInterface'
   import { Component, Vue } from 'vue-property-decorator';
 
   @Component
-  export default class Activity extends Vue implements ActivityInterface {
-    articles: {
-      icon: number;
-      text: string;
-      time: string;
-      comment: string;
-      uploads: {
-        url: string;
-        alt: string;
-      }[] | string;
-    }[]
-  
+  export default class Activity extends Vue {
+    articles: ActivityInterface[];
     constructor() {
       super();
       this.articles = [

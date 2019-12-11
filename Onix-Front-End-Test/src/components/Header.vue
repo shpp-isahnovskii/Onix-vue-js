@@ -22,15 +22,15 @@
 
 
 <script lang="ts">
-    import { HeaderInterface } from './componentInterface/Header';
+    import { FriendsInterface } from '../interfaces/FriendsInterface';
   import { Component, Vue, Watch } from 'vue-property-decorator';
 
   @Component({})
-  export default class Header extends Vue implements HeaderInterface {
+  export default class Header extends Vue {
 
     pages: string[];
     currentPage: string;
-    friends: { person: string, alt: string }[];
+    friends: FriendsInterface[];
 
     constructor() {
       super();
@@ -46,7 +46,7 @@
     changeActive(name:string): void {
       this.currentPage = name;
     }
-    /*@Watch example: https://stackoverflow.com/questions/51892100/watch-route-changes-in-vue-js-with-typescript */
+    /* @Watch example: https://stackoverflow.com/questions/51892100/watch-route-changes-in-vue-js-with-typescript */
     @Watch('$route', { immediate: true, deep: true })
       onUrlChange(link: any) {
       this.currentPage = link.name;
