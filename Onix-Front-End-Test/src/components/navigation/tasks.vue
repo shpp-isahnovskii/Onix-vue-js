@@ -13,10 +13,7 @@
   
   @Component
   export default class Tasks extends Vue implements TasksInterface {
-    tasks: {
-      text: string,
-      time: string
-    }[]
+    tasks: TasksInterface[] = [];
 
     constructor() {
       super();

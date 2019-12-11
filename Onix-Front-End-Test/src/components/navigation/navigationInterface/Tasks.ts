@@ -1,6 +1,4 @@
 export interface TasksInterface {
-    tasks: {
-    text: string,
-    time: string
-  }[]
+  tasks.text: string,
+  tasks.time: string
 }
