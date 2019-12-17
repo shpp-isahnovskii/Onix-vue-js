@@ -2,8 +2,10 @@
   section
     h3 Today
     .article(v-for='(task, n) in tasks', v-bind:key='n')
-      p {{task.text}}
-        .article__time {{ task.time }}
+        p {{task.text}}
+          .article__time {{ task.time }}
+            span
+              div(v-on:click="remove(n)") x
 </template>
 
 
@@ -26,8 +28,34 @@ export default class Tasks extends Vue {
       { text: 'Writing down two to four important tasks for the day.', time: '7.50AM' }
     ];
   }
+  remove(index: number) {
+    this.tasks.splice(index, 1);
+  }
 }
 </script>
+
+<style lang="scss">
+  .article__time {
+    span {
+      display: inline-block;
+      position: relative;
+      text-align: center;
+      margin-left: 10px;
+      width: 20px;
+      border-radius: 50%;
+      background-color: tomato;
+      color: white;
+      font-weight: bold;
+      div {
+        position: relative;
+        top: -1px;
+      }
+    }
+    span:hover {
+      cursor: pointer;
+    }
+  }
+</style>
 
 
 
