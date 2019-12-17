@@ -1,6 +1,12 @@
 <template lang="pug">
   section
     h3 Today
+    .inputText
+      input(type="text" v-on:keyup.enter="adding(taskText, taskTime)" v-model="taskText" placeholder="type text here.." class="task__text")
+      .time__before time:
+        input(type='time' v-model="taskTime" placeholder="set time.." class="task__time")
+      button(class='task__submit' v-on:click="adding(taskText, taskTime)") 
+        div v
     .article(v-for='(task, n) in tasks', v-bind:key='n')
         p {{task.text}}
           .article__time {{ task.time }}
@@ -16,6 +22,8 @@ import { Component, Vue, Prop } from 'vue-property-decorator';
 @Component
 export default class Tasks extends Vue {
   tasks: TasksInterface[];
+  taskTime: string;
+  taskText: string;
 
   constructor() {
     super();
@@ -27,6 +35,17 @@ export default class Tasks extends Vue {
       { text: 'Reviewing my goals.', time: '7.45AM' },
       { text: 'Writing down two to four important tasks for the day.', time: '7.50AM' }
     ];
+    this.taskTime = '';
+    this.taskText = '';
+
+  }
+
+  adding(text: string, time: string){
+    if(text === '' || time === '') {
+      window.alert("please, input something in the task message and set the time");
+    } else {
+      this.tasks.push({text: text , time: time})
+    }
   }
   remove(index: number) {
     this.tasks.splice(index, 1);
@@ -35,6 +54,45 @@ export default class Tasks extends Vue {
 </script>
 
 <style lang="scss">
+  .inputText {
+    display: flex;
+    flex-wrap: nowrap;
+    margin: 16px 26px 16px 34px;
+    
+    .task__text, .task__time {
+      font-size: 16px;
+      outline: none;
+      border: none;
+    }
+    .task__text {
+      flex-grow: 4;
+      border-bottom: 2px dotted silver;
+      padding-bottom: 10px;
+    }
+    .time__before {
+      position: relative;
+      margin-left: 20px;
+      color: #131313;
+      flex-grow: 1;
+    }
+    .task__time {
+      margin-left: 20px;
+      }
+    }
+    .task__submit {
+      background-color: rgb(140, 223, 142);
+      border: none;
+      color: white;
+      text-decoration: none;
+      font-size: 18px;
+      width: 33px;
+      border-radius: 50%;
+      margin-left: auto;
+      margin-right: 5px;
+    }
+    .task__submit:hover {
+      cursor: pointer;
+    }
   .article__time {
     span {
       display: inline-block;
