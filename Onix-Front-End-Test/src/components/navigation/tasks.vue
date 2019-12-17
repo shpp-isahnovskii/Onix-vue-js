@@ -40,11 +40,16 @@ export default class Tasks extends Vue {
 
   }
 
-  adding(text: string, time: string){
+  adding(text: string, time: any){
     if(text === '' || time === '') {
       window.alert("please, input something in the task message and set the time");
     } else {
-      this.tasks.push({text: text , time: time})
+      //24 to 12 - get example from here: https://medium.com/front-end-weekly/how-to-convert-24-hours-format-to-12-hours-in-javascript-ca19dfd7419d
+      time = time.split(':');
+      time[1] += time[0] >= 12 ? 'PM' : 'AM';
+      time[0] = time[0] % 12 || 12;
+
+      this.tasks.push({text: text , time: time.join('.')})
     }
   }
   remove(index: number) {
