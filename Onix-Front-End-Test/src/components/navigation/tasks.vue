@@ -49,7 +49,10 @@ export default class Tasks extends Vue {
       time[1] += time[0] >= 12 ? 'PM' : 'AM';
       time[0] = time[0] % 12 || 12;
 
-      this.tasks.push({text: text , time: time.join('.')})
+      this.tasks.push({text: text , time: time.join('.')});
+      
+      this.taskTime = '';
+      this.taskText = '';
     }
   }
   remove(index: number) {
