@@ -27,6 +27,11 @@ export default class Tasks extends Vue {
 
   constructor() {
     super();
+    this.tasks = [];
+    this.taskTime = '';
+    this.taskText = '';
+  }
+  created() {
     this.tasks = [
       { text: 'Making bed.', time: '7.00AM' },
       { text: 'Washing face.', time: '7.05AM' },
@@ -35,10 +40,8 @@ export default class Tasks extends Vue {
       { text: 'Reviewing my goals.', time: '7.45AM' },
       { text: 'Writing down two to four important tasks for the day.', time: '7.50AM' }
     ];
-    this.taskTime = '';
-    this.taskText = '';
-
   }
+
 
   adding(text: string, time: any){
     if(text === '' || time === '') {
