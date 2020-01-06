@@ -17,7 +17,7 @@
 
 <script lang="ts">
 import { TasksInterface } from '../../interfaces/TasksInterface';
-import { Component, Vue, Prop } from 'vue-property-decorator';
+import { Component, Vue } from 'vue-property-decorator';
 
 @Component
 export default class Tasks extends Vue {
@@ -44,14 +44,14 @@ export default class Tasks extends Vue {
       { text: 'Writing down two to four important tasks for the day.', time: '7.50AM' }
     ];
   }
+  
   mounted() {
     //get $refs example: https://codingexplained.com/coding/front-end/vue-js/accessing-dom-refs
     const refsOfTasks = this.$refs.tasksRef;
-      refsOfTasks.forEach( (element: HTMLFormElement) => {
-        element.classList.add('asd');
+    refsOfTasks.forEach( (element: HTMLFormElement, index: number) => {
+      setTimeout( () => element.classList.add('tasks__animation'), 80 * (index) + 800);
     });
   }
-
   adding(text: string, time: any){
     if(text === '' || time === '') {
       window.alert("please, input something in the task message and set the time");
@@ -71,12 +71,22 @@ export default class Tasks extends Vue {
     this.tasks.splice(index, 1);
   }
 }
+
 </script>
 
 <style lang="scss">
-  .asd {
-    background-color: #131313;
+  .blinking {
+    opacity: 0.5;
   }
+  .tasks__animation {
+    animation-name: thisTasksAnimation;
+    animation-duration: 0.4s,
+  }
+  @keyframes thisTasksAnimation {
+  from {font-size: 1.0em;}
+  50%  {font-size: 1.04em;}
+  to {font-size: 1.0em;}
+}
   .fade-enter-active, .fade-leave-active {
   transition: all .2s;
   }
