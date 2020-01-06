@@ -7,11 +7,11 @@
         input(type='time' v-model="taskTime" placeholder="set time.." class="task__time")
       button(class='task__submit' v-on:click="adding(taskText, taskTime)") 
         div v
-    .article(v-for='(task, n) in tasks', v-bind:key='n')
-        p {{task.text}}
-          .article__time {{ task.time }}
-            span
-              div(v-on:click="remove(n)") x
+    .article(v-for='(task, n) in tasks', v-bind:key='n' ref="tasksRef")
+      p {{task.text}}
+        .article__time {{ task.time }}
+          span
+            div(v-on:click="remove(n)") x
 </template>
 
 
@@ -24,6 +24,9 @@ export default class Tasks extends Vue {
   tasks: TasksInterface[];
   taskTime: string;
   taskText: string;
+  $refs!: {
+    tasksRef : HTMLFormElement;
+  }
 
   constructor() {
     super();
@@ -41,7 +44,13 @@ export default class Tasks extends Vue {
       { text: 'Writing down two to four important tasks for the day.', time: '7.50AM' }
     ];
   }
-
+  mounted() {
+    //get $refs example: https://codingexplained.com/coding/front-end/vue-js/accessing-dom-refs
+    const refsOfTasks = this.$refs.tasksRef;
+      refsOfTasks.forEach( (element: HTMLFormElement) => {
+        element.classList.add('asd');
+    });
+  }
 
   adding(text: string, time: any){
     if(text === '' || time === '') {
@@ -65,6 +74,18 @@ export default class Tasks extends Vue {
 </script>
 
 <style lang="scss">
+  .asd {
+    background-color: #131313;
+  }
+  .fade-enter-active, .fade-leave-active {
+  transition: all .2s;
+  }
+  .fade-enter, .fade-leave-to{
+    opacity: 0;
+  }
+  .fade-enter-active {
+    transition-delay: .2s;
+  }
   .inputText {
     display: flex;
     flex-wrap: nowrap;
@@ -103,6 +124,10 @@ export default class Tasks extends Vue {
     }
     .task__submit:hover {
       cursor: pointer;
+    }
+    p {
+      max-width: 480px;
+      overflow-wrap: break-word;
     }
   .article__time {
     span {
