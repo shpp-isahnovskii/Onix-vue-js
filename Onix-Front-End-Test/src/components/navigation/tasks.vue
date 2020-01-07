@@ -62,8 +62,16 @@ export default class Tasks extends Vue {
       time[1] += time[0] >= 12 ? 'PM' : 'AM';
       time[0] = time[0] % 12 || 12;
 
-      this.tasks.push({text: text , time: time.join('.')});
+      let existingTask = this.tasks.find( e => {
+        return (e.text === text);
+      });
       
+      if(!existingTask) {
+        this.tasks.push({text: text , time: time.join('.')});
+      } else {
+        alert('Taks with this name is already exist')
+      }
+    
       this.taskTime = '';
       this.taskText = '';
 
@@ -73,8 +81,7 @@ export default class Tasks extends Vue {
     this.tasks.splice(index, 1);
   }
   addBlinkAnimation() {
-
-    setTimeout( () => this.$refs.tasksRef[this.$refs.tasksRef.length - 1].classList.add('task-blink__animation'), 1000 );
+    setTimeout( ()=> this.$refs.tasksRef[this.$refs.tasksRef.length - 1].classList.add('task-blink__animation'), 1000 );
   }
 }
 
