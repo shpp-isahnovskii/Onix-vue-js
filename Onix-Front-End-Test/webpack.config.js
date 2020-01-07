@@ -12,7 +12,7 @@ module.exports = {
     alias: {
       vue$: 'vue/dist/vue.esm.js'
     },
-    extensions: ['.ts', '.tsx', '.js']
+    extensions: ['.ts', '.tsx', '.js'],
   },
   module: {
     rules: [
@@ -37,7 +37,5 @@ module.exports = {
     ]
   },
   devtool: 'source-map',
-  plugins: [
-    new VueLoaderPlugin()
-  ]
+  plugins: [new VueLoaderPlugin()]
 }

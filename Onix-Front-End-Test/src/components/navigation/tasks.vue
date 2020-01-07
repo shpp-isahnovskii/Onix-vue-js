@@ -7,11 +7,12 @@
         input(type='time' v-model="taskTime" placeholder="set time.." class="task__time")
       button(class='task__submit' v-on:click="adding(taskText, taskTime)") 
         div v
-    .article(v-for='(task, n) in tasks', v-bind:key='n' ref="tasksRef")
-      p {{task.text}}
-        .article__time {{ task.time }}
-          span
-            div(v-on:click="remove(n)") x
+    transition-group(tag='div' name='tasks-list' v-on:enter="addBlinkAnimation")
+      .article(v-for='(task, n) in tasks', v-bind:key='task.text' ref="tasksRef")
+        p {{task.text}}
+          .article__time {{ task.time }}
+            span
+              div(v-on:click="remove(n)") x
 </template>
 
 
@@ -49,7 +50,7 @@ export default class Tasks extends Vue {
     //get $refs example: https://codingexplained.com/coding/front-end/vue-js/accessing-dom-refs
     const refsOfTasks = this.$refs.tasksRef;
     refsOfTasks.forEach( (element: HTMLFormElement, index: number) => {
-      setTimeout( () => element.classList.add('tasks__animation'), 80 * (index) + 800);
+      setTimeout( () => element.classList.add('tasks-wave__animation'), 80 * (index) + 800);
     });
   }
   adding(text: string, time: any){
@@ -65,20 +66,42 @@ export default class Tasks extends Vue {
       
       this.taskTime = '';
       this.taskText = '';
+
     }
   }
   remove(index: number) {
     this.tasks.splice(index, 1);
   }
+  addBlinkAnimation() {
+
+    setTimeout( () => this.$refs.tasksRef[this.$refs.tasksRef.length - 1].classList.add('task-blink__animation'), 1000 );
+  }
 }
 
 </script>
 
-<style lang="scss">
-  .blinking {
-    opacity: 0.5;
+<style lang="scss" scoped>
+  .tasks-list-enter-active, .tasks-list-leave-active {
+    transition: opacity 1s, transform 1s;
   }
-  .tasks__animation {
+  .tasks-list-enter, .tasks-list-leave-to {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+  //blink
+  .task-blink__animation {
+    animation-name: thisTaskBlink;
+    animation-duration: 1.7s,
+  }
+  @keyframes thisTaskBlink {
+  from {opacity: 1;}
+  25%  {opacity: 0.5;}
+  50%  {opacity: 1;}
+  75%  {opacity: 0.5;}
+  to   {opacity: 1;}
+  }
+  //text scale
+  .tasks-wave__animation {
     animation-name: thisTasksAnimation;
     animation-duration: 0.4s,
   }
@@ -86,7 +109,14 @@ export default class Tasks extends Vue {
   from {font-size: 1.0em;}
   50%  {font-size: 1.04em;}
   to {font-size: 1.0em;}
-}
+  }
+
+  .article {
+    margin: 24px 26px 0px 34px;
+  }
+  .article:last-child {
+    margin-bottom: 60px;
+  }
   .fade-enter-active, .fade-leave-active {
   transition: all .2s;
   }

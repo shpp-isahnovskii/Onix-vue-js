@@ -17,49 +17,112 @@
 
 
 <script lang="ts">
-  import { ActivityInterface } from '../../interfaces/ActivityInterface'
-  import { Component, Vue } from 'vue-property-decorator';
+import { ActivityInterface } from '../../interfaces/ActivityInterface'
+import { Component, Vue } from 'vue-property-decorator'
 
-  @Component
-  export default class Activity extends Vue {
-    articles: ActivityInterface[];
-    constructor() {
-      super();
-      this.articles = [
-        {
-          icon: 0,  //"done"
-          text: "Darika Samak mark as done Listing on Product Hunt so that we can reach as many potential users",
-          time: "8:40PM",
-          comment: '',
-          uploads: ''
-        },
-        {
-          icon: 1, //"comment"
-          text: "Emilee Simchenko commented on Account for teams and personal in bottom style",
-          time: "7:32PM",
-          comment: "During a project build, it is necessary to evaluate the product design and development against project requirements and outcomes",
-          uploads: ''
-        },
-        {
-          icon: 2, //"upload"
-          text: "Darika Samak uploaded 4 files on An option to search in current projectsor in all projects",
-          time: "6:02PM",
-          comment: '',
-          uploads: [ 
-            { url: require("../../assets/images/temporary/0.jpg"), alt: 'first file' },
-            { url: require("../../assets/images/temporary/1.jpg"), alt: 'second file'},
-            { url: require("../../assets/images/temporary/2.jpg"), alt: 'third file' },
-            { url: require("../../assets/images/temporary/3.jpg"), alt: 'fourth file'}
-          ]
-        } 
-      ]
-    }
-    sendIndex(index : number) {
-      this.$root.$emit('notify-index', index);
-    }
+@Component
+export default class Activity extends Vue {
+  articles: ActivityInterface[]
+  constructor() {
+    super()
+    this.articles = [
+      {
+        icon: 0, //"done"
+        text:
+          'Darika Samak mark as done Listing on Product Hunt so that we can reach as many potential users',
+        time: '8:40PM',
+        comment: '',
+        uploads: ''
+      },
+      {
+        icon: 1, //"comment"
+        text:
+          'Emilee Simchenko commented on Account for teams and personal in bottom style',
+        time: '7:32PM',
+        comment:
+          'During a project build, it is necessary to evaluate the product design and development against project requirements and outcomes',
+        uploads: ''
+      },
+      {
+        icon: 2, //"upload"
+        text:
+          'Darika Samak uploaded 4 files on An option to search in current projectsor in all projects',
+        time: '6:02PM',
+        comment: '',
+        uploads: [
+          {
+            url: require('../../assets/images/temporary/0.jpg'),
+            alt: 'first file'
+          },
+          {
+            url: require('../../assets/images/temporary/1.jpg'),
+            alt: 'second file'
+          },
+          {
+            url: require('../../assets/images/temporary/2.jpg'),
+            alt: 'third file'
+          },
+          {
+            url: require('../../assets/images/temporary/3.jpg'),
+            alt: 'fourth file'
+          }
+        ]
+      }
+    ]
   }
+  sendIndex(index: number) {
+    this.$root.$emit('notify-index', index)
+  }
+}
 </script>
 
 
-<style lang="scss">
+<style lang="scss"  scoped>
+  .article {
+    margin: 16px 26px 16px 34px;
+    .article__comment {
+      border-radius: 10px;
+      background-color: $item-comment;
+      margin: 25px 70px 0 62px;
+      padding: 22px 24px 32px;
+    }
+    .item__images {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      margin: 12px 60px;
+      .cell {
+        width: 105px;
+        margin: 10px 5px 0;
+        img {
+          width: 100%;
+          border-radius: 8px;
+        }
+        img:hover {
+          cursor: pointer;
+        }
+      }
+    }
+    //icons for articles
+    &.article__icon::before {
+      margin-right: 22px;
+      border-radius: 50%;
+      text-align: center;
+    }
+    &.icon-lightgreen::before {
+      content: url('../../assets/images/site/check.svg');
+      background-color: $lightgreen;
+    }
+    &.icon-lightyellow::before {
+      content: url('../../assets/images/site/chat.svg');
+      background-color: $lightyellow;
+    }
+    &.icon-lightblue::before {
+      content: url('../../assets/images/site/files.svg');
+      background-color: $lightblue;
+    }
+  }
+  .article:last-child {
+    margin-bottom: 60px;
+  }
 </style>
