@@ -6,16 +6,17 @@
         input(type='time' v-model="taskTime" placeholder="set time.." class="task__time")
       button(class='task__submit' v-on:click="adding(taskText, taskTime)") 
         div v
-    //- outer forEach
-    div(v-for='(taskObject, globalTask) in tasks', v-bind:key='globalTask' )
-      //- inner forEach
-      h3 {{globalTask}}
-      transition-group(tag='div' name='tasks-list' v-on:enter="addBlinkAnimation")
-        .article(v-for='(task, time) in taskObject', v-bind:key='task.text' ref="tasksRef")
-          p {{task.text}}
-            .article__time {{ time }}
-              span
-                div(v-on:click="remove(globalTask, time)") x
+    transition-group(tag='div' name='tasks-list' v-on:enter="addBlinkAnimation")
+      //- outer forEach
+      div(v-for='(taskObject, globalTask) in tasks', v-bind:key='globalTask' )
+        //- inner forEach
+        h3 {{globalTask}}
+        transition-group(tag='div' name='tasks-list' v-on:enter="addBlinkAnimation")
+          .article(v-for='(task, time) in taskObject', v-bind:key='task.text' ref="tasksRef")
+            p {{task.text}}
+              .article__time {{ time }}
+                span
+                  div(v-on:click="remove(globalTask, time)") x
 </template>
 
 
@@ -91,6 +92,10 @@ export default class Tasks extends Vue {
   }
   remove(name: string, index: string) {
     Vue.delete(this.tasks[name], index);
+    // eslint-disable-next-line no-console
+    if(Object.entries(this.tasks[name]).length === 0) {
+      Vue.delete(this.tasks, name);
+    }
   }
 
   addBlinkAnimation() {
