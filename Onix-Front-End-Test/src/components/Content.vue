@@ -83,12 +83,10 @@ section {
   border-radius: 8px;
 }
 h3 {
-  margin: 40px 32px 18px;
   text-transform: uppercase;
   opacity: 0.5;
   font-size: $secondFontSize;
 }
-
   .article {
     display: flex;
     flex-wrap: wrap;

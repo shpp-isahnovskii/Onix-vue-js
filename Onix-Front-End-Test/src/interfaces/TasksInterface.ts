@@ -1,4 +1,4 @@
 export interface TasksInterface {
-  text: string,
-  time: string
+  [key: string]: { 
+    [key: string]: { text: string, status: string } }
 }

@@ -1,18 +1,21 @@
 <template lang="pug">
   section
-    h3 Today
     .inputText
       input(type="text" v-on:keyup.enter="adding(taskText, taskTime)" v-model="taskText" placeholder="type text here.." class="task__text")
       .time__before time:
         input(type='time' v-model="taskTime" placeholder="set time.." class="task__time")
       button(class='task__submit' v-on:click="adding(taskText, taskTime)") 
         div v
-    transition-group(tag='div' name='tasks-list' v-on:enter="addBlinkAnimation")
-      .article(v-for='(task, n) in tasks', v-bind:key='task.text' ref="tasksRef")
-        p {{task.text}}
-          .article__time {{ task.time }}
-            span
-              div(v-on:click="remove(n)") x
+    //- outer forEach
+    div(v-for='(taskObject, globalTask) in tasks', v-bind:key='globalTask' )
+      //- inner forEach
+      h3 {{globalTask}}
+      transition-group(tag='div' name='tasks-list' v-on:enter="addBlinkAnimation")
+        .article(v-for='(task, time) in taskObject', v-bind:key='task.text' ref="tasksRef")
+          p {{task.text}}
+            .article__time {{ time }}
+              span
+                div(v-on:click="remove(globalTask, time)") x
 </template>
 
 
@@ -22,7 +25,7 @@ import { Component, Vue } from 'vue-property-decorator';
 
 @Component
 export default class Tasks extends Vue {
-  tasks: TasksInterface[];
+  tasks: TasksInterface;
   taskTime: string;
   taskText: string;
   $refs!: {
@@ -31,19 +34,28 @@ export default class Tasks extends Vue {
 
   constructor() {
     super();
-    this.tasks = [];
+    this.tasks = {};
     this.taskTime = '';
     this.taskText = '';
   }
   created() {
-    this.tasks = [
-      { text: 'Making bed.', time: '7.00AM' },
-      { text: 'Washing face.', time: '7.05AM' },
-      { text: 'Drinking a pint of lemon water.', time: '7.10AM' },
-      { text: 'Maging breakfast', time: '7.15AM' },
-      { text: 'Reviewing my goals.', time: '7.45AM' },
-      { text: 'Writing down two to four important tasks for the day.', time: '7.50AM' }
-    ];
+    this.tasks = {
+      'wake up': {
+        '7.00AM': { text: 'Making bed.', status: 'todo' },
+        '7.05AM': { text: 'Washing face.', status: 'todo' },
+        '7.10AM': { text: 'Drinking a pint of lemon water.', status: 'todo' },
+        '7.15AM': { text: 'Maging breakfast', status: 'todo' },
+        '7.45AM': { text: 'Reviewing my goals.', status: 'todo' },
+        '7.50AM': { text: 'Writing down two to four important tasks for the day.', status: 'todo' }
+      },
+      'go to the work': {
+        '8.00AM': { text: 'Suit up.', status: 'todo' },
+        '8.10AM': { text: 'Go out.', status: 'todo' },
+        '8.15AM': { text: 'Driving to the office.', status: 'todo' },
+        '8.45AM': { text: 'Talk to the manager.', status: 'todo' },
+        '8.50AM': { text: 'Planning work day.', status: 'todo' }
+      }
+    };
   }
   
   mounted() {
@@ -62,24 +74,25 @@ export default class Tasks extends Vue {
       time[1] += time[0] >= 12 ? 'PM' : 'AM';
       time[0] = time[0] % 12 || 12;
 
-      let existingTask = this.tasks.find( e => {
-        return (e.text === text);
-      });
+      // let existingTask = this.tasks.find( e => {
+      //   return (e.text === text);
+      // });
       
-      if(!existingTask) {
-        this.tasks.push({text: text , time: time.join('.')});
-      } else {
-        alert('Taks with this name is already exist')
-      }
+      // if(!existingTask) {
+      //   this.tasks.push({text: text , time: time.join('.')});
+      // } else {
+      //   alert('Taks with this name is already exist')
+      // }
     
       this.taskTime = '';
       this.taskText = '';
 
     }
   }
-  remove(index: number) {
-    this.tasks.splice(index, 1);
+  remove(name: string, index: string) {
+    Vue.delete(this.tasks[name], index);
   }
+
   addBlinkAnimation() {
     setTimeout( ()=> this.$refs.tasksRef[this.$refs.tasksRef.length - 1].classList.add('task-blink__animation'), 1000 );
   }
@@ -117,12 +130,14 @@ export default class Tasks extends Vue {
   50%  {font-size: 1.04em;}
   to {font-size: 1.0em;}
   }
-
+  h3 {
+    margin: 20px 32px 18px;
+  }
   .article {
     margin: 24px 26px 0px 34px;
   }
   .article:last-child {
-    margin-bottom: 60px;
+    margin-bottom: 40px;
   }
   .fade-enter-active, .fade-leave-active {
   transition: all .2s;

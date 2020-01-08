@@ -78,6 +78,9 @@ export default class Activity extends Vue {
 
 
 <style lang="scss"  scoped>
+  h3 {
+    margin: 40px 32px 18px;
+  }
   .article {
     margin: 16px 26px 16px 34px;
     .article__comment {
