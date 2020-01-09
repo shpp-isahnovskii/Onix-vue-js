@@ -1,22 +1,24 @@
 <template lang="pug">
   section
-    .inputText
-      input(type="text" v-on:keyup.enter="adding(taskText, taskTime)" v-model="taskText" placeholder="type text here.." class="task__text")
-      .time__before time:
+    form(class='task-form' @submit.prevent="adding(taskHeader, taskText, taskTime)")
+      .header__wrapper
+        input(type="text" v-model="taskHeader" placeholder="Task Title.." class="task__header")
+      input(type="text" v-model="taskText" placeholder="Task text here.." class="task__text")
+      .time__wrapper time:
         input(type='time' v-model="taskTime" placeholder="set time.." class="task__time")
-      button(class='task__submit' v-on:click="adding(taskText, taskTime)") 
+      button(type='submit' class='task__submit') 
         div v
     transition-group(tag='div' name='tasks-list' v-on:enter="addBlinkAnimation")
       //- outer forEach
-      div(v-for='(taskObject, globalTask) in tasks', v-bind:key='globalTask' )
+      div(v-for='(taskObject, index) in tasks', v-bind:key='index' )
         //- inner forEach
-        h3 {{globalTask}}
+        h3 {{index}}
         transition-group(tag='div' name='tasks-list' v-on:enter="addBlinkAnimation")
-          .article(v-for='(task, time) in taskObject', v-bind:key='task.text' ref="tasksRef")
+          .article(v-for='(task, time) in taskObject', v-bind:key='time' ref="tasksRef")
             p {{task.text}}
               .article__time {{ time }}
                 span
-                  div(v-on:click="remove(globalTask, time)") x
+                  div(v-on:click="remove(index, time)") x
 </template>
 
 
@@ -29,6 +31,7 @@ export default class Tasks extends Vue {
   tasks: TasksInterface;
   taskTime: string;
   taskText: string;
+  taskHeader: string;
   $refs!: {
     tasksRef : HTMLFormElement;
   }
@@ -38,10 +41,12 @@ export default class Tasks extends Vue {
     this.tasks = {};
     this.taskTime = '';
     this.taskText = '';
+    this.taskHeader ='';
   }
   created() {
     this.tasks = {
-      'wake up': {
+      'wake up': 
+      {
         '7.00AM': { text: 'Making bed.', status: 'todo' },
         '7.05AM': { text: 'Washing face.', status: 'todo' },
         '7.10AM': { text: 'Drinking a pint of lemon water.', status: 'todo' },
@@ -49,7 +54,8 @@ export default class Tasks extends Vue {
         '7.45AM': { text: 'Reviewing my goals.', status: 'todo' },
         '7.50AM': { text: 'Writing down two to four important tasks for the day.', status: 'todo' }
       },
-      'go to the work': {
+      'go to the work': 
+      {
         '8.00AM': { text: 'Suit up.', status: 'todo' },
         '8.10AM': { text: 'Go out.', status: 'todo' },
         '8.15AM': { text: 'Driving to the office.', status: 'todo' },
@@ -60,40 +66,47 @@ export default class Tasks extends Vue {
   }
   
   mounted() {
-    //get $refs example: https://codingexplained.com/coding/front-end/vue-js/accessing-dom-refs
-    const refsOfTasks = this.$refs.tasksRef;
-    refsOfTasks.forEach( (element: HTMLFormElement, index: number) => {
+    this.waveAnimation(this.$refs.tasksRef);
+  }
+
+  waveAnimation(refs: HTMLFormElement) {
+    //$refs example: https://codingexplained.com/coding/front-end/vue-js/accessing-dom-refs
+    refs.forEach( (element: HTMLFormElement, index: number) => {
       setTimeout( () => element.classList.add('tasks-wave__animation'), 80 * (index) + 800);
     });
   }
-  adding(text: string, time: any){
-    if(text === '' || time === '') {
+
+  adding(header:string, text: string, time: string) {
+
+    if( !header || !text || !time ) {
       window.alert("please, input something in the task message and set the time");
     } else {
-      //24 to 12 - get example from here: https://medium.com/front-end-weekly/how-to-convert-24-hours-format-to-12-hours-in-javascript-ca19dfd7419d
+      const t = this.timeConvertAMPM(time);
+
+      header = header.toLowerCase();
+      const headerExist = Object.entries(this.tasks).find(e => e[0] === header);
+      if(headerExist) {
+        Vue.set(this.tasks[header], t, {text:text, status:'todo'});
+      } else {
+        Vue.set(this.tasks, header, {[t]: {text:text, status:'todo'} } );
+      }
+
+      this.taskHeader = '';
+      this.taskTime = '';
+      this.taskText = '';
+    }
+  }
+  timeConvertAMPM(time: any) {
+    //24 to 12 - get example from here: https://medium.com/front-end-weekly/how-to-convert-24-hours-format-to-12-hours-in-javascript-ca19dfd7419d
       time = time.split(':');
       time[1] += time[0] >= 12 ? 'PM' : 'AM';
       time[0] = time[0] % 12 || 12;
-
-      // let existingTask = this.tasks.find( e => {
-      //   return (e.text === text);
-      // });
-      
-      // if(!existingTask) {
-      //   this.tasks.push({text: text , time: time.join('.')});
-      // } else {
-      //   alert('Taks with this name is already exist')
-      // }
-    
-      this.taskTime = '';
-      this.taskText = '';
-
-    }
+      return time.join('.');
   }
+
   remove(name: string, index: string) {
     Vue.delete(this.tasks[name], index);
-    // eslint-disable-next-line no-console
-    if(Object.entries(this.tasks[name]).length === 0) {
+    if(Object.entries(this.tasks[name]).length === 0) { //remove header if no tasks inside
       Vue.delete(this.tasks, name);
     }
   }
@@ -153,22 +166,32 @@ export default class Tasks extends Vue {
   .fade-enter-active {
     transition-delay: .2s;
   }
-  .inputText {
+  .task-form {
     display: flex;
-    flex-wrap: nowrap;
+    flex-wrap: wrap;
     margin: 16px 26px 16px 34px;
     
-    .task__text, .task__time {
+    .task__header, .task__text, .task__time {
       font-size: 16px;
       outline: none;
       border: none;
     }
-    .task__text {
-      flex-grow: 4;
+    .task__header, .task__text {
       border-bottom: 2px dotted silver;
       padding-bottom: 10px;
     }
-    .time__before {
+    .header__wrapper {
+      flex-basis: 100%;
+      margin: 10px 0;
+    }
+    .task__header {
+      max-width: 140px;
+    }
+    
+    .task__text {
+      flex-grow: 4;
+    }
+    .time__wrapper {
       position: relative;
       margin-left: 20px;
       color: #131313;
