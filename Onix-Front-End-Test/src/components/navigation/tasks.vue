@@ -267,9 +267,8 @@ export default class Tasks extends Vue {
   }
   .article-button__status:hover {
     cursor: pointer;
-    background-color: #131313;
+    background-color: #d6d6d6;
     border-radius: 4px;
-    color: white;
   }
 </style>
 

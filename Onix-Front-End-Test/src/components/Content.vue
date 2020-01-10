@@ -91,6 +91,8 @@ h3 {
     display: flex;
     flex-wrap: wrap;
     line-height: 1.25em;
+    position: relative;
+    top: -6px;
 
     .item__logo {
       margin-right: 20px;
