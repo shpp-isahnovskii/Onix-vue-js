@@ -19,6 +19,7 @@
               .article__time {{ time }}
                 span
                   div(v-on:click="remove(index, time)") x
+                button(class='article-button__status' v-on:click="changeTaskStatus(index, time, task.status)") {{task.status}}
 </template>
 
 
@@ -32,6 +33,7 @@ export default class Tasks extends Vue {
   taskTime: string;
   taskText: string;
   taskHeader: string;
+  taskStatuses: string[];
   $refs!: {
     tasksRef : HTMLFormElement;
   }
@@ -42,6 +44,7 @@ export default class Tasks extends Vue {
     this.taskTime = '';
     this.taskText = '';
     this.taskHeader ='';
+    this.taskStatuses = ['todo', 'inprogress', 'done']
   }
   created() {
     this.tasks = {
@@ -108,6 +111,19 @@ export default class Tasks extends Vue {
     Vue.delete(this.tasks[name], index);
     if(Object.entries(this.tasks[name]).length === 0) { //remove header if no tasks inside
       Vue.delete(this.tasks, name);
+    }
+  }
+  changeTaskStatus(header: string, time: string, curStatus: string) {
+    Vue.set(this.tasks[header][time], 'status',  this.setNextStatus(curStatus));
+  }
+
+  setNextStatus(status: string): string {
+    const statuses = this.taskStatuses;
+    let result = '';
+    switch (status) {
+      case statuses[0]: return statuses[1];
+      case statuses[1]: return statuses[2];
+      default: return statuses[0];
     }
   }
 
@@ -238,6 +254,22 @@ export default class Tasks extends Vue {
     span:hover {
       cursor: pointer;
     }
+  }
+  .article-button__status {
+    margin-top: 6px;
+    border-radius: 4px;
+    display: block;
+    width: 70px;
+    transition: all 1s;
+    outline: none;
+    position: relative;
+    left: -10px;
+  }
+  .article-button__status:hover {
+    cursor: pointer;
+    background-color: #131313;
+    border-radius: 4px;
+    color: white;
   }
 </style>
 
