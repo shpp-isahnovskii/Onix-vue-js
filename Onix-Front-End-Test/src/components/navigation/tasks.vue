@@ -10,7 +10,7 @@
         div v
     transition-group(tag='div' name='tasks-list' v-on:enter="addBlinkAnimation")
       //- outer forEach
-      div(v-for='(taskObject, index) in tasks', v-bind:key='index' )
+      div(v-for='(taskObject, index) in tasks', v-bind:key='index')
         //- inner forEach
         h3 {{index}}
         transition-group(tag='div' name='tasks-list' v-on:enter="addBlinkAnimation")
@@ -22,10 +22,10 @@
                 button(class='article-button__status' v-on:click="changeTaskStatus(index, time, task.status)") {{task.status}}
 </template>
 
-
 <script lang="ts">
 import { TasksInterface } from '../../interfaces/TasksInterface';
 import { Component, Vue } from 'vue-property-decorator';
+import { EventBusTasks } from '@/main.ts'
 
 @Component
 export default class Tasks extends Vue {
@@ -37,7 +37,6 @@ export default class Tasks extends Vue {
   $refs!: {
     tasksRef : HTMLFormElement;
   }
-
   constructor() {
     super();
     this.tasks = {};
@@ -63,23 +62,44 @@ export default class Tasks extends Vue {
         '8.10AM': { text: 'Go out.', status: 'todo' },
         '8.15AM': { text: 'Driving to the office.', status: 'todo' },
         '8.45AM': { text: 'Talk to the manager.', status: 'todo' },
-        '8.50AM': { text: 'Planning work day.', status: 'todo' }
+        '8.50AM': { text: 'Planning work day.', status: 'todo' },
+        '9.00AM': { text: 'Work hard or easy.', status: 'todo' }
       }
     };
+    this.setTasks();
+    EventBusTasks.$on('get-tasks', ()=> {
+      this.refreshKanban();
+    });
+
   }
   mounted() {
     this.waveAnimation(this.$refs.tasksRef);
   }
-
   waveAnimation(refs: HTMLFormElement) {
     //$refs example: https://codingexplained.com/coding/front-end/vue-js/accessing-dom-refs
     refs.forEach( (element: HTMLFormElement, index: number) => {
       setTimeout( () => element.classList.add('tasks-wave__animation'), 80 * (index) + 800);
     });
   }
+  refreshKanban(): void {
+    EventBusTasks.$emit('tasks-refresh', this.tasks);
+  }
+  setTasks() {
+    let counter: number = 0;
+    Object.keys(this.tasks).forEach( e => {
+      counter += (Object.keys(this.tasks[e]).length);
+      // eslint-disable-next-line no-console
+    });
+    EventBusTasks.$emit('set-tasks-count', counter);
+  }
+  increaseTasksCounter() : void {
+    EventBusTasks.$emit('tasks-counts-up');
+  }
+  reduceTasksCounter() : void {
+    EventBusTasks.$emit('tasks-counts-down');
+  }
 
   adding(header:string, text: string, time: string) {
-
     if( !header || !text || !time ) {
       window.alert("please, input something in the task message and set the time");
     } else {
@@ -94,6 +114,7 @@ export default class Tasks extends Vue {
       this.taskHeader = '';
       this.taskTime = '';
       this.taskText = '';
+      this.increaseTasksCounter();
     }
   }
   timeConvertAMPM(time: any) {
@@ -108,6 +129,7 @@ export default class Tasks extends Vue {
     if(Object.entries(this.tasks[name]).length === 0) { //remove header if no tasks inside
       Vue.delete(this.tasks, name);
     }
+    this.reduceTasksCounter();
   }
   changeTaskStatus(header: string, time: string, curStatus: string) {
     Vue.set(this.tasks[header][time], 'status',  this.setNextStatus(curStatus));

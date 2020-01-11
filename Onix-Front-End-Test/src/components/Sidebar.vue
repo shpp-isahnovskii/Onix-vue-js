@@ -39,7 +39,8 @@
 <script lang="ts">
   import { UserInterface } from '../interfaces/UserInterface'
   import { Component, Vue, Watch } from 'vue-property-decorator'
-import Tasks from './navigation/tasks.vue';
+  import Tasks from './navigation/tasks.vue';
+import { EventBusTasks } from '../main';
 
   @Component
   export default class SidebarVue extends Vue {
@@ -82,6 +83,12 @@ import Tasks from './navigation/tasks.vue';
     sidebarToggle(): void {
       this.hideSidebar = !this.hideSidebar;
     }
+    created() {
+      EventBusTasks.$on('set-tasks-count', (tasks: number) => {
+        this.user.tasks.open = tasks;
+      EventBusTasks.$off('set-tasks-count');
+      });
+    }
     //change image index event for notify element
     mounted() {
       this.$root.$on('notify-index', (index : number) => {
@@ -89,6 +96,12 @@ import Tasks from './navigation/tasks.vue';
       });
       this.$root.$on('hide-sidebar', (status : boolean) => {
         this.hideSidebar = status;
+      });
+      EventBusTasks.$on('tasks-counts-up', () => {
+        this.user.tasks.open++;
+      })
+      EventBusTasks.$on('tasks-counts-down', ()=> {
+        this.user.tasks.open--;
       });
     }
   }
