@@ -44,7 +44,7 @@ export default class Tasks extends Vue {
     this.taskTime = '';
     this.taskText = '';
     this.taskHeader ='';
-    this.taskStatuses = ['todo', 'inprogress', 'done']
+    this.taskStatuses = ['todo', 'inprogress', 'done'];
   }
   created() {
     this.tasks = {
@@ -67,7 +67,6 @@ export default class Tasks extends Vue {
       }
     };
   }
-  
   mounted() {
     this.waveAnimation(this.$refs.tasksRef);
   }
@@ -85,7 +84,6 @@ export default class Tasks extends Vue {
       window.alert("please, input something in the task message and set the time");
     } else {
       const t = this.timeConvertAMPM(time);
-
       header = header.toLowerCase();
       const headerExist = Object.entries(this.tasks).find(e => e[0] === header);
       if(headerExist) {
@@ -93,7 +91,6 @@ export default class Tasks extends Vue {
       } else {
         Vue.set(this.tasks, header, {[t]: {text:text, status:'todo'} } );
       }
-
       this.taskHeader = '';
       this.taskTime = '';
       this.taskText = '';
@@ -106,7 +103,6 @@ export default class Tasks extends Vue {
       time[0] = time[0] % 12 || 12;
       return time.join('.');
   }
-
   remove(name: string, index: string) {
     Vue.delete(this.tasks[name], index);
     if(Object.entries(this.tasks[name]).length === 0) { //remove header if no tasks inside
@@ -116,7 +112,6 @@ export default class Tasks extends Vue {
   changeTaskStatus(header: string, time: string, curStatus: string) {
     Vue.set(this.tasks[header][time], 'status',  this.setNextStatus(curStatus));
   }
-
   setNextStatus(status: string): string {
     const statuses = this.taskStatuses;
     let result = '';
@@ -126,11 +121,11 @@ export default class Tasks extends Vue {
       default: return statuses[0];
     }
   }
-
   addBlinkAnimation() {
     setTimeout( ()=> this.$refs.tasksRef[this.$refs.tasksRef.length - 1].classList.add('task-blink__animation'), 1000 );
   }
 }
+
 
 </script>
 
@@ -234,6 +229,9 @@ export default class Tasks extends Vue {
     p {
       max-width: 480px;
       overflow-wrap: break-word;
+      background-color: #f7f7f7;
+      border-radius: 4px;
+      border-left: 10px solid #f7f7f7;
     }
   .article__time {
     span {
@@ -250,6 +248,7 @@ export default class Tasks extends Vue {
         position: relative;
         top: -1px;
       }
+      
     }
     span:hover {
       cursor: pointer;
@@ -259,11 +258,11 @@ export default class Tasks extends Vue {
     margin-top: 6px;
     border-radius: 4px;
     display: block;
-    width: 70px;
+    width: 78px;
     transition: all 1s;
     outline: none;
     position: relative;
-    left: -10px;
+    left: -24px;
   }
   .article-button__status:hover {
     cursor: pointer;

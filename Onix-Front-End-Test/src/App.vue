@@ -32,6 +32,5 @@ export default class App extends Vue {
     font-family: $mainFont;
     color: $mainFontColor;
     background-color: $mainBGColor;
-    height: 100vh;
   }
 </style>
