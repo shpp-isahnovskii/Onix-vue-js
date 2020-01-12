@@ -21,10 +21,12 @@
       this.a ='b'
     }
     created() {
-      EventBusTasks.$emit('get-tasks');
+      //EventBusTasks.$emit('get-tasks');
       EventBusTasks.$on('tasks-refresh', (e: TasksInterface) => {
       this.tasks = e;
-      this.a = 'a'
+      //this.a = 'a'
+      //eslint-disable-next-line no-console
+      console.log(Object.keys(e));
       });
     }
   }

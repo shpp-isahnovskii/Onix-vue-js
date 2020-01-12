@@ -39,7 +39,12 @@ export default class Tasks extends Vue {
   }
   constructor() {
     super();
-    this.tasks = {};
+    this.tasks = {
+      'asd': 
+      {
+        '7.00AM': { text: 'Making bed.', status: 'todo' },
+      }
+    }
     this.taskTime = '';
     this.taskText = '';
     this.taskHeader ='';
@@ -67,10 +72,9 @@ export default class Tasks extends Vue {
       }
     };
     this.setTasks();
-    EventBusTasks.$on('get-tasks', ()=> {
+    //EventBusTasks.$on('get-tasks', ()=> {
       this.refreshKanban();
-    });
-
+    //});
   }
   mounted() {
     this.waveAnimation(this.$refs.tasksRef);
@@ -88,7 +92,6 @@ export default class Tasks extends Vue {
     let counter: number = 0;
     Object.keys(this.tasks).forEach( e => {
       counter += (Object.keys(this.tasks[e]).length);
-      // eslint-disable-next-line no-console
     });
     EventBusTasks.$emit('set-tasks-count', counter);
   }
@@ -280,11 +283,11 @@ export default class Tasks extends Vue {
     margin-top: 6px;
     border-radius: 4px;
     display: block;
-    width: 78px;
+    width: 80px;
     transition: all 1s;
     outline: none;
     position: relative;
-    left: -24px;
+    left: -2px;
   }
   .article-button__status:hover {
     cursor: pointer;
