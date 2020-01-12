@@ -39,12 +39,7 @@ export default class Tasks extends Vue {
   }
   constructor() {
     super();
-    this.tasks = {
-      'asd': 
-      {
-        '7.00AM': { text: 'Making bed.', status: 'todo' },
-      }
-    }
+    this.tasks = {};
     this.taskTime = '';
     this.taskText = '';
     this.taskHeader ='';
