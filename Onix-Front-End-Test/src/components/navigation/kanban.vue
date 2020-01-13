@@ -4,14 +4,16 @@
     table
       thead
         tr
+          th 
           th(v-for='(element, i) in taskStatus' :key='i') {{element}}
       tbody
-        tr(v-for='(element, i) in tasks' :key='i') 
-          td(v-if="element.task.status === taskStatus[0]") {{`${element.task.time}: ${element.task.description}`}}
+        tr(v-for='(element, i) in tasks' :key='i')
+          td {{element.task.time}}
+          td(v-if="element.task.status === taskStatus[0]") {{element.task.description}}
           td(v-else) {{''}}
-          td(v-if="element.task.status === taskStatus[1]") {{`${element.task.time}: ${element.task.description}`}}
+          td(v-if="element.task.status === taskStatus[1]") {{element.task.description}}
           td(v-else) {{''}}
-          td(v-if="element.task.status === taskStatus[2]") {{`${element.task.time}: ${element.task.description}`}}
+          td(v-if="element.task.status === taskStatus[2]") {{element.task.description}}
           td(v-else) {{''}}
 </template>
 
@@ -43,7 +45,7 @@
         { title: 'go to the work', task: { description: 'Work hard or easy.', time: '9.00AM', status: 'todo'}},
       ];
     }
-    created() {
+    created() { //-this code don't work
       //EventBusTasks.$emit('get-tasks');
       EventBusTasks.$on('tasks-refresh', (e: TasksInterface) => {
       //this.tasks = e;
@@ -54,11 +56,26 @@
 </script>
 
 <style lang="scss">
+  h3 {
+    margin: 40px 32px 18px;
+  }
   table {
     border-collapse: collapse;
+    margin: 0 10px;
+  }
+  thead {
+    th {
+      padding-bottom: 12px;
+    }
   }
   td {
-    width: 33%;
     border: solid silver 1px;
+    padding: 4px;
+  }
+  td:not(:first-child) {
+    width: 33.3%;
+  }
+  td:first-child {
+    border: none;
   }
 </style>

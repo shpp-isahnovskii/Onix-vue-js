@@ -68,7 +68,7 @@ export default class Tasks extends Vue {
     };
     this.setTasks();
     //EventBusTasks.$on('get-tasks', ()=> {
-      this.refreshKanban();
+      this.refreshKanban(); //-this code don't work
     //});
   }
   mounted() {
