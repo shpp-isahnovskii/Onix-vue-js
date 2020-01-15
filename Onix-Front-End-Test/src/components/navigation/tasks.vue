@@ -111,15 +111,16 @@ export default class Tasks extends Vue {
         } else {
           Vue.set(this.tasks[titleIndex].subtasks, this.tasks[titleIndex].subtasks.length, 
             {description: text, time: convertedTime, status: 'todo'}); //add new time to current existing task
+            this.increaseTasksCounter();
         }
       } else {
         Vue.set(this.tasks, this.tasks.length, {title: title , 
-          subtasks: [{description: text, time: convertedTime, status: 'todo'}]}); //add absolutely new task 
+          subtasks: [{description: text, time: convertedTime, status: 'todo'}]}); //add absolutely new task
+          this.increaseTasksCounter();
       }
       this.taskHeader = '';
       this.taskTime = '';
       this.taskText = '';
-      this.increaseTasksCounter();
     }
   }
   /* convert time from 24 to 12AM/PM */
