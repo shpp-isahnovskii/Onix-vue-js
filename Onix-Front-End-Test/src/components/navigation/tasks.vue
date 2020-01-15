@@ -10,16 +10,16 @@
         div v
     transition-group(tag='div' name='tasks-list' v-on:enter="addBlinkAnimation")
       //- outer forEach
-      div(v-for='(taskObject, index) in tasks', v-bind:key='index')
+      div(v-for='(task, i) in tasks', v-bind:key='i')
         //- inner forEach
-        h3 {{index}}
+        h3 {{task.title}}
         transition-group(tag='div' name='tasks-list' v-on:enter="addBlinkAnimation")
-          .article(v-for='(task, time) in taskObject', v-bind:key='time' ref="tasksRef")
-            p {{task.text}}
-              .article__time {{ time }}
+          .article(v-for='(subtask, j) in task.subtasks', v-bind:key='j' ref="tasksRef")
+            p {{subtask.description}}
+              .article__time {{ subtask.time }}
                 span
-                  div(v-on:click="remove(index, time)") x
-                button(class='article-button__status' v-on:click="changeTaskStatus(index, time, task.status)") {{task.status}}
+                  div(v-on:click="remove(i, j)") x
+                button(class='article-button__status' v-on:click="changeTaskStatus(i, j, subtask.status)") {{subtask.status}}
 </template>
 
 <script lang="ts">
@@ -29,7 +29,7 @@ import { EventBusTasks } from '@/main.ts'
 
 @Component
 export default class Tasks extends Vue {
-  tasks: TasksInterface;
+  tasks: TasksInterface[];
   taskTime: string;
   taskText: string;
   taskHeader: string;
@@ -39,75 +39,82 @@ export default class Tasks extends Vue {
   }
   constructor() {
     super();
-    this.tasks = {};
+    this.tasks = [];
     this.taskTime = '';
     this.taskText = '';
     this.taskHeader ='';
     this.taskStatuses = ['todo', 'inprogress', 'done'];
   }
   created() {
-    this.tasks = {
-      'wake up': 
-      {
-        '7.00AM': { text: 'Making bed.', status: 'todo' },
-        '7.05AM': { text: 'Washing face.', status: 'todo' },
-        '7.10AM': { text: 'Drinking a pint of lemon water.', status: 'todo' },
-        '7.15AM': { text: 'Maging breakfast', status: 'todo' },
-        '7.45AM': { text: 'Reviewing my goals.', status: 'todo' },
-        '7.50AM': { text: 'Writing down two to four important tasks for the day.', status: 'todo' }
-      },
-      'go to the work': 
-      {
-        '8.00AM': { text: 'Suit up.', status: 'todo' },
-        '8.10AM': { text: 'Go out.', status: 'todo' },
-        '8.15AM': { text: 'Driving to the office.', status: 'todo' },
-        '8.45AM': { text: 'Talk to the manager.', status: 'todo' },
-        '8.50AM': { text: 'Planning work day.', status: 'todo' },
-        '9.00AM': { text: 'Work hard or easy.', status: 'todo' }
-      }
-    };
+    this.tasks = [
+        { title: 'wake up', subtasks: [
+          { description: 'Making bed.', time: '7.00AM', status: 'done'},
+          { description: 'Washing face.', time: '7.05AM', status: 'inprogress'},
+          { description: 'Drinking a pint of lemon water.', time: '7.10AM', status: 'todo'},
+          { description: 'Making breakfast.', time: '7.15AM', status: 'todo'},
+          { description: 'Reviewing my goals.', time: '7.45AM', status: 'todo'},
+          { description: 'Writing down two to four important tasks for the day.', time: '7.50AM', status: 'todo'}
+        ]},
+        { title: 'go to the work', subtasks: [
+          { description: 'Suit up.', time: '8.00AM', status: 'todo'},
+          { description: 'Go out.', time: '8.10AM', status: 'todo'},
+          { description: 'Driving to the office.', time: '8.15AM', status: 'todo'},
+          { description: 'Talk to the manager.', time: '8.45AM', status: 'todo'},
+          { description: 'Planing work day.', time: '8.50AM', status: 'todo'},
+          { description: 'Work hard or easy.', time: '9.00AM', status: 'todo'},
+        ]}
+    ];
     this.setTasks();
-    //EventBusTasks.$on('get-tasks', ()=> {
-      this.refreshKanban(); //-this code don't work
-    //});
   }
   mounted() {
     this.waveAnimation(this.$refs.tasksRef);
   }
+  /* add wave animation to tasks array */
   waveAnimation(refs: HTMLFormElement) {
     //$refs example: https://codingexplained.com/coding/front-end/vue-js/accessing-dom-refs
     refs.forEach( (element: HTMLFormElement, index: number) => {
       setTimeout( () => element.classList.add('tasks-wave__animation'), 80 * (index) + 800);
     });
   }
-  refreshKanban(): void {
-    EventBusTasks.$emit('tasks-refresh', this.tasks);
-  }
+  /* sidebar menu set 'open tasks' counter*/
   setTasks() {
     let counter: number = 0;
-    Object.keys(this.tasks).forEach( e => {
-      counter += (Object.keys(this.tasks[e]).length);
+    this.tasks.forEach( e => {
+      counter += e.subtasks.length;
     });
     EventBusTasks.$emit('set-tasks-count', counter);
   }
+  /* sidebar menu counter +1 */
   increaseTasksCounter() : void {
     EventBusTasks.$emit('tasks-counts-up');
   }
+  /* sidebar menu counter -1 */
   reduceTasksCounter() : void {
     EventBusTasks.$emit('tasks-counts-down');
   }
-
-  adding(header:string, text: string, time: string) {
-    if( !header || !text || !time ) {
+  /* adding new subtask, change subtask with same time, or create new task with new title  */
+  adding(title:string, text: string, time: string) {
+    if( !title || !text || !time ) {
       window.alert("please, input something in the task message and set the time");
     } else {
-      const t = this.timeConvertAMPM(time);
-      header = header.toLowerCase();
-      const headerExist = Object.entries(this.tasks).find(e => e[0] === header);
-      if(headerExist) {
-        Vue.set(this.tasks[header], t, {text:text, status:'todo'});
+      const convertedTime : string = this.timeConvertAMPM(time);
+      title = title.toLowerCase();
+
+      /* find task  */
+      const titleIndex : number = this.tasks.findIndex( e => e.title === title);
+      if(titleIndex !== -1) {
+
+        /* find time in subtasks */
+        const timeIndex : number = this.tasks[titleIndex].subtasks.findIndex( e => e.time === convertedTime);
+        if(timeIndex !== -1) {
+          Vue.set(this.tasks[titleIndex].subtasks, timeIndex , {description: text, time: convertedTime, status: 'todo'}); //refresh task with the same time
+        } else {
+          Vue.set(this.tasks[titleIndex].subtasks, this.tasks[titleIndex].subtasks.length, 
+            {description: text, time: convertedTime, status: 'todo'}); //add new time to current existing task
+        }
       } else {
-        Vue.set(this.tasks, header, {[t]: {text:text, status:'todo'} } );
+        Vue.set(this.tasks, this.tasks.length, {title: title , 
+          subtasks: [{description: text, time: convertedTime, status: 'todo'}]}); //add absolutely new task 
       }
       this.taskHeader = '';
       this.taskTime = '';
@@ -115,6 +122,7 @@ export default class Tasks extends Vue {
       this.increaseTasksCounter();
     }
   }
+  /* convert time from 24 to 12AM/PM */
   timeConvertAMPM(time: any) {
     //24 to 12 - get example from here: https://medium.com/front-end-weekly/how-to-convert-24-hours-format-to-12-hours-in-javascript-ca19dfd7419d
       time = time.split(':');
@@ -122,15 +130,17 @@ export default class Tasks extends Vue {
       time[0] = time[0] % 12 || 12;
       return time.join('.');
   }
-  remove(name: string, index: string) {
-    Vue.delete(this.tasks[name], index);
-    if(Object.entries(this.tasks[name]).length === 0) { //remove header if no tasks inside
-      Vue.delete(this.tasks, name);
+  /* remove Task */
+  remove(taskIndex: number, subtaskIndex: number) {
+    Vue.delete(this.tasks[taskIndex].subtasks, subtaskIndex);
+    if(this.tasks[taskIndex].subtasks.length === 0) { //remove task if no subtasks inside
+      Vue.delete(this.tasks, taskIndex);
     }
     this.reduceTasksCounter();
   }
-  changeTaskStatus(header: string, time: string, curStatus: string) {
-    Vue.set(this.tasks[header][time], 'status',  this.setNextStatus(curStatus));
+  /* change status: todo inprogress or done */
+  changeTaskStatus(index: number, subindex: number, curStatus: string) {
+    Vue.set(this.tasks[index].subtasks[subindex], 'status',  this.setNextStatus(curStatus));
   }
   setNextStatus(status: string): string {
     const statuses = this.taskStatuses;
@@ -141,12 +151,11 @@ export default class Tasks extends Vue {
       default: return statuses[0];
     }
   }
+  /* add blink animation */
   addBlinkAnimation() {
     setTimeout( ()=> this.$refs.tasksRef[this.$refs.tasksRef.length - 1].classList.add('task-blink__animation'), 1000 );
   }
 }
-
-
 </script>
 
 <style lang="scss" scoped>

@@ -1,4 +1,8 @@
 export interface TasksInterface {
-    [key: string]: { 
-      [key: string]: { text: string, status: string } }
+    title : string
+    subtasks : {
+      description: string
+      time: string
+      status: string
+    }[]
 }

@@ -6,7 +6,7 @@
       //- text
       p {{ article.text }}
       .article__time {{ article.time }}
-      //- coment
+      //- comment
       .article__comment(v-if="article.comment !==''") {{ article.comment }}
       //- image
       .item__images(v-if="article.uploads !==''")
