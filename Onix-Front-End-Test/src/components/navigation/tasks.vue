@@ -25,11 +25,13 @@
 <script lang="ts">
 import { TasksInterface } from '../../interfaces/TasksInterface';
 import { Component, Vue } from 'vue-property-decorator';
-import { EventBusTasks } from '@/main.ts'
+import { EventBusTasks } from '@/main.ts';
+import { dataTask } from '@/store/database';
+import { mapGetters } from 'vuex';
 
 @Component
 export default class Tasks extends Vue {
-  tasks: TasksInterface[];
+  //tasks: TasksInterface[];
   taskTime: string;
   taskText: string;
   taskHeader: string;
@@ -39,17 +41,22 @@ export default class Tasks extends Vue {
   }
   constructor() {
     super();
-    this.tasks = [];
+    //this.tasks = [];
     this.taskTime = '';
     this.taskText = '';
     this.taskHeader ='';
     this.taskStatuses = ['todo', 'inprogress', 'done'];
   }
+  get tasks() : TasksInterface[] {
+    return this.$store.getters.getTasks;
+  }
   created() {
-    this.tasks = this.$store.state.tasks;
+    //this.$store.commit('loadTasks', dataTask);
+    this.$store.dispatch('load', dataTask);
+    //this.tasks = this.$store.state.tasks;
   }
   mounted() {
-    this.waveAnimation(this.$refs.tasksRef);
+    //this.waveAnimation(this.$refs.tasksRef);
   }
   /* add wave animation to tasks array */
   waveAnimation(refs: HTMLFormElement) {

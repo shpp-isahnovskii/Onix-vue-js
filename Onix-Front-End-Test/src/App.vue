@@ -18,13 +18,13 @@ export default class App extends Vue {
     super();
     this.tasks = [];
   }
-  
   mounted() {
     let width = window.innerWidth
     if(width < 970) {
       this.$root.$emit('hide-sidebar', true);
     }
   }
+  
   /* sidebar menu set 'open tasks' counter*/
   setTasks() {
     let counter: number = 0;
