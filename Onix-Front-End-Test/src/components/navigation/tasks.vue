@@ -27,7 +27,6 @@ import { TasksInterface } from '../../interfaces/TasksInterface';
 import { Component, Vue } from 'vue-property-decorator';
 import { EventBusTasks } from '@/main.ts';
 import { dataTask } from '@/store/database';
-import { mapGetters } from 'vuex';
 
 @Component
 export default class Tasks extends Vue {
@@ -41,7 +40,6 @@ export default class Tasks extends Vue {
   }
   constructor() {
     super();
-    //this.tasks = [];
     this.taskTime = '';
     this.taskText = '';
     this.taskHeader ='';
@@ -51,9 +49,7 @@ export default class Tasks extends Vue {
     return this.$store.getters.getTasks;
   }
   created() {
-    //this.$store.commit('loadTasks', dataTask);
-    this.$store.dispatch('load', dataTask);
-    //this.tasks = this.$store.state.tasks;
+    this.$store.dispatch('loadTasks', dataTask);
   }
   mounted() {
     //this.waveAnimation(this.$refs.tasksRef);

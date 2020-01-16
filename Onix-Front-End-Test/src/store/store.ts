@@ -1,25 +1,44 @@
 import Vue from 'vue';
-import Vuex from 'vuex';
+import Vuex, { Module } from 'vuex';
+import { UserInterface } from '@/interfaces/UserInterface'
 
 Vue.use(Vuex);
 
+export const user: Module<UserInterface> = {
+	
+}
+
 export default new Vuex.Store ({
 	state: {
-		tasks: []
+		tasks: [],
+		user: []
 	},
 	getters: {
-		getTasks : st => {
-			return st.tasks;
-		}
+		getTasks : st => st.tasks,
+		getUser : st => st.user
 	},
 	actions: {
-		load(context, tasks) {
-			context.commit('loadTasks', tasks)
+		loadTasks(context, tasks) {
+			context.commit('loadTasks', tasks);
+		},
+		loadUser(context, user) {
+			context.commit('loadUser', user);
+		},
+		closeTask(context, user) {
+			context.commit('closeTask', user);
 		}
 	},
 	mutations: {
 		loadTasks(state, mutation) {
 			state.tasks = mutation;
+		},
+		loadUser(state, mutation) {
+			state.user = mutation;
+		},
+		closeTask(state, mutation) {
+			// eslint-disable-next-line no-console
+			console.log(state.user.tasks.open);
+			
 		}
 	}
 });

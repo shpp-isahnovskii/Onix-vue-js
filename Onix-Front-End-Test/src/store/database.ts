@@ -16,3 +16,17 @@ export const dataTask = [
     { description: 'Work hard or easy.', time: '9.00AM', status: 'todo'},
   ]}
 ];
+
+export const userData = {
+  company: 'PROJECTUS',
+  personal: {
+    avatar: require('../assets/images/people/avatar.jpg'),
+    name: 'Jean Gonzales',
+    role: 'Product Ovner'
+  },
+  tasks: {
+    open: 11,
+    closed: 372
+  },
+  notifications: 3
+}

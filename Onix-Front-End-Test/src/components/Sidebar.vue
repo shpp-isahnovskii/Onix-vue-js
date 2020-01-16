@@ -40,39 +40,35 @@
   import { UserInterface } from '../interfaces/UserInterface'
   import { Component, Vue, Watch } from 'vue-property-decorator'
   import Tasks from './navigation/tasks.vue';
-import { EventBusTasks } from '../main';
+  import { EventBusTasks } from '../main';
+  import { userData } from '@/store/database';
 
   @Component
   export default class SidebarVue extends Vue {
-    user: UserInterface;
     hideSidebar: boolean;
-
     constructor() {
       super();
-      
-      this.user = {
-        company: 'PROJECTUS',
-        personal: {
-          avatar: require('../assets/images/people/avatar.jpg'),
-          name: 'Jean Gonzales',
-          role: 'Product Ovner'
-        },
-        tasks: {
-          open: 11,
-          closed: 372
-        },
-        notifications: 3
-      }
       this.hideSidebar = false;
     }
+
+    get user(): UserInterface {
+      return this.$store.getters.getUser;
+    }
+    created() {
+      this.$store.dispatch('loadUser', userData);
+      //EventBusTasks.$on('set-tasks-count', (tasks: number) => {
+      //  this.user.tasks.open = tasks;
+      //EventBusTasks.$off('set-tasks-count');
+      //});
+    }
     //close a task
+
     changeCounter(): void {
       let closeTheTask = 'Are you sure you want to change the number of tasks?';
       if(this.user.tasks.open > 0) {
-        this.$router.push('/tasks'); //add router pushing
+        //this.$router.push('/tasks'); //add router pushing
         if(confirm(closeTheTask) ) {
-          this.user.tasks.open--;
-          this.user.tasks.closed++;
+          this.$store.dispatch('closeTask', userData);
         }
       }
       else {
@@ -83,26 +79,20 @@ import { EventBusTasks } from '../main';
     sidebarToggle(): void {
       this.hideSidebar = !this.hideSidebar;
     }
-    created() {
-      EventBusTasks.$on('set-tasks-count', (tasks: number) => {
-        this.user.tasks.open = tasks;
-      EventBusTasks.$off('set-tasks-count');
-      });
-    }
     //change image index event for notify element
     mounted() {
-      this.$root.$on('notify-index', (index : number) => {
-        this.user.notifications = index;
-      });
-      this.$root.$on('hide-sidebar', (status : boolean) => {
-        this.hideSidebar = status;
-      });
-      EventBusTasks.$on('tasks-counts-up', () => {
-        this.user.tasks.open++;
-      })
-      EventBusTasks.$on('tasks-counts-down', ()=> {
-        this.user.tasks.open--;
-      });
+    //   this.$root.$on('notify-index', (index : number) => {
+    //     this.user.notifications = index;
+    //   });
+    //   this.$root.$on('hide-sidebar', (status : boolean) => {
+    //     this.hideSidebar = status;
+    //   });
+    //   EventBusTasks.$on('tasks-counts-up', () => {
+    //     this.user.tasks.open++;
+    //   })
+    //   EventBusTasks.$on('tasks-counts-down', ()=> {
+    //     this.user.tasks.open--;
+    //   });
     }
   }
 </script>
