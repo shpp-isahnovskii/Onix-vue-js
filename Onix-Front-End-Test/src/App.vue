@@ -6,7 +6,6 @@
 import { Component, Vue } from 'vue-property-decorator';
 import layoutComponent from './components/Layout.vue';
 import { TasksInterface } from './interfaces/TasksInterface';
-import { EventBusTasks } from '@/main'
 
 @Component({
   components: {layoutComponent}
@@ -23,15 +22,7 @@ export default class App extends Vue {
     if(width < 970) {
       this.$root.$emit('hide-sidebar', true);
     }
-  }
-  
-  /* sidebar menu set 'open tasks' counter*/
-  setTasks() {
-    let counter: number = 0;
-    this.tasks.forEach( e => {
-      counter += e.subtasks.length;
-    });
-    EventBusTasks.$emit('set-tasks-count', counter);
+    this.$root.$emit('make-wave'); //add animation wave to the sidebar
   }
 }
 </script>

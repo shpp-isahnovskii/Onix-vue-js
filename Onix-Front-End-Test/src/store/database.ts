@@ -25,7 +25,7 @@ export const userData = {
     role: 'Product Ovner'
   },
   tasks: {
-    open: 11,
+    open: 12,
     closed: 372
   },
   notifications: 3

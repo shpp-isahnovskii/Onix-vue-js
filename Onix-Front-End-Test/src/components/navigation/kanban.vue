@@ -1,56 +1,42 @@
 <template lang="pug">
   section
     h3 Kanban
-    table
+    table(v-for='(header, i) in tasks' :key='i')
       thead
-        tr
-          th 
-          th(v-for='(element, i) in taskStatus' :key='i') {{element}}
+        td(colspan='4' class='task-title') {{header.title}}
       tbody
-        tr(v-for='(element, i) in tasks' :key='i')
-          td {{element.task.time}}
-          td(v-if="element.task.status === taskStatus[0]") {{element.task.description}}
+        tr
+          td
+          td(v-for='(status, i) in taskStatus' :key='i' class='task-header') {{status}}
+        tr(v-for='(element, i) in header.subtasks' :key='i')
+          td {{element.time}}
+          td(v-if="element.status === taskStatus[0]") {{element.description}}
           td(v-else) {{''}}
-          td(v-if="element.task.status === taskStatus[1]") {{element.task.description}}
+          td(v-if="element.status === taskStatus[1]") {{element.description}}
           td(v-else) {{''}}
-          td(v-if="element.task.status === taskStatus[2]") {{element.task.description}}
+          td(v-if="element.status === taskStatus[2]") {{element.description}}
           td(v-else) {{''}}
 </template>
 
 <script lang="ts">
   import { Component, Vue, Prop } from 'vue-property-decorator';
   import { TasksInterface } from '@/interfaces/TasksInterface';
-  import { EventBusTasks } from '@/main.ts';
+  import { dataTask } from '@/store/database';
 
-  
   @Component
   export default class Kanban extends Vue {
-    tasks: any[];
     taskStatus: string[];
     constructor() {
       super();
       this.taskStatus = ['todo', 'inprogress', 'done'];
-      this.tasks = [
-        { title: 'wake up', task: { description: 'Making bed.', time: '7.00AM', status: 'done'}},
-        { title: 'wake up', task: { description: 'Washing face.', time: '7.05AM', status: 'inprogress'}},
-        { title: 'wake up', task: { description: 'Drinking a pint of lemon water.', time: '7.10AM', status: 'todo'}},
-        { title: 'wake up', task: { description: 'Making breakfast.', time: '7.15AM', status: 'todo'}},
-        { title: 'wake up', task: { description: 'Reviewing my goals.', time: '7.45AM', status: 'todo'}},
-        { title: 'wake up', task: { description: 'Writing down two to four important tasks for the day.', time: '7.50AM', status: 'todo'}},
-        { title: 'go to the work', task: { description: 'Suit up.', time: '8.00AM', status: 'todo'}},
-        { title: 'go to the work', task: { description: 'Go out.', time: '8.10AM', status: 'todo'}},
-        { title: 'go to the work', task: { description: 'Driving to the office.', time: '8.15AM', status: 'todo'}},
-        { title: 'go to the work', task: { description: 'Talk to the manager.', time: '8.45AM', status: 'todo'}},
-        { title: 'go to the work', task: { description: 'Planing work day.', time: '8.50AM', status: 'todo'}},
-        { title: 'go to the work', task: { description: 'Work hard or easy.', time: '9.00AM', status: 'todo'}},
-      ];
     }
-    created() { //-this code don't work
-      //EventBusTasks.$emit('get-tasks');
-      EventBusTasks.$on('tasks-refresh', (e: TasksInterface) => {
-      //this.tasks = e;
-      EventBusTasks.$off('tasks-refresh');
-      });
+
+    /*get tasks from the store*/
+    get tasks() {
+      return this.$store.getters.getTasks;
+    }
+    created() {
+      this.$store.dispatch('loadTasks', dataTask);
     }
   }
 </script>
@@ -77,5 +63,17 @@
   }
   td:first-child {
     border: none;
+  }
+  .task-title {
+    text-align: center;
+    padding: 30px 0 10px 0;
+    text-transform: uppercase;
+    opacity: 0.5;
+    font-size: $secondFontSize;
+    font-weight: bold;
+  }
+  .task-header {
+    font-weight: bold;
+    text-align: center;
   }
 </style>

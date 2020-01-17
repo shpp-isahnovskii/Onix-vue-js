@@ -40,7 +40,6 @@
   import { UserInterface } from '../interfaces/UserInterface'
   import { Component, Vue, Watch } from 'vue-property-decorator'
   import Tasks from './navigation/tasks.vue';
-  import { EventBusTasks } from '../main';
   import { userData } from '@/store/database';
 
   @Component
@@ -56,19 +55,17 @@
     }
     created() {
       this.$store.dispatch('loadUser', userData);
-      //EventBusTasks.$on('set-tasks-count', (tasks: number) => {
-      //  this.user.tasks.open = tasks;
-      //EventBusTasks.$off('set-tasks-count');
-      //});
     }
-    //close a task
 
+    // open/closed tasks counter
     changeCounter(): void {
       let closeTheTask = 'Are you sure you want to change the number of tasks?';
       if(this.user.tasks.open > 0) {
         //this.$router.push('/tasks'); //add router pushing
         if(confirm(closeTheTask) ) {
-          this.$store.dispatch('closeTask', userData);
+          userData.tasks.open--;
+          userData.tasks.closed++;
+          this.$store.dispatch('loadTask', userData);
         }
       }
       else {
@@ -81,18 +78,12 @@
     }
     //change image index event for notify element
     mounted() {
-    //   this.$root.$on('notify-index', (index : number) => {
-    //     this.user.notifications = index;
-    //   });
-    //   this.$root.$on('hide-sidebar', (status : boolean) => {
-    //     this.hideSidebar = status;
-    //   });
-    //   EventBusTasks.$on('tasks-counts-up', () => {
-    //     this.user.tasks.open++;
-    //   })
-    //   EventBusTasks.$on('tasks-counts-down', ()=> {
-    //     this.user.tasks.open--;
-    //   });
+      this.$root.$on('notify-index', (index : number) => {
+        this.user.notifications = index;
+      });
+      this.$root.$on('hide-sidebar', (status : boolean) => {
+        this.hideSidebar = status; 
+      });
     }
   }
 </script>

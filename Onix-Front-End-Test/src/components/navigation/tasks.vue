@@ -25,12 +25,10 @@
 <script lang="ts">
 import { TasksInterface } from '../../interfaces/TasksInterface';
 import { Component, Vue } from 'vue-property-decorator';
-import { EventBusTasks } from '@/main.ts';
-import { dataTask } from '@/store/database';
+import { dataTask, userData } from '@/store/database';
 
 @Component
 export default class Tasks extends Vue {
-  //tasks: TasksInterface[];
   taskTime: string;
   taskText: string;
   taskHeader: string;
@@ -52,7 +50,15 @@ export default class Tasks extends Vue {
     this.$store.dispatch('loadTasks', dataTask);
   }
   mounted() {
-    //this.waveAnimation(this.$refs.tasksRef);
+    this.makeWave();
+  }
+  /*init wave for once*/
+  makeWave() {
+    this.$root.$on('make-wave', () => {
+      if(this.tasks.length !== 0) {
+        this.waveAnimation(this.$refs.tasksRef);
+      }
+    });
   }
   /* add wave animation to tasks array */
   waveAnimation(refs: HTMLFormElement) {
@@ -63,11 +69,12 @@ export default class Tasks extends Vue {
   }
   /* sidebar menu counter +1 */
   increaseTasksCounter() : void {
-    EventBusTasks.$emit('tasks-counts-up');
+    userData.tasks.open++;
   }
   /* sidebar menu counter -1 */
   reduceTasksCounter() : void {
-    EventBusTasks.$emit('tasks-counts-down');
+    userData.tasks.open--;
+    userData.tasks.closed++;
   }
   /* adding new subtask, change subtask with same time, or create new task with new title  */
   adding(title:string, text: string, time: string) {

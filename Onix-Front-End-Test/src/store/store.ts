@@ -1,12 +1,7 @@
 import Vue from 'vue';
-import Vuex, { Module } from 'vuex';
-import { UserInterface } from '@/interfaces/UserInterface'
+import Vuex from 'vuex';
 
 Vue.use(Vuex);
-
-export const user: Module<UserInterface> = {
-	
-}
 
 export default new Vuex.Store ({
 	state: {
@@ -19,26 +14,18 @@ export default new Vuex.Store ({
 	},
 	actions: {
 		loadTasks(context, tasks) {
-			context.commit('loadTasks', tasks);
+			context.commit('reloadTasks', tasks);
 		},
 		loadUser(context, user) {
-			context.commit('loadUser', user);
-		},
-		closeTask(context, user) {
-			context.commit('closeTask', user);
+			context.commit('reloadUser', user);
 		}
 	},
 	mutations: {
-		loadTasks(state, mutation) {
+		reloadTasks(state, mutation) {
 			state.tasks = mutation;
 		},
-		loadUser(state, mutation) {
+		reloadUser(state, mutation) {
 			state.user = mutation;
 		},
-		closeTask(state, mutation) {
-			// eslint-disable-next-line no-console
-			console.log(state.user.tasks.open);
-			
-		}
 	}
 });
