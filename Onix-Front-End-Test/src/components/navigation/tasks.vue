@@ -1,13 +1,15 @@
 <template lang="pug">
   section
-    form(class='task-form' @submit.prevent="adding(taskHeader, taskText, taskTime)")
-      .header__wrapper
-        input(type="text" v-model="taskHeader" placeholder="Task Title.." class="task__header")
-      input(type="text" v-model="taskText" placeholder="Task text here.." class="task__text")
-      .time__wrapper time:
-        input(type='time' v-model="taskTime" placeholder="set time.." class="task__time")
-      button(type='submit' class='task__submit') 
-        div v
+    div
+      button(class="section-button" v-on:click="showModal()") add new task
+    //- form(class='task-form' @submit.prevent="adding(taskHeader, taskText, taskTime)")
+    //-   .header__wrapper
+    //-     input(type="text" v-model="taskHeader" placeholder="Task Title.." class="task__header")
+    //-   input(type="text" v-model="taskText" placeholder="Task text here.." class="task__text")
+    //-   .time__wrapper time:
+    //-     input(type='time' v-model="taskTime" placeholder="set time.." class="task__time")
+    //-   button(type='submit' class='task__submit') 
+    //-     div v
     transition-group(tag='div' name='tasks-list' v-on:enter="addBlinkAnimation")
       //- outer forEach
       div(v-for='(task, i) in tasks', v-bind:key='i')
@@ -268,20 +270,36 @@ export default class Tasks extends Vue {
       cursor: pointer;
     }
   }
+  .section-button {
+    margin: 30px 0 0 32px;
+    height: 40px;
+    padding: 0 15px;
+    color: white;
+    background-color: #66bb66;
+    border: 1px solid #4cae4c;
+  }
   .article-button__status {
     margin-top: 6px;
-    border-radius: 4px;
     display: block;
     width: 80px;
-    transition: all 1s;
-    outline: none;
     position: relative;
     left: -2px;
   }
-  .article-button__status:hover {
-    cursor: pointer;
-    background-color: #d6d6d6;
+  .article-button__status, .section-button {
     border-radius: 4px;
+    outline: none;
+    transition: all 0.5s;
+    &:hover {
+    cursor: pointer;
+    border-radius: 4px;
+    }
+  }
+  .article-button__status:hover {
+    background-color: #dbdbdb;
+  }
+  .section-button:hover {
+    background-color: #449d44;
+    border-color: #398439;
   }
 </style>
 
