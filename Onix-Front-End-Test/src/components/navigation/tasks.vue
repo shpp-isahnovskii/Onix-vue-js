@@ -1,15 +1,22 @@
 <template lang="pug">
   section
     div
-      button(class="section-button" v-on:click="showModal()") add new task
-    //- form(class='task-form' @submit.prevent="adding(taskHeader, taskText, taskTime)")
-    //-   .header__wrapper
-    //-     input(type="text" v-model="taskHeader" placeholder="Task Title.." class="task__header")
-    //-   input(type="text" v-model="taskText" placeholder="Task text here.." class="task__text")
-    //-   .time__wrapper time:
-    //-     input(type='time' v-model="taskTime" placeholder="set time.." class="task__time")
-    //-   button(type='submit' class='task__submit') 
-    //-     div v
+      button(class="section-button" v-on:click="toggleModal()") add new task
+
+    //- toggle window with form
+    .modal-window( v-if="addTask" )
+      .modal-overlay(v-on:click="toggleModal()")
+      .form-wrapper
+        form(class='modal-task-form' @submit.prevent="adding(taskHeader, taskText, taskTime)")
+          .header__wrapper
+            input(type="text" v-model="taskHeader" placeholder="Task Title.." class="task__header")
+          input(type="text" v-model="taskText" placeholder="Task text here.." class="task__text")
+          .time__wrapper time:
+            input(type='time' v-model="taskTime" placeholder="set time.." class="task__time")
+          button(type='submit' class='task__submit') 
+            div v
+    //- end of toggle window
+
     transition-group(tag='div' name='tasks-list' v-on:enter="addBlinkAnimation")
       //- outer forEach
       div(v-for='(task, i) in tasks', v-bind:key='i')
@@ -35,6 +42,7 @@ export default class Tasks extends Vue {
   taskText: string;
   taskHeader: string;
   taskStatuses: string[];
+  addTask: boolean;
   $refs!: {
     tasksRef : HTMLFormElement;
   }
@@ -44,9 +52,14 @@ export default class Tasks extends Vue {
     this.taskText = '';
     this.taskHeader ='';
     this.taskStatuses = ['todo', 'inprogress', 'done'];
+    this.addTask = false;
   }
   get tasks() : TasksInterface[] {
     return this.$store.getters.getTasks;
+  }
+  /* show or hide modal window 'add new task' */
+  toggleModal() {
+    this.addTask = !this.addTask;
   }
   created() {
     this.$store.dispatch('loadTasks', dataTask);
@@ -180,6 +193,9 @@ export default class Tasks extends Vue {
   }
   .article {
     margin: 24px 26px 0px 34px;
+    p {
+      padding-top: 4px;
+    }
   }
   .article:last-child {
     margin-bottom: 40px;
@@ -193,9 +209,28 @@ export default class Tasks extends Vue {
   .fade-enter-active {
     transition-delay: .2s;
   }
-  .task-form {
-    display: flex;
-    flex-wrap: wrap;
+  .modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0.7;
+    background-color: gray;
+    z-index: 10;
+    cursor: pointer;
+  }
+  .form-wrapper {
+    position: fixed;
+    width: 600px;
+    height: 600px;
+    background-color: white;
+    border-radius: 10px;
+    z-index: 11;
+  }
+  .modal-task-form {
+    display: block;
+    position: relative;
     margin: 16px 26px 16px 34px;
     
     .task__header, .task__text, .task__time {
@@ -264,7 +299,6 @@ export default class Tasks extends Vue {
         position: relative;
         top: -1px;
       }
-      
     }
     span:hover {
       cursor: pointer;
@@ -301,7 +335,7 @@ export default class Tasks extends Vue {
     background-color: #449d44;
     border-color: #398439;
   }
-</style>
+</style>  
 
 
 
