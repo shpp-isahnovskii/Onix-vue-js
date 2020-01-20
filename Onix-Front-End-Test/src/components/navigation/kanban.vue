@@ -46,17 +46,25 @@
     }
 
     /* n: task, i: subtask, j: status (indexes) */
-    drop(event:any) {
-      const id = this.stringToArray(event.target.className);
-      if(id[0] === this.dragged[0] && id[1] === this.dragged[1]) {
+    drop(event:any): void {
+      const drop = this.stringToArray(event.target.className);
 
-        this.tasks[this.dragged[0]].subtasks[this.dragged[1]].status = this.taskStatus[id[2]];
+      /* if user try to drop Done task to Todo - prevent it */
+      if(drop[2] === 0 && this.dragged[2] === 2) {
+        event.target.style.background = "";
+        return;
+      }
+      
+      /* if task(drop point 'id') in the same row with dragged task('dragged') - make drop*/
+      if( this.inSameRow(drop, this.dragged) ) {
+        this.changeStatus(this.dragged, drop[2]);
       }
       event.target.style.background = "";
     }
+    /* change background of hovered task */
     enter(event: any) {
-      const id = this.stringToArray(event.target.className);
-      if(id[0] === this.dragged[0] && id[1] === this.dragged[1]) {
+      const drop = this.stringToArray(event.target.className);
+      if( this.inSameRow(drop, this.dragged) ) {
         event.target.style.background = "#eee";
       }
     }
@@ -66,6 +74,15 @@
     /*convert class name with id000 to array of [0,0,0] */
     stringToArray(name: string): number[] {
       return name.slice(2).split('').map( (item: string) => parseInt(item, 10) );
+    }
+
+    /* if task(drop point 'id') in the same row with dragged task('dragged') - make drop*/
+    inSameRow(taskId: number[], dropPoint: number[]) {
+      return (taskId[0] === dropPoint[0] && taskId[1] === dropPoint[1]);
+    }
+    /* change status of the current cask in this.tasks Object */
+    changeStatus(oldStatus: number[], newStatus: number) {
+      this.tasks[oldStatus[0]].subtasks[oldStatus[1]].status = this.taskStatus[newStatus];
     }
   }
 </script>
