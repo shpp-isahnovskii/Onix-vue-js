@@ -1,7 +1,7 @@
 <template lang="pug">
   section
     div
-      button(class="section-button" v-on:click="toggleModal()") add new task
+      button(class="section-button" v-on:click="toggleModal()") Add new task
 
     //- toggle window with form
     .modal-window( v-if="addTask" )
@@ -10,11 +10,12 @@
         form(class='modal-task-form' @submit.prevent="adding(taskHeader, taskText, taskTime)")
           .header__wrapper
             input(type="text" v-model="taskHeader" placeholder="Task Title.." class="task__header")
-          input(type="text" v-model="taskText" placeholder="Task text here.." class="task__text")
-          .time__wrapper time:
+          .time__wrapper time: {{validate}}
             input(type='time' v-model="taskTime" placeholder="set time.." class="task__time")
-          button(type='submit' class='task__submit') 
-            div v
+          textarea(rows="12" v-model="taskText" placeholder="Task text here.." class="task__text")
+          .task_btn__wrapper
+            button(type='submit' class='task__btn btn__submit') Submit
+            button(type='button' class='task__btn btn__cancel' v-on:click="toggleModal()") Cancel
     //- end of toggle window
 
     transition-group(tag='div' name='tasks-list' v-on:enter="addBlinkAnimation")
@@ -33,7 +34,7 @@
 
 <script lang="ts">
 import { TasksInterface } from '../../interfaces/TasksInterface';
-import { Component, Vue } from 'vue-property-decorator';
+import { Component, Vue, Prop } from 'vue-property-decorator';
 import { dataTask, userData } from '@/store/database';
 
 @Component
@@ -44,7 +45,7 @@ export default class Tasks extends Vue {
   taskStatuses: string[];
   addTask: boolean;
   $refs!: {
-    tasksRef : HTMLFormElement;
+    tasksRef : HTMLFormElement
   }
   constructor() {
     super();
@@ -60,6 +61,12 @@ export default class Tasks extends Vue {
   /* show or hide modal window 'add new task' */
   toggleModal() {
     this.addTask = !this.addTask;
+    if(this.addTask) {
+      this.resetFormFields();
+      document.documentElement.style.overflow = 'hidden';
+    } else {
+      document.documentElement.style.overflow = 'auto';
+    }
   }
   created() {
     this.$store.dispatch('loadTasks', dataTask);
@@ -117,10 +124,15 @@ export default class Tasks extends Vue {
           subtasks: [{description: text, time: convertedTime, status: 'todo'}]}); //add absolutely new task
           this.increaseTasksCounter();
       }
-      this.taskHeader = '';
-      this.taskTime = '';
-      this.taskText = '';
+      this.resetFormFields();
+      this.toggleModal();
     }
+  }
+  /* Reset all input values for the task form */
+  resetFormFields(){
+    this.taskHeader = '';
+    this.taskTime = '';
+    this.taskText = '';
   }
   /* convert time from 24 to 12AM/PM */
   timeConvertAMPM(time: any) {
@@ -223,13 +235,15 @@ export default class Tasks extends Vue {
   .form-wrapper {
     position: fixed;
     width: 600px;
-    height: 600px;
+    height: 420px;
+    top: 100px;
     background-color: white;
     border-radius: 10px;
     z-index: 11;
   }
   .modal-task-form {
-    display: block;
+    display: flex;
+    flex-direction: column;
     position: relative;
     margin: 16px 26px 16px 34px;
     
@@ -238,52 +252,67 @@ export default class Tasks extends Vue {
       outline: none;
       border: none;
     }
-    .task__header, .task__text {
+    .task__header {
       border-bottom: 2px dotted silver;
       padding-bottom: 10px;
     }
     .header__wrapper {
-      flex-basis: 100%;
       margin: 10px 0;
     }
     .task__header {
-      max-width: 140px;
+      max-width: 320px;
     }
-    
     .task__text {
-      flex-grow: 4;
+      resize: none;
+      background-color: #f5f5f5;
+      border-radius: 4px;
+    }
+    .task__header, .task__text {
+      padding-left: 4px;
     }
     .time__wrapper {
-      position: relative;
-      margin-left: 20px;
+      position: relative; 
       color: #131313;
-      flex-grow: 1;
+      margin-bottom: 10px;
     }
-    .task__time {
-      margin-left: 20px;
-      }
-    }
-    .task__submit {
-      background-color: rgb(140, 223, 142);
+  }
+  .task_btn__wrapper {
+    align-self: flex-end;
+    .task__btn {
+      display: inline-block;
       border: none;
       color: white;
       text-decoration: none;
       font-size: 18px;
-      width: 33px;
-      border-radius: 50%;
-      margin-left: auto;
-      margin-right: 5px;
-    }
-    .task__submit:hover {
-      cursor: pointer;
-    }
-    p {
-      max-width: 480px;
-      overflow-wrap: break-word;
-      background-color: #f7f7f7;
+      padding: 10px 12px;
       border-radius: 4px;
-      border-left: 10px solid #f7f7f7;
+      margin: 20px 0 20px 10px;
+      font-size: 14px;
+      transition: background-color 0.5s;
+      &.btn__submit {
+        background-color: rgb(140, 223, 142);
+        &:hover {
+          background-color: rgb(98, 218, 100);
+        }
+      }
+      &.btn__cancel {
+        background-color: rgb(223, 140, 140);
+        &:hover {
+          background-color: rgb(214, 106, 106);
+        }
+      }
+      &:hover {
+      cursor: pointer;
+      }
     }
+  }
+  p {
+    max-width: 480px;
+    overflow-wrap: break-word;
+    background-color: #f7f7f7;
+    border-radius: 4px;
+    border-left: 10px solid #f7f7f7;
+  }
   .article__time {
     span {
       display: inline-block;
