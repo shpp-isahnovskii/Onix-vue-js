@@ -14,7 +14,8 @@
         tr(v-for='(element, i) in header.subtasks' :key='i')
           td {{element.time}}
           //- texts and statuses
-          td(v-for='status, j in taskStatus' :key='j' v-if="element.status === status" draggable="true" @dragstart="dragstart" :class="'id'+n+i+j") {{element.description}}
+          td(v-for='status, j in taskStatus' :key='j' 
+            v-if="element.status === status" draggable="true" @dragstart="dragstart" :class="'id'+n+i+j" @click="taskModal") {{element.description}}
             td(v-else @dragover.prevent @dragenter='enter' @dragleave='leave' @drop="drop" :class="'id'+n+i+j") {{''}}
 </template>
 
@@ -26,12 +27,12 @@
   @Component
   export default class Kanban extends Vue {
     taskStatus: string[];
-    dragged: number[];
+    dragging: number[];
     
     constructor() {
       super();
       this.taskStatus = ['todo', 'inprogress', 'done'];
-      this.dragged = [];
+      this.dragging = [];
     }
 
     /*get tasks from the store*/
@@ -42,7 +43,10 @@
       this.$store.dispatch('loadTasks', dataTask);
     }
     dragstart(event: any) {
-      this.dragged = this.stringToArray(event.target.className);
+      const className = event.target.className;
+      if(className !== undefined) {
+        this.dragging = this.stringToArray(className);
+      }
     }
 
     /* n: task, i: subtask, j: status (indexes) */
@@ -50,21 +54,21 @@
       const drop = this.stringToArray(event.target.className);
 
       /* if user try to drop Done task to Todo - prevent it */
-      if(drop[2] === 0 && this.dragged[2] === 2) {
+      if(drop[2] === 0 && this.dragging[2] === 2) {
         event.target.style.background = "";
         return;
       }
       
-      /* if task(drop point 'id') in the same row with dragged task('dragged') - make drop*/
-      if( this.inSameRow(drop, this.dragged) ) {
-        this.changeStatus(this.dragged, drop[2]);
+      /* if task(drop point 'id') in the same row with dragging task('dragging') - make drop*/
+      if( this.inSameRow(drop, this.dragging) ) {
+        this.changeStatus(this.dragging, drop[2]);
       }
       event.target.style.background = "";
     }
     /* change background of hovered task */
     enter(event: any) {
       const drop = this.stringToArray(event.target.className);
-      if( this.inSameRow(drop, this.dragged) ) {
+      if( this.inSameRow(drop, this.dragging) ) {
         event.target.style.background = "#eee";
       }
     }
@@ -76,7 +80,7 @@
       return name.slice(2).split('').map( (item: string) => parseInt(item, 10) );
     }
 
-    /* if task(drop point 'id') in the same row with dragged task('dragged') - make drop*/
+    /* if task(drop point 'id') in the same row with dragging task('dragging') - make drop*/
     inSameRow(taskId: number[], dropPoint: number[]) {
       return (taskId[0] === dropPoint[0] && taskId[1] === dropPoint[1]);
     }
@@ -84,20 +88,15 @@
     changeStatus(oldStatus: number[], newStatus: number) {
       this.tasks[oldStatus[0]].subtasks[oldStatus[1]].status = this.taskStatus[newStatus];
     }
+
+    taskModal(){
+      // eslint-disable-next-line no-console
+      console.log('clicked');
+    }
   }
 </script>
 
 <style lang="scss">
-  .drop {
-    width: 300px;
-    height: 300px;
-    border: 1px solid black;
-  }
-  .drag {
-    width: 100px;
-    height: 100px;
-    background-color: burlywood;
-  }
   h3 {
     margin: 40px 32px 18px;
   }

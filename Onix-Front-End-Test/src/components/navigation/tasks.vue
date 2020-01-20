@@ -24,7 +24,7 @@
         //- inner forEach
         h3 {{task.title}}
         transition-group(tag='div' name='tasks-list' v-on:enter="addBlinkAnimation")
-          .article(v-for='(subtask, j) in task.subtasks', v-bind:key='subtask' ref="tasksRef")
+          .article(v-for='(subtask, j) in task.subtasks', v-bind:key='j' ref="tasksRef")
             p {{subtask.description}}
               .article__time {{ subtask.time }}
                 span
