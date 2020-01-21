@@ -15,16 +15,18 @@
           td {{element.time}}
           //- texts and statuses
           td(v-for='status, j in taskStatus' :key='j' 
-            v-if="element.status === status" draggable="true" @dragstart="dragstart" :class="'id'+n+i+j" @click="taskModal") {{element.description}}
+            v-if="element.status === status" draggable="true" @dragstart="dragstart" :class="'id'+n+i+j") {{element.description}}
             td(v-else @dragover.prevent @dragenter='enter' @dragleave='leave' @drop="drop" :class="'id'+n+i+j") {{''}}
+    taskModal
 </template>
 
 <script lang="ts">
-  import { Component, Vue, Prop } from 'vue-property-decorator';
+  import { Component, Vue } from 'vue-property-decorator';
   import { TasksInterface } from '@/interfaces/TasksInterface';
   import { dataTask } from '@/store/database';
+  import taskModal from '@/components/modal/TaskModal.vue';
 
-  @Component
+  @Component({components: {taskModal}})
   export default class Kanban extends Vue {
     taskStatus: string[];
     dragging: number[];
@@ -87,11 +89,6 @@
     /* change status of the current cask in this.tasks Object */
     changeStatus(oldStatus: number[], newStatus: number) {
       this.tasks[oldStatus[0]].subtasks[oldStatus[1]].status = this.taskStatus[newStatus];
-    }
-
-    taskModal(){
-      // eslint-disable-next-line no-console
-      console.log('clicked');
     }
   }
 </script>
