@@ -1,21 +1,19 @@
 <template lang="pug">
-    .modal-window( v-if="editTask" )
-      .modal-overlay(v-on:click="toggleModal()")
+    .modal-window( v-if="showModal" )
+      .modal-overlay(v-on:click="hideModal()")
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
+import { Component, Vue, Prop, Watch } from 'vue-property-decorator';
 
 @Component
 export default class TaskModal extends Vue {
-  editTask: boolean;
-
+  @Prop({default: false}) showModal !: boolean;
   constructor() {
     super();
-    this.editTask = false;
   }
-  toggleModal() {
-    this.editTask = !this.editTask;
+  hideModal() {
+    this.$emit('hideModal');
   }
 }
 </script>

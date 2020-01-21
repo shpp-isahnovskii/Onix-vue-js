@@ -15,9 +15,9 @@
           td {{element.time}}
           //- texts and statuses
           td(v-for='status, j in taskStatus' :key='j' 
-            v-if="element.status === status" draggable="true" @dragstart="dragstart" :class="'id'+n+i+j") {{element.description}}
+            v-if="element.status === status" draggable="true" @dragstart="dragstart" @click="toggleModal" :class="'id'+n+i+j") {{element.description}}
             td(v-else @dragover.prevent @dragenter='enter' @dragleave='leave' @drop="drop" :class="'id'+n+i+j") {{''}}
-    taskModal
+    taskModal(v-bind:showModal="modal" @hideModal="toggleModal()")
 </template>
 
 <script lang="ts">
@@ -30,11 +30,13 @@
   export default class Kanban extends Vue {
     taskStatus: string[];
     dragging: number[];
+    modal: boolean;
     
     constructor() {
       super();
       this.taskStatus = ['todo', 'inprogress', 'done'];
       this.dragging = [];
+      this.modal = false;
     }
 
     /*get tasks from the store*/
@@ -89,6 +91,10 @@
     /* change status of the current cask in this.tasks Object */
     changeStatus(oldStatus: number[], newStatus: number) {
       this.tasks[oldStatus[0]].subtasks[oldStatus[1]].status = this.taskStatus[newStatus];
+    }
+
+    toggleModal() {
+      this.modal = !this.modal;
     }
   }
 </script>
