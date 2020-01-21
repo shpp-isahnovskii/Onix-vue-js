@@ -17,26 +17,28 @@
           td(v-for='status, j in taskStatus' :key='j' 
             v-if="element.status === status" draggable="true" @dragstart="dragstart" @click="toggleModal" :class="'id'+n+i+j") {{element.description}}
             td(v-else @dragover.prevent @dragenter='enter' @dragleave='leave' @drop="drop" :class="'id'+n+i+j") {{''}}
-    taskModal(v-bind:showModal="modal" @hideModal="toggleModal()")
+    taskModal(v-bind:showModal="modal" v-bind:clickedTask="clickedTask" @hideModal="toggleModal()")
 </template>
 
 <script lang="ts">
   import { Component, Vue } from 'vue-property-decorator';
   import { TasksInterface } from '@/interfaces/TasksInterface';
   import { dataTask } from '@/store/database';
-  import taskModal from '@/components/modal/TaskModal.vue';
+  import taskModal from '@/components/modal/TaskDetailsModal.vue';
 
   @Component({components: {taskModal}})
   export default class Kanban extends Vue {
     taskStatus: string[];
     dragging: number[];
     modal: boolean;
+    clickedTask: number[];
     
     constructor() {
       super();
       this.taskStatus = ['todo', 'inprogress', 'done'];
       this.dragging = [];
       this.modal = false;
+      this.clickedTask = [];
     }
 
     /*get tasks from the store*/
@@ -93,8 +95,12 @@
       this.tasks[oldStatus[0]].subtasks[oldStatus[1]].status = this.taskStatus[newStatus];
     }
 
-    toggleModal() {
+    toggleModal(event : any) {
       this.modal = !this.modal;
+
+      if(this.modal) { //also get task id [0,0,0]
+        this.clickedTask = this.stringToArray(event.target.className);
+      }
     }
   }
 </script>
