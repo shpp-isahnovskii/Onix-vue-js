@@ -1,16 +1,28 @@
 <template lang="pug">
     .modal-window( v-if="showModal" )
       .modal-overlay(v-on:click="hideModal()")
-      .form-wrapper
+      //- edit form
+      .form-wrapper( v-if="editmode" )
         .task-header {{tasks[clickedTask[0]].title}}
-        .task-time 
+          .task-time
+            span Time: 
+            input(type="date" class="task__time")
+          .task-text
+            span Description: 
+            input(type='text' :value="tasks[clickedTask[0]].subtasks[clickedTask[1]].description")
+        .btn-wrapper
+          button(class="edit-btn" v-on:click='toggleEdit()') Cancel
+      //- observer form
+      .form-wrapper( v-else )
+        .task-header {{tasks[clickedTask[0]].title}}
+        .task-time
           span Time: 
           span {{tasks[clickedTask[0]].subtasks[clickedTask[1]].time}}
         .task-text 
           span Description: 
           div {{tasks[clickedTask[0]].subtasks[clickedTask[1]].description}}
         .btn-wrapper
-          button(class="edit-btn") Edit
+          button(class="edit-btn" v-on:click='toggleEdit()') Edit
 
 </template>
 
@@ -22,9 +34,11 @@ import { dataTask } from '@/store/database';
 export default class TaskModal extends Vue {
   @Prop({default: false}) showModal !: boolean;
   @Prop({}) clickedTask !: number[];
+  editmode: boolean;
 
   constructor() {
     super();
+    this.editmode = false;
   }
   /*get tasks from the store*/
   get tasks() {
@@ -32,6 +46,9 @@ export default class TaskModal extends Vue {
   }
   created() {
     this.$store.dispatch('loadTasks', dataTask);
+  }
+  toggleEdit() {
+    this.editmode = !this.editmode;
   }
 
 hideModal() {
@@ -97,6 +114,7 @@ hideModal() {
       height: 40px;
       cursor: pointer;
       font-size: 14px;
+      background-color: #eee;
       transition: background-color 0.4s;
       &:hover {
         background-color: lightgray;

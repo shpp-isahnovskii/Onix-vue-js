@@ -121,6 +121,7 @@
   td {
     border: solid silver 1px;
     padding: 4px;
+    border-radius: 6px;
   }
   td:not(:first-child) {
     width: 33.3%;
@@ -139,5 +140,6 @@
   .task-header {
     font-weight: bold;
     text-align: center;
+    border: none;
   }
 </style>
