@@ -1,26 +1,14 @@
 <template lang="pug">
     .modal-window( v-if="showModal" )
       .modal-overlay(v-on:click="hideModal()")
-      //- edit form
-      .form-wrapper( v-if="editmode" )
-        .task-header {{tasks[clickedTask[0]].title}}
-          .task-time
-            span Time: 
-            input(type="date" class="task__time")
-          .task-text
-            span Description: 
-            input(type='text' :value="tasks[clickedTask[0]].subtasks[clickedTask[1]].description")
-        .btn-wrapper
-          button(class="edit-btn" v-on:click='toggleEdit()') Cancel
-      //- observer form
-      .form-wrapper( v-else )
+      .form-wrapper
         .task-header {{tasks[clickedTask[0]].title}}
         .task-time
           span Time: 
-          span {{tasks[clickedTask[0]].subtasks[clickedTask[1]].time}}
+          input(type="date")
         .task-text 
           span Description: 
-          div {{tasks[clickedTask[0]].subtasks[clickedTask[1]].description}}
+          input(type="text" class="task-text__input" :value="tasks[clickedTask[0]].subtasks[clickedTask[1]].description")
         .btn-wrapper
           button(class="edit-btn" v-on:click='toggleEdit()') Edit
 
@@ -50,10 +38,9 @@ export default class TaskModal extends Vue {
   toggleEdit() {
     this.editmode = !this.editmode;
   }
-
-hideModal() {
-  this.$emit('hideModal');
-}
+  hideModal() {
+    this.$emit('hideModal');
+  }
 }
 </script>
 
@@ -91,7 +78,7 @@ hideModal() {
   }
   .task-text {
     margin-top: 15px;
-    div {
+    .task-text__input {
       margin: 10px 30px 0 0px;
       border: 1px solid #eee;
       height: 180px;
