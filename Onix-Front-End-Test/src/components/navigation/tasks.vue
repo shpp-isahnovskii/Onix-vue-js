@@ -10,8 +10,9 @@
         transition-group(tag='div' name='tasks-list' v-on:enter="addBlinkAnimation")
           .article(v-for='(subtask, j) in task.subtasks', v-bind:key='j' ref="tasksRef")
             p {{subtask.description}}
-              .article__time {{ subtask.time }}
-                span
+              .article__time 
+                span(class="article_time__text") {{subtask.time}}
+                span(class="article__remove")
                   div(v-on:click="remove(i, j)") x
                 button(class='article-button__status' v-on:click="changeTaskStatus(i, j, subtask.status)") {{subtask.status}}
     taskModal( v-bind:addTask="modal" v-on:hideModal="toggleModal()")
@@ -165,7 +166,10 @@ export default class Tasks extends Vue {
     border-left: 10px solid #f7f7f7;
   }
   .article__time {
-    span {
+    .article_time__text {
+      margin-left: 12px;
+    }
+    .article__remove {
       display: inline-block;
       position: relative;
       text-align: center;
@@ -180,7 +184,7 @@ export default class Tasks extends Vue {
         top: -1px;
       }
     }
-    span:hover {
+    .article__remove:hover {
       cursor: pointer;
     }
   }

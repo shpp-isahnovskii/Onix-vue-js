@@ -59,6 +59,8 @@
     .task__date, .task__time {
       padding-bottom: 2px;
       margin-bottom: 5px;
+    }
+    .task__time {
       border-bottom: 1px solid lightgray;
     }
     .header__wrapper {

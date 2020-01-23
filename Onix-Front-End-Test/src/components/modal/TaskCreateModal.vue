@@ -38,7 +38,6 @@ import { dataTask, userData } from '@/store/database';
       if( !title || !text || !time ) {
         window.alert("please, input something in the task message and set the time");
       } else {
-        const convertedTime : string = this.timeConvertAMPM(time);
         title = title.toLowerCase();
 
         /* find task  */
@@ -46,17 +45,17 @@ import { dataTask, userData } from '@/store/database';
         if(titleIndex !== -1) {
 
           /* find time in subtasks */
-          const timeIndex : number = this.tasks[titleIndex].subtasks.findIndex( e => e.time === convertedTime);
+          const timeIndex : number = this.tasks[titleIndex].subtasks.findIndex( e => e.time === time);
           if(timeIndex !== -1) {
-            Vue.set(this.tasks[titleIndex].subtasks, timeIndex , {description: text, time: convertedTime, status: 'todo'}); //refresh task with the same time
+            Vue.set(this.tasks[titleIndex].subtasks, timeIndex , {description: text, time: time, status: 'todo'}); //refresh task with the same time
           } else {
             Vue.set(this.tasks[titleIndex].subtasks, this.tasks[titleIndex].subtasks.length, 
-              {description: text, time: convertedTime, status: 'todo'}); //add new time to current existing task
+              {description: text, time: time, status: 'todo'}); //add new time to current existing task
               this.increaseTasksCounter();
           }
         } else {
           Vue.set(this.tasks, this.tasks.length, {title: title , 
-            subtasks: [{description: text, time: convertedTime, status: 'todo'}]}); //add absolutely new task
+            subtasks: [{description: text, time: time, status: 'todo'}]}); //add absolutely new task
             this.increaseTasksCounter();
         }
         this.toggleModal(); //success
@@ -65,14 +64,6 @@ import { dataTask, userData } from '@/store/database';
     /* sidebar menu counter +1 */
     increaseTasksCounter() : void {
       userData.tasks.open++;
-    }
-    /* convert time from 24 to 12AM/PM */
-    timeConvertAMPM(time: any) {
-    //24 to 12 - get example from here: https://medium.com/front-end-weekly/how-to-convert-24-hours-format-to-12-hours-in-javascript-ca19dfd7419d
-      time = time.split(':');
-      time[1] += time[0] >= 12 ? 'PM' : 'AM';
-      time[0] = time[0] % 12 || 12;
-      return time.join('.');
     }
     toggleModal() {
       this.$emit('hideModal');

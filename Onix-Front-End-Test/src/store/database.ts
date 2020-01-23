@@ -1,19 +1,19 @@
 export const dataTask = [
   { title: '2019-12-31', subtasks: [
-    { description: 'Making bed.', time: '7.00AM', status: 'done'},
-    { description: 'Washing face.', time: '7.05AM', status: 'inprogress'},
-    { description: 'Drinking a pint of lemon water.', time: '7.10AM', status: 'todo'},
-    { description: 'Making breakfast.', time: '7.15AM', status: 'todo'},
-    { description: 'Reviewing my goals.', time: '7.45AM', status: 'todo'},
-    { description: 'Writing down two to four important tasks for the day.', time: '7.50AM', status: 'todo'}
+    { description: 'Making bed.', time: '07:00', status: 'done'},
+    { description: 'Washing face.', time: '07:05', status: 'inprogress'},
+    { description: 'Drinking a pint of lemon water.', time: '07:10', status: 'todo'},
+    { description: 'Making breakfast.', time: '07:15', status: 'todo'},
+    { description: 'Reviewing my goals.', time: '07:45', status: 'todo'},
+    { description: 'Writing down two to four important tasks for the day.', time: '07:50', status: 'todo'}
   ]},
   { title: '2020-01-01', subtasks: [
-    { description: 'Suit up.', time: '8.00AM', status: 'todo'},
-    { description: 'Go out.', time: '8.10AM', status: 'todo'},
-    { description: 'Driving to the office.', time: '8.15AM', status: 'todo'},
-    { description: 'Talk to the manager.', time: '8.45AM', status: 'todo'},
-    { description: 'Planing work day.', time: '8.50AM', status: 'todo'},
-    { description: 'Work hard or easy.', time: '9.00AM', status: 'todo'},
+    { description: 'Suit up.', time: '08:00', status: 'todo'},
+    { description: 'Go out.', time: '08:10', status: 'todo'},
+    { description: 'Driving to the office.', time: '08:15', status: 'todo'},
+    { description: 'Talk to the manager.', time: '08:45', status: 'todo'},
+    { description: 'Planing work day.', time: '08:50', status: 'todo'},
+    { description: 'Work hard or easy.', time: '09:00', status: 'todo'},
   ]}
 ];
 
