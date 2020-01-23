@@ -1,5 +1,5 @@
 export const dataTask = [
-  { title: 'wake up', subtasks: [
+  { title: '2019-12-31', subtasks: [
     { description: 'Making bed.', time: '7.00AM', status: 'done'},
     { description: 'Washing face.', time: '7.05AM', status: 'inprogress'},
     { description: 'Drinking a pint of lemon water.', time: '7.10AM', status: 'todo'},
@@ -7,7 +7,7 @@ export const dataTask = [
     { description: 'Reviewing my goals.', time: '7.45AM', status: 'todo'},
     { description: 'Writing down two to four important tasks for the day.', time: '7.50AM', status: 'todo'}
   ]},
-  { title: 'go to the work', subtasks: [
+  { title: '2020-01-01', subtasks: [
     { description: 'Suit up.', time: '8.00AM', status: 'todo'},
     { description: 'Go out.', time: '8.10AM', status: 'todo'},
     { description: 'Driving to the office.', time: '8.15AM', status: 'todo'},

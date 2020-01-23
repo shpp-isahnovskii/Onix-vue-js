@@ -16,17 +16,19 @@
           //- texts and statuses
           td(v-for='status, j in taskStatus' :key='j' 
             v-if="element.status === status" draggable="true" @dragstart="dragstart" @click="toggleModal" :class="'id'+n+i+j") {{element.description}}
-            td(v-else @dragover.prevent @dragenter='enter' @dragleave='leave' @drop="drop" :class="'id'+n+i+j") {{''}}
-    taskModal(v-bind:showModal="modal" v-bind:clickedTask="clickedTask" @hideModal="toggleModal()")
+          td(v-else @dragover.prevent @dragenter='enter' @dragleave='leave' @drop="drop" :class="'id'+n+i+j") {{''}}
+    taskCreateModal(v-bind:addTask="modal" v-on:hideModal="toggleModal()")
 </template>
 
 <script lang="ts">
   import { Component, Vue } from 'vue-property-decorator';
   import { TasksInterface } from '@/interfaces/TasksInterface';
   import { dataTask } from '@/store/database';
-  import taskModal from '@/components/modal/TaskDetailsModal.vue';
+  import TaskCreateModal from '../modal/TaskCreateModal.vue';
+  //import taskModal from '@/components/modal/TaskDetailsModal.vue';
 
-  @Component({components: {taskModal}})
+  //@Component({components: {taskModal}})
+  @Component({components: {TaskCreateModal}})
   export default class Kanban extends Vue {
     taskStatus: string[];
     dragging: number[];

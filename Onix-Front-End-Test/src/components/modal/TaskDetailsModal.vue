@@ -1,27 +1,24 @@
 <template lang="pug">
-    .modal-window( v-if="showModal" )
-      .modal-overlay(v-on:click="hideModal()")
-      .form-wrapper
-        .task-header {{tasks[clickedTask[0]].title}}
-        .task-time
-          span Time: 
-          input(type="date")
-        .task-text 
-          span Description: 
-          input(type="text" class="task-text__input" :value="tasks[clickedTask[0]].subtasks[clickedTask[1]].description")
-        .btn-wrapper
-          button(class="edit-btn" v-on:click='toggleEdit()') Edit
-
+  .modal-window( v-if="showModal" )
+    .modal-overlay(v-on:click="hideModal()")
+    .form-wrapper
+      .task-header {{tasks[clickedTask[0]].title}}
+      .task-time Time: 
+        input(type="date")
+      .task-text Description: 
+        input(type="textarea" class="task-text__input" :value="tasks[clickedTask[0]].subtasks[clickedTask[1]].description")
+      .btn-wrapper
+        button(class="edit-btn" v-on:click='toggleEdit()') Edit
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop, Watch } from 'vue-property-decorator';
+import { Component, Vue, Prop } from 'vue-property-decorator';
 import { dataTask } from '@/store/database';
 
 @Component
 export default class TaskModal extends Vue {
   @Prop({default: false}) showModal !: boolean;
-  @Prop({}) clickedTask !: number[];
+  @Prop({}) clickedTask !: number[]; //give an array in format [0, 1, 2]. 0 - date, 1 - time, 2 - description
   editmode: boolean;
 
   constructor() {
@@ -46,7 +43,7 @@ export default class TaskModal extends Vue {
 
 
 <style lang="scss">
-  .modal-overlay {
+    .modal-overlay {
     position: fixed;
     top: 0;
     left: 0;
@@ -58,53 +55,79 @@ export default class TaskModal extends Vue {
     cursor: pointer;
   }
   .form-wrapper {
-  position: fixed;
-  width: 600px;
-  height: 420px;
-  top: 100px;
-  background-color: white;
-  border-radius: 10px;
-  z-index: 11;
+    position: fixed;
+    width: 600px;
+    height: 425px;
+    top: 100px;
+    background-color: white;
+    border-radius: 10px;
+    z-index: 11;
   }
-  .task-header {
-    margin-top: 30px;
-    text-transform: uppercase;
-  }
-  .task-header, .task-time, .task-text {
-    margin-left: 30px;
-  }
-  .task-time {
-    margin-top: 20px;
-  }
-  .task-text {
-    margin-top: 15px;
-    .task-text__input {
-      margin: 10px 30px 0 0px;
-      border: 1px solid #eee;
-      height: 180px;
-      padding: 10px;
-    }
-  }
-  .task-text, .task-time {
-    *:first-child {
-      font-weight: bold;
-    }
-  }
-  .btn-wrapper {
-    .edit-btn {
-      display: block;
-      margin: 20px auto;
+  .modal-task-form {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    margin: 16px 26px 0 26px;
+    
+    .task__date, .task__text, .task__time {
+      font-size: 16px;
       outline: none;
-      border-radius: 4px;
       border: none;
-      width: 100px;
-      height: 40px;
-      cursor: pointer;
+    }
+    .task__date, .task__time {
+      padding-bottom: 2px;
+      margin-bottom: 5px;
+      border-bottom: 1px solid lightgray;
+    }
+    .header__wrapper {
+      margin-top: 20px;
+    }
+    .task__date {
+      max-width: 320px;
+    }
+    .task__text {
+      margin-top: 5px;
+      resize: none;
+      background-color: #f5f5f5;
+      border-radius: 4px;
+    }
+    .task__date, .task__text {
+      padding-left: 4px;
+    }
+    .time__wrapper {
+      position: relative; 
+      color: #131313;
+      margin-bottom: 10px;
+    }
+  }
+  .task_btn__wrapper {
+    align-self: flex-end;
+    margin-top: 20px;
+    .task__btn {
+      display: inline-block;
+      border: none;
+      color: white;
+      text-decoration: none;
+      font-size: 18px;
+      padding: 10px 12px;
+      border-radius: 4px;
+      margin-left: 10px;
       font-size: 14px;
-      background-color: #eee;
-      transition: background-color 0.4s;
+      transition: background-color 0.5s;
+      &.btn__submit {
+        background-color: rgb(140, 223, 142);
+        &:hover {
+          background-color: rgb(98, 218, 100);
+        }
+      }
+      &.btn__cancel {
+        background-color: rgb(223, 140, 140);
+        &:hover {
+          background-color: rgb(214, 106, 106);
+        }
+      }
       &:hover {
-        background-color: lightgray;
+      cursor: pointer;
       }
     }
   }
