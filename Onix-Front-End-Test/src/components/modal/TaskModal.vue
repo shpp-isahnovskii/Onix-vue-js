@@ -1,49 +1,31 @@
 <template lang="pug">
-  .modal-window
-    .modal-overlay(v-on:click="hideModal()")
-    .form-wrapper
-      .task-header {{tasks[clickedTask[0]].title}}
-      .task-time Time: 
-        input(type="date")
-      .task-text Description: 
-        input(type="textarea" class="task-text__input" :value="tasks[clickedTask[0]].subtasks[clickedTask[1]].description")
-      .btn-wrapper
-        button(class="edit-btn" v-on:click='toggleEdit()') Edit
+  div
+    taskCreate(v-if="addTask" v-on:hideModal="hideModal()")
+    taskEdit(v-if="editTask" v-bind:clickedTask="clickedTask" v-on:hideModal="hideModal()")
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop } from 'vue-property-decorator';
-import { dataTask } from '@/store/database';
+  import { Component, Vue, Prop } from "vue-property-decorator";
+  import taskCreate from "./TaskCreateModal.vue";
+  import taskEdit from "./TaskDetailsModal.vue";
 
-@Component
-export default class TaskModal extends Vue {
-  @Prop({default: false}) showModal !: boolean;
-  @Prop({default: undefined}) clickedTask !: number[]; //give an array in format [0, 1, 2]. 0 - date, 1 - time, 2 - description
-  editmode: boolean;
+@Component({components: { taskCreate, taskEdit }})
+  export default class TaskModal extends Vue {
+    @Prop({default: false}) addTask !: boolean;
+    @Prop({default: false}) editTask !: boolean;
+    @Prop({default: undefined}) clickedTask !: number[]; // kanban task-id. Example: [0, 1, 2], where 0 - date, 1 - time, 2 - description
 
-  constructor() {
-    super();
-    this.editmode = false;
+    constructor() {
+      super();
+    }
+    hideModal(){
+      this.$emit('hideModal');
+    }
   }
-  /*get tasks from the store*/
-  get tasks() {
-    return this.$store.getters.getTasks;
-  }
-  created() {
-    this.$store.dispatch('loadTasks', dataTask);
-  }
-  toggleEdit() {
-    this.editmode = !this.editmode;
-  }
-  hideModal() {
-    this.$emit('hideModal');
-  }
-}
 </script>
 
-
 <style lang="scss">
-    .modal-overlay {
+  .modal-overlay {
     position: fixed;
     top: 0;
     left: 0;

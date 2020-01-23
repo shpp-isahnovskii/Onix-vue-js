@@ -14,16 +14,16 @@
                 span
                   div(v-on:click="remove(i, j)") x
                 button(class='article-button__status' v-on:click="changeTaskStatus(i, j, subtask.status)") {{subtask.status}}
-    taskCreateModal( v-bind:addTask="modal" v-on:hideModal="toggleModal()")
+    taskModal( v-bind:addTask="modal" v-on:hideModal="toggleModal()")
 </template>
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import { TasksInterface } from '@/interfaces/TasksInterface';
 import { dataTask, userData } from '@/store/database';
-import taskCreateModal from '../modal/TaskCreateModal.vue';
+import taskModal from '../modal/TaskModal.vue';
 
-@Component({ components: { taskCreateModal }})
+@Component({ components: { taskModal }})
 export default class Tasks extends Vue {
   taskStatuses: string[];
   modal: boolean;
