@@ -6,17 +6,18 @@
         .header__wrapper Date: 
           input(type="date" :value="tasks[clickedTask[0]].title" class="task__date" disabled)
         .time__wrapper Time: 
-          input(type='time' v-model="taskTime" class="task__time" disabled)
-        textarea(rows="12" v-model="taskText" placeholder="Text here.." class="task__text" disabled)
+          input(type='time' v-model="taskTime" v-bind:class="{time__underline : edit}" class="task__time" :disabled="edit == false")
+          img( v-bind:src="[edit ? lockImg[1].src : lockImg[0].src]" alt="lock" class="form-lock-img")
+        textarea(rows="12" v-model="taskText" placeholder="Text here.." class="task__text" ref='textInput' :disabled="edit == false")
         .task_btn__wrapper
-          button(type='submit' class='task__btn btn__submit') Submit
-          button(type='button' class='task__btn btn__cancel' v-on:click="toggleModal()") Cancel
+          button(type='button' class='task__btn btn__edit' v-on:click="allowEditing()") Edit
 </template>
 
 <script lang="ts">
 import { Component, Vue, Prop, Watch } from 'vue-property-decorator';
 import { TasksInterface } from "@/interfaces/TasksInterface";
 import { dataTask } from '@/store/database';
+import { ImgInterface } from '@/interfaces/ImgInterface'
 
 @Component
 export default class TaskModal extends Vue {
@@ -24,10 +25,24 @@ export default class TaskModal extends Vue {
   @Prop({default: undefined}) clickedTask !: number[]; //give an array in format [0, 1, 2]. 0 - date, 1 - time, 2 - description
   taskTime: string;
   taskText: string;
+  edit: boolean;
+  lockImg: ImgInterface[];
+  $refs!: {
+    textInput: HTMLFormElement;
+  }
   constructor() {
     super();
     this.taskTime = "";
     this.taskText = "";
+    this.edit = false;
+    this.lockImg = [{
+        src: require("@/assets/images/site/lock/lock.svg"), 
+        alt: "lock"
+      },
+      {
+        src: require("@/assets/images/site/lock/unlock.svg"),
+        alt: "unlock"
+    }];
   }
   /*get tasks from the store*/
   get tasks(): TasksInterface[] {
@@ -44,6 +59,13 @@ export default class TaskModal extends Vue {
   toggleModal() {
     this.$emit('hideModal');
   }
+  allowEditing() {
+    this.edit = true;
+    this.focusOnText();
+  }
+  focusOnText() {
+    this.$nextTick(() => {this.$refs.textInput.focus()});
+  }
 }
 </script>
 
@@ -51,5 +73,30 @@ export default class TaskModal extends Vue {
 <style lang="scss" scoped>
   input[type="date"]:disabled, input[type="date"]:disabled {
     background: none;
+  }
+  .task_btn__wrapper {
+    align-self: center;
+    .task__btn {
+      color: rgb(30, 30, 30);
+      width: 80px;
+      &.btn__edit {
+        background-color: rgb(220, 220, 220);
+        &:hover {
+          background-color: rgb(200, 200, 200);
+        }
+      }
+      &.btn__save {
+        background-color: rgb(140, 223, 142);
+        &:hover {
+          background-color: rgb(98, 218, 100);
+        }
+      }
+    }
+  }
+  .modal-task-form {
+    .form-lock-img {
+      position: relative;
+      top: 4px;
+    }
   }
 </style>

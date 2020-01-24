@@ -7,7 +7,7 @@
         .btn__dots ...
     .header__chat
       .chat__imgs
-        img.btn.-medium.-rounded.-pointer(v-for='(friend, n) in friends', v-bind:key='n', :src='friend.person', :alt=' friend.alt')
+        img.btn.-medium.-rounded.-pointer(v-for='(friend, n) in friends', v-bind:key='n', :src='friend.src', :alt=' friend.alt')
       .btn.-gray.-pointer.btn__share Share
       .btn.-lightyellow.-pointer.btn__chat
         p Chat
@@ -22,7 +22,7 @@
 
 
 <script lang="ts">
-    import { FriendsInterface } from '../interfaces/FriendsInterface';
+    import { ImgInterface } from '../interfaces/ImgInterface';
   import { Component, Vue, Watch } from 'vue-property-decorator';
 
   @Component({})
@@ -30,16 +30,16 @@
 
     pages: string[];
     currentPage: string;
-    friends: FriendsInterface[];
+    friends: ImgInterface[];
 
     constructor() {
       super();
       this.pages = ['Tasks', 'Kanban', 'Activity', 'Calendar', 'Files'];
       this.currentPage = '';
       this.friends = [
-        { person : require('../assets/images/people/1.jpg'), alt : "Matt" },
-        { person : require('../assets/images/people/2.jpg'), alt : "David" },
-        { person : require('../assets/images/people/3.jpg'), alt : "Katty" }
+        { src : require('../assets/images/people/1.jpg'), alt : "Matt" },
+        { src : require('../assets/images/people/2.jpg'), alt : "David" },
+        { src : require('../assets/images/people/3.jpg'), alt : "Katty" }
       ];
     }
     /* change active page css (add yellow line to the bottom) */

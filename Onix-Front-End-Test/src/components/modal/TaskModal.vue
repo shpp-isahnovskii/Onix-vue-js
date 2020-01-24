@@ -60,9 +60,6 @@
       padding-bottom: 2px;
       margin-bottom: 5px;
     }
-    .task__time {
-      border-bottom: 1px solid lightgray;
-    }
     .header__wrapper {
       margin-top: 20px;
     }
@@ -85,12 +82,10 @@
     }
   }
   .task_btn__wrapper {
-    align-self: flex-end;
     margin-top: 20px;
     .task__btn {
       display: inline-block;
       border: none;
-      color: white;
       text-decoration: none;
       font-size: 18px;
       padding: 10px 12px;
@@ -98,18 +93,6 @@
       margin-left: 10px;
       font-size: 14px;
       transition: background-color 0.5s;
-      &.btn__submit {
-        background-color: rgb(140, 223, 142);
-        &:hover {
-          background-color: rgb(98, 218, 100);
-        }
-      }
-      &.btn__cancel {
-        background-color: rgb(223, 140, 140);
-        &:hover {
-          background-color: rgb(214, 106, 106);
-        }
-      }
       &:hover {
       cursor: pointer;
       }

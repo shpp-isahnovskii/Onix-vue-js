@@ -71,6 +71,23 @@ import { dataTask, userData } from '@/store/database';
   }
 </script>
 
-<style lang="scss">
-  
+<style lang="scss" scoped>
+  .task_btn__wrapper {
+    align-self: flex-end;
+    .task__btn {
+      color: white;
+      &.btn__submit {
+        background-color: rgb(140, 223, 142);
+        &:hover {
+          background-color: rgb(98, 218, 100);
+        }
+      }
+      &.btn__cancel {
+        background-color: rgb(223, 140, 140);
+        &:hover {
+          background-color: rgb(214, 106, 106);
+        }
+      }
+    }
+  }
 </style>
