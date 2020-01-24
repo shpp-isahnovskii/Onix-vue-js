@@ -7,7 +7,7 @@
           input(type="date" :value="tasks[clickedTask[0]].title" class="task__date" disabled)
         .time__wrapper Time: 
           input(type='time' v-model="taskTime" v-bind:class="{time__underline : edit}" class="task__time" :disabled="edit == false")
-          img( v-bind:src="[edit ? lockImg[1].src : lockImg[0].src]" alt="lock" class="form-lock-img")
+          img(v-bind:src="[edit ? lockImg[1].src : lockImg[0].src]" v-bind:alt="[edit ? lockImg[1].alt : lockImg[0].alt]" class="form-lock-img")
         textarea(rows="12" v-model="taskText" placeholder="Text here.." class="task__text" ref='textInput' :disabled="edit == false")
         .task_btn__wrapper
           button(type='button' class='task__btn btn__edit' v-on:click="allowEditing()") Edit
