@@ -2,15 +2,15 @@
   .modal-window
     .modal-overlay(v-on:click="toggleModal()")
     .form-wrapper
-      form(class='modal-task-form' @submit.prevent="")
+      form(class='modal-task-form' @submit.prevent="" @input.once="allowToSave()")
         .header__wrapper Date: 
           input(type="date" :value="tasks[clickedTask[0]].title" class="task__date" disabled)
         .time__wrapper Time: 
-          input(type='time' v-model="taskTime" v-bind:class="{time__underline : edit}" class="task__time" :disabled="edit == false")
-          img(v-bind:src="[edit ? lockImg[1].src : lockImg[0].src]" v-bind:alt="[edit ? lockImg[1].alt : lockImg[0].alt]" class="form-lock-img")
+          input(type='time' v-model="taskTime" class="task__time" :disabled="edit == false")
+          img(v-bind:src="[edit ? lockImg[1].src : lockImg[0].src]" v-bind:alt="[edit ? lockImg[1].alt : lockImg[0].alt]" class="form-lock-img" v-on:click="toggleEditing()")
         textarea(rows="12" v-model="taskText" placeholder="Text here.." class="task__text" ref='textInput' :disabled="edit == false")
         .task_btn__wrapper
-          button(type='button' class='task__btn btn__edit' v-on:click="allowEditing()") Edit
+          button(type='button' class='task__btn btn__edit' :class="{ 'btn__save' : changed}" v-on:click="[changed ? confirmChanges(taskTime, taskText) : chooseAction()]") {{editButton}}
 </template>
 
 <script lang="ts">
@@ -26,7 +26,9 @@ export default class TaskModal extends Vue {
   taskTime: string;
   taskText: string;
   edit: boolean;
-  lockImg: ImgInterface[];
+  changed: boolean;
+  editButton: string;
+  lockImg: ImgInterface[]; //simple svg img
   $refs!: {
     textInput: HTMLFormElement;
   }
@@ -35,6 +37,7 @@ export default class TaskModal extends Vue {
     this.taskTime = "";
     this.taskText = "";
     this.edit = false;
+    this.changed = false;
     this.lockImg = [{
         src: require("@/assets/images/site/lock/lock.svg"), 
         alt: "lock"
@@ -43,6 +46,7 @@ export default class TaskModal extends Vue {
         src: require("@/assets/images/site/lock/unlock.svg"),
         alt: "unlock"
     }];
+    this.editButton = "Edit";
   }
   /*get tasks from the store*/
   get tasks(): TasksInterface[] {
@@ -59,19 +63,42 @@ export default class TaskModal extends Vue {
   toggleModal() {
     this.$emit('hideModal');
   }
-  allowEditing() {
-    this.edit = true;
-    this.focusOnText();
+  chooseAction(): void {
+    if(this.edit) { //if in edit mode - exit
+      this.toggleModal();
+      return
+    }
+    this.toggleEditing(); //or allow aditing
   }
+
+  toggleEditing() {
+    this.edit = !this.edit;
+    if(this.edit) {
+      this.focusOnText();
+      this.editButton = "Cancel";
+    } else {
+      this.editButton = "Edit";
+    }
+  }
+  allowToSave() {
+    this.editButton = "Save";
+    this.changed = !this.changed;
+  }
+  
   focusOnText() {
     this.$nextTick(() => {this.$refs.textInput.focus()});
+  }
+  confirmChanges(time: string, text: string,) {
+    // eslint-disable-next-line no-console
+    console.log('saving..');
   }
 }
 </script>
 
 
 <style lang="scss" scoped>
-  input[type="date"]:disabled, input[type="date"]:disabled {
+  input[type="date"]:disabled, input[type="time"]:disabled {
+    color:rgb(200, 200, 200);
     background: none;
   }
   .task_btn__wrapper {
@@ -87,6 +114,7 @@ export default class TaskModal extends Vue {
       }
       &.btn__save {
         background-color: rgb(140, 223, 142);
+        color: white;
         &:hover {
           background-color: rgb(98, 218, 100);
         }
@@ -96,7 +124,7 @@ export default class TaskModal extends Vue {
   .modal-task-form {
     .form-lock-img {
       position: relative;
-      top: 4px;
+      top: 5px;
     }
   }
 </style>
