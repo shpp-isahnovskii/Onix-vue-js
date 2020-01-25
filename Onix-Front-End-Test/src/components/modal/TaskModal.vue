@@ -86,6 +86,7 @@
     .task__btn {
       display: inline-block;
       border: none;
+      outline: none;
       text-decoration: none;
       font-size: 18px;
       padding: 10px 12px;
