@@ -208,8 +208,8 @@ export default class Tasks extends Vue {
     outline: none;
     transition: all 0.5s;
     &:hover {
-    cursor: pointer;
-    border-radius: 4px;
+      cursor: pointer;
+      border-radius: 4px;
     }
   }
   .article-button__status:hover {

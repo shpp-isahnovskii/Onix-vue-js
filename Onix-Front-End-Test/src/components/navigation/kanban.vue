@@ -9,7 +9,7 @@
         tr
           td
           //- task-status names
-          td(v-for='(status, m) in taskStatus' :key='m' class='task-header') {{status}}
+          td(v-for='(status, m) in taskStatus' :key='m' :class="'task_status__' + status" class='task-header') {{status}}
         //- sub-tasks
         tr(v-for='(element, i) in header.subtasks' :key='i')
           td {{element.time}}
@@ -32,6 +32,7 @@
     dragging: number[];
     modal: boolean;
     clickedTask: number[];
+    dateToday: Object;
     
     constructor() {
       super();
@@ -39,6 +40,7 @@
       this.dragging = [];
       this.modal = false;
       this.clickedTask = [];
+      this.dateToday = this.getDate();
     }
 
     /*get tasks from the store*/
@@ -47,14 +49,27 @@
     }
     created() {
       this.$store.dispatch('loadTasks', dataTask);
+            // eslint-disable-next-line no-console
+      console.log(this.dateToday);
     }
+
+    getDate(): Object {
+      const today = new Date();
+      return { 
+        year: today.getFullYear(),
+        month: today.getMonth() + 1,
+        day: today.getDate(),
+        time: today.getHours(),
+        minutes: today.getMinutes()
+      }
+    }
+
     dragstart(event: any) {
       const className = event.target.className;
       if(className !== undefined) {
         this.dragging = this.stringToArray(className);
       }
     }
-
     /* n: task, i: subtask, j: status (indexes) */
     drop(event:any): void {
       const drop = this.stringToArray(event.target.className);
@@ -121,7 +136,7 @@
   td {
     border: solid silver 1px;
     padding: 4px;
-    border-radius: 6px;
+    border-radius: 4px;
   }
   td:not(:first-child) {
     width: 33.3%;
@@ -141,5 +156,14 @@
     font-weight: bold;
     text-align: center;
     border: none;
+  }
+  .task_status__todo {
+    background-color: rgb(250, 242, 242);
+  }
+  .task_status__inprogress {
+    background-color: rgb(252, 252, 211);
+  }
+  .task_status__done {
+    background-color: rgb(221, 255, 221);
   }
 </style>
