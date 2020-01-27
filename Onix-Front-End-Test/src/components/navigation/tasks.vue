@@ -21,7 +21,7 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import { TasksInterface } from '@/interfaces/TasksInterface';
-import { dataTask, userData } from '@/store/database';
+import { dataTasks, userData } from '@/store/database';
 import taskModal from '../modal/TaskModal.vue';
 
 @Component({ components: { taskModal }})
@@ -49,7 +49,7 @@ export default class Tasks extends Vue {
     }
   }
   created() {
-    this.$store.dispatch('loadTasks', dataTask);
+    this.$store.dispatch('loadTasks', dataTasks);
   }
   mounted() {
     this.makeWave();

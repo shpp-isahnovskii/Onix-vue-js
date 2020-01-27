@@ -1,0 +1,68 @@
+<template lang="pug">
+  div(class="table_column"
+    @dragover.prevent 
+    @dragenter="enter"
+    @dragleave="leave"
+    @drop.prevent="drop"
+  ) 
+    div(class="table_column__title") {{title}}
+    div(class="table_column__body")
+      kanbanCard(v-for="(card, n) in data" :key="n"
+      v-bind:id="card.id"
+      v-bind:title="card.title"
+      v-bind:time="card.time"
+    )
+</template>
+
+<script lang="ts">
+  import { Component, Vue, Prop } from "vue-property-decorator";
+  import { TasksInterfaces } from '@/interfaces/TasksInterfaces';
+  import kanbanCard from "./kanbanCard.vue";
+
+@Component({components: { kanbanCard }})
+export default class Table extends Vue {
+  @Prop({default:"..."}) title!: string;
+  @Prop({default: 0}) tableId!: string; //value can be: todo inprogress or done
+  @Prop({default: []}) data!: TasksInterfaces[];
+
+  constructor() {
+    super();
+  }
+  enter(event: any) {
+    const classList = event.target.classList
+    if(classList.contains("table_column__title")) {
+      classList.add("column_title__hover")
+    }
+  }
+  leave(event: any) {
+    const classList = event.target.classList
+    if(classList.contains("column_title__hover")) {
+      classList.remove("column_title__hover")
+    }
+  }
+  drop(event: any) {
+    event.target.classList.remove("column_title__hover");
+
+    const id = event.dataTransfer.getData('card_id');
+    this.$emit('card-drop', this.tableId, id);
+  }
+}
+</script>
+
+<style lang="scss">
+  .table_column {
+    width: 250px;
+    margin: 0 2px;
+    background-color: rgb(236, 234, 234);
+    border-radius: 4px;
+    min-height: 100px;
+    .table_column__title {
+      background-color: ghostwhite;
+      text-align: center;
+      padding: 5px;
+      &.column_title__hover {
+        background-color: #eceaea;
+      }
+    }
+  }
+</style>

@@ -2,121 +2,157 @@
   section
     h3 Kanban
     //- tasks
-    table(v-for='(header, n) in tasks' :key='n')
-      thead
-        td(colspan='4' class='task-title') {{header.title}}
-      tbody
-        tr
-          td
-          //- task-status names
-          td(v-for='(status, m) in taskStatus' :key='m' :class="'task_status__' + status" class='task-header') {{status}}
-        //- sub-tasks
-        tr(v-for='(element, i) in header.subtasks' :key='i')
-          td {{element.time}}
-          //- texts and statuses
-          td(v-for='status, j in taskStatus' :key='j' 
-            v-if="element.status === status" draggable="true" @dragstart="dragstart" @click="toggleModal" :class="'id'+n+i+j") {{element.description}}
-          td(v-else @dragover.prevent @dragenter='enter' @dragleave='leave' @drop="drop" :class="'id'+n+i+j") {{''}}
-    taskModal( v-bind:editTask="modal" v-bind:clickedTask="clickedTask" v-on:hideModal="toggleModal()")
+    div( class="table_wrapper")
+      kanbanTable(
+        v-for="(columnName, n) in tableStatus" :key="n"
+        v-bind:tableId="n"
+        v-bind:title="columnName"
+        v-bind:data="formatedData[n]"
+        v-on:card-drop="cardDrop"
+      )
+        
+      //- table(v-for='(header, n) in tasks' :key='n')
+      //-   thead
+      //-     td(colspan='4' class='task-title') {{header.title}}
+      //-   tbody
+      //-     tr
+      //-       td
+      //-       //- task-status names
+      //-       td(v-for='(status, m) in tableColumns' :key='m' :class="'task_status__' + status" class='task-header') {{status}}
+      //-     //- sub-tasks
+      //-     tr(v-for='(element, i) in header.subtasks' :key='i')
+      //-       td {{element.time}}
+      //-       //- texts and statuses
+      //-       td(v-for='status, j in tableColumns' :key='j' 
+      //-         v-if="element.status === status" draggable="true" @dragstart="dragstart" @click="toggleModal" :class="'id'+n+i+j" ) {{element.description}}
+      //-       td(v-else @dragover.prevent @dragenter='enter' @dragleave='leave' @drop="drop" :class="'id'+n+i+j" ) {{''}}
+    //- taskModal( v-bind:editTask="modal" v-bind:clickedTask="clickedTask" v-on:hideModal="toggleModal()")
 </template>
 
 <script lang="ts">
   import { Component, Vue } from 'vue-property-decorator';
-  import { TasksInterface } from '@/interfaces/TasksInterface';
-  import { dataTask } from '@/store/database';
+  //import { TasksInterface } from '@/interfaces/TasksInterface';
+  import { TasksInterfaces } from '@/interfaces/TasksInterfaces';
+  import { newData } from '@/store/database';
   import taskModal from '../modal/TaskModal.vue';
+  import kanbanTable from '../kanbanTable/kanbanTable.vue'
 
-  @Component({components: {taskModal}})
+  @Component({components: {taskModal, kanbanTable}})
   export default class Kanban extends Vue {
-    taskStatus: string[];
-    dragging: number[];
+    tableStatus: Object;
+    formatedData: {todo: Object[], inprogress: Object[], done: Object[]};
+    //dragging: number[];
     modal: boolean;
-    clickedTask: number[];
-    dateToday: Object;
+
+    //clickedTask: number[];
+    //dateToday: Object;
     
     constructor() {
       super();
-      this.taskStatus = ['todo', 'inprogress', 'done'];
-      this.dragging = [];
+      this.tableStatus = {todo: "To do", inprogress: 'In progress', done: 'Done'};
+      this.formatedData = {todo: [], inprogress: [], done: []};
+      //this.dragging = [];
       this.modal = false;
-      this.clickedTask = [];
-      this.dateToday = this.getDate();
+      //this.clickedTask = [];
+      //this.dateToday = this.getDate();
     }
 
     /*get tasks from the store*/
-    get tasks() {
+    get tasks() : TasksInterfaces[] {
       return this.$store.getters.getTasks;
     }
     created() {
-      this.$store.dispatch('loadTasks', dataTask);
-            // eslint-disable-next-line no-console
-      console.log(this.dateToday);
+      this.$store.dispatch('loadTasks', newData);
+      this.prepareData(this.tasks);
     }
 
-    getDate(): Object {
-      const today = new Date();
-      return { 
-        year: today.getFullYear(),
-        month: today.getMonth() + 1,
-        day: today.getDate(),
-        time: today.getHours(),
-        minutes: today.getMinutes()
+    cardDrop(tableId: string, id: number): void {
+    
+      if(this.tasks[id].status == tableId) {
+        return //if card droped to the same table - do nothing
       }
+      this.tasks[id].status = tableId;
+      this.prepareData(this.tasks);
     }
-
-    dragstart(event: any) {
-      const className = event.target.className;
-      if(className !== undefined) {
-        this.dragging = this.stringToArray(className);
-      }
+    /* prepare data into mount in tables by statuses */
+    prepareData(data: TasksInterfaces[]) {
+      this.formatedData = {todo: [], inprogress: [], done: []};
+      const keys = Object.keys(this.tableStatus);
+      data.map( e => {
+        switch (e.status) {
+          case keys[0]: this.formatedData.todo.push(e); //todo table
+          break;
+          case keys[1]: this.formatedData.inprogress.push(e); //inpropgress table
+          break;
+          default: this.formatedData.done.push(e); //done table
+          break;
+        }
+      });
     }
-    /* n: task, i: subtask, j: status (indexes) */
-    drop(event:any): void {
-      const drop = this.stringToArray(event.target.className);
+    // getDate(): Object {
+    //   const today = new Date();
+    //   return { 
+    //     year: today.getFullYear(),
+    //     month: today.getMonth() + 1,
+    //     day: today.getDate(),
+    //     time: today.getHours(),
+    //     minutes: today.getMinutes()
+    //   }
+    // }
 
-      /* if user try to drop Done task to Todo - prevent it */
-      if(drop[2] === 0 && this.dragging[2] === 2) {
-        event.target.style.background = "";
-        return;
-      }
+    // dragstart(event: any) {
+    //   const className = event.target.className;
+    //   if(className !== undefined) {
+    //     this.dragging = this.stringToArray(className);
+    //   }
+    // }
+    // /* n: task, i: subtask, j: status (indexes) */
+    // drop(event:any): void {
+    //   const drop = this.stringToArray(event.target.className);
+
+    //   /* if user try to drop Done task to Todo - prevent it */
+    //   if(drop[2] === 0 && this.dragging[2] === 2) {
+    //     event.target.style.background = "";
+    //     return;
+    //   }
       
-      /* if task(drop point 'id') in the same row with dragging task('dragging') - make drop*/
-      if( this.inSameRow(drop, this.dragging) ) {
-        this.changeStatus(this.dragging, drop[2]);
-      }
-      event.target.style.background = "";
-    }
-    /* change background of hovered task */
-    enter(event: any) {
-      const drop = this.stringToArray(event.target.className);
-      if( this.inSameRow(drop, this.dragging) ) {
-        event.target.style.background = "#eee";
-      }
-    }
-    leave(event: any) {
-      event.target.style.background = "";
-    }
+    //   /* if task(drop point 'id') in the same row with dragging task('dragging') - make drop*/
+    //   if( this.inSameRow(drop, this.dragging) ) {
+    //     this.changeStatus(this.dragging, drop[2]);
+    //   }
+    //   event.target.style.background = "";
+    // }
+    // /* change background of hovered task */
+    // enter(event: any) {
+    //   const drop = this.stringToArray(event.target.className);
+    //   if( this.inSameRow(drop, this.dragging) ) {
+    //     event.target.style.background = "#eee";
+    //   }
+    // }
+    // leave(event: any) {
+    //   event.target.style.background = "";
+    // }
     /*convert class name with id000 to array of [0,0,0] */
-    stringToArray(name: string): number[] {
-      return name.slice(2).split('').map( (item: string) => parseInt(item, 10) );
-    }
+    // stringToArray(name: string): number[] {
+    //   return name.slice(2).split('').map( (item: string) => parseInt(item, 10) );
+    // }
 
-    /* if task(drop point 'id') in the same row with dragging task('dragging') - make drop*/
-    inSameRow(taskId: number[], dropPoint: number[]) {
-      return (taskId[0] === dropPoint[0] && taskId[1] === dropPoint[1]);
-    }
-    /* change status of the current cask in this.tasks Object */
-    changeStatus(oldStatus: number[], newStatus: number) {
-      this.tasks[oldStatus[0]].subtasks[oldStatus[1]].status = this.taskStatus[newStatus];
-    }
+    // /* if task(drop point 'id') in the same row with dragging task('dragging') - make drop*/
+    // inSameRow(taskId: number[], dropPoint: number[]) {
+    //   return (taskId[0] === dropPoint[0] && taskId[1] === dropPoint[1]);
+    // }
+    // /* change status of the current cask in this.tasks Object */
+    // changeStatus(oldStatus: number[], newStatus: number) {
+    //   this.tasks[oldStatus[0]].subtasks[oldStatus[1]].status = this.tableColumns[newStatus];
+    // }
 
-    toggleModal(event : any) {
-      this.modal = !this.modal;
+    // toggleModal(event : any) {
+    //   this.modal = !this.modal;
 
-      if(this.modal) { //also get task id [0,0,0]
-        this.clickedTask = this.stringToArray(event.target.className);
-      }
-    }
+    //   if(this.modal) { //also get task id [0,0,0]
+    //     this.clickedTask = this.stringToArray(event.target.className);
+    //   }
+    // }
   }
 </script>
 
@@ -124,6 +160,13 @@
   h3 {
     margin: 40px 32px 18px;
   }
+  .table_wrapper {
+    display: flex;
+    flex-wrap: nowrap;
+    align-self: center;
+    align-items: flex-start;
+  }
+
   table {
     //border-collapse: collapse;
     margin: 0 10px;

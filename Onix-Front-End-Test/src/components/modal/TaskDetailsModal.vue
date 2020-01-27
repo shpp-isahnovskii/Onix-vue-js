@@ -17,7 +17,7 @@
 <script lang="ts">
 import { Component, Vue, Prop, Watch } from 'vue-property-decorator';
 import { TasksInterface } from "@/interfaces/TasksInterface";
-import { dataTask } from '@/store/database';
+import { dataTasks } from '@/store/database';
 import { ImgInterface } from '@/interfaces/ImgInterface';
 
 @Component
@@ -61,9 +61,9 @@ export default class TaskModal extends Vue {
     this.taskTime = this.tasks[this.clickedTask[0]].subtasks[this.clickedTask[1]].time;
     this.taskText = this.tasks[this.clickedTask[0]].subtasks[this.clickedTask[1]].description;
   }
-  /* add data-base from the store */
+  // /* add data-base from the store */
   created() {
-    this.$store.dispatch('loadTasks', dataTask);
+    this.$store.dispatch('loadTasks', dataTasks);
   }
   /* edit trigger, used at the lock img */
   toggleEdit() {

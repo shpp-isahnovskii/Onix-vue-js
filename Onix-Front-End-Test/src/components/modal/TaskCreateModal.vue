@@ -17,7 +17,7 @@
 
 import { Component, Vue, Prop } from "vue-property-decorator";
 import { TasksInterface } from "@/interfaces/TasksInterface";
-import { dataTask, userData } from '@/store/database';
+import { dataTasks, userData } from '@/store/database';
 
 @Component
   export default class TaskCreateModal extends Vue {
