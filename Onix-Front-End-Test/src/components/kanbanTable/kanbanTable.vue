@@ -16,14 +16,14 @@
 
 <script lang="ts">
   import { Component, Vue, Prop } from "vue-property-decorator";
-  import { TasksInterfaces } from '@/interfaces/TasksInterfaces';
+  import { TasksInterface } from '@/interfaces/TasksInterface';
   import kanbanCard from "./kanbanCard.vue";
 
 @Component({components: { kanbanCard }})
 export default class Table extends Vue {
   @Prop({default:"..."}) title!: string;
   @Prop({default: 0}) tableId!: string; //value can be: todo inprogress or done
-  @Prop({default: []}) data!: TasksInterfaces[];
+  @Prop({default: []}) data!: TasksInterface[];
 
   constructor() {
     super();

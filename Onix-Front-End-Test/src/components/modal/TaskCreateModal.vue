@@ -2,12 +2,14 @@
   .modal-window
     .modal-overlay(v-on:click="toggleModal()")
     .form-wrapper
-      form(class='modal-task-form' @submit.prevent="adding(taskDate, taskText, taskTime)")
+      h3 New Task
+      form(class='modal-task-form' @submit.prevent="adding(taskDate, taskTime, taskTitle, taskText)")
         .header__wrapper Date: 
-          input(type="date" v-model="taskDate" class="task__date")
+          input(type="date" v-model="taskDate" class="task__date" required)
         .time__wrapper Time: 
-          input(type='time' v-model="taskTime" placeholder="set time.." class="task__time")
-        textarea(rows="12" v-model="taskText" placeholder="Task text here.." class="task__text")
+          input(type='time' v-model="taskTime" class="task__time" required)
+        input(type='text' v-model="taskTitle" placeholder="Set title.." class="task__title" required)
+        textarea(rows="12" v-model="taskText" placeholder="Task text here.." class="task__text" required)
         .task_btn__wrapper
           button(type='submit' class='task__btn btn__submit') Submit
           button(type='button' class='task__btn btn__cancel' v-on:click="toggleModal()") Cancel
@@ -23,44 +25,30 @@ import { dataTasks, userData } from '@/store/database';
   export default class TaskCreateModal extends Vue {
     taskDate: string;
     taskTime: string;
+    taskTitle: string;
     taskText: string;
     constructor() {
       super();
       this.taskDate = "";
       this.taskTime = "";
       this.taskText = "";
+      this.taskTitle = "";
     }
     get tasks() : TasksInterface[] {
       return this.$store.getters.getTasks;
     }
-    /* adding new subtask, change subtask with same time, or create new task with new title  */
-    adding(title:string, text: string, time: string) {
-      if( !title || !text || !time ) {
+    adding(date:string, time: string, title: string, text: string) {
+      if( !date || !time || !title || !text ) {
         window.alert("please, input something in the task message and set the time");
       } else {
-        title = title.toLowerCase();
+        const id = this.tasks[this.tasks.length -1].id + 1;
+        this.tasks.push({id: id, title: title, description: text, time: `${date}T${time}`, status: 'todo'});
 
-        /* find task  */
-        const titleIndex : number = this.tasks.findIndex( e => e.title === title);
-        if(titleIndex !== -1) {
-
-          /* find time in subtasks */
-          const timeIndex : number = this.tasks[titleIndex].subtasks.findIndex( e => e.time === time);
-          if(timeIndex !== -1) {
-            Vue.set(this.tasks[titleIndex].subtasks, timeIndex , {description: text, time: time, status: 'todo'}); //refresh task with the same time
-          } else {
-            Vue.set(this.tasks[titleIndex].subtasks, this.tasks[titleIndex].subtasks.length, 
-              {description: text, time: time, status: 'todo'}); //add new time to current existing task
-              this.increaseTasksCounter();
-          }
-        } else {
-          Vue.set(this.tasks, this.tasks.length, {title: title , 
-            subtasks: [{description: text, time: time, status: 'todo'}]}); //add absolutely new task
-            this.increaseTasksCounter();
-        }
-        this.toggleModal(); //success
+        this.increaseTasksCounter();
+        this.toggleModal();
       }
     }
+
     /* sidebar menu counter +1 */
     increaseTasksCounter() : void {
       userData.tasks.open++;
@@ -72,6 +60,12 @@ import { dataTasks, userData } from '@/store/database';
 </script>
 
 <style lang="scss" scoped>
+  h3 {
+    text-align: center;
+    margin: 0;
+    margin-top: 20px;
+    font-size: 20px;
+  }
   .task_btn__wrapper {
     align-self: flex-end;
     .task__btn {

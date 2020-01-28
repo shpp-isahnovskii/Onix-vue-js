@@ -39,7 +39,7 @@
   .form-wrapper {
     position: fixed;
     width: 600px;
-    height: 425px;
+    height: 465px;
     top: 100px;
     background-color: white;
     border-radius: 10px;
@@ -49,9 +49,9 @@
     display: flex;
     flex-direction: column;
     position: relative;
-    margin: 16px 26px 0 26px;
+    margin: 4px 26px 0 26px;
     
-    .task__date, .task__text, .task__time {
+    .task__date, .task__text, .task__time, .task__title {
       font-size: 16px;
       outline: none;
       border: none;
@@ -60,11 +60,13 @@
       padding-bottom: 2px;
       margin-bottom: 5px;
     }
-    .header__wrapper {
-      margin-top: 20px;
-    }
     .task__date {
       max-width: 320px;
+    }
+    .task__title {
+      padding-left: 4px;
+      border-bottom: 1px solid silver;
+      width: 180px;
     }
     .task__text {
       margin-top: 5px;

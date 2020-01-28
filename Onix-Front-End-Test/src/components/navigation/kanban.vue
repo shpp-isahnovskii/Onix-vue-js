@@ -32,8 +32,8 @@
 <script lang="ts">
   import { Component, Vue } from 'vue-property-decorator';
   //import { TasksInterface } from '@/interfaces/TasksInterface';
-  import { TasksInterfaces } from '@/interfaces/TasksInterfaces';
-  import { newData } from '@/store/database';
+  import { TasksInterface } from '@/interfaces/TasksInterface';
+  import { dataTasks } from '@/store/database';
   import taskModal from '../modal/TaskModal.vue';
   import kanbanTable from '../kanbanTable/kanbanTable.vue'
 
@@ -58,11 +58,11 @@
     }
 
     /*get tasks from the store*/
-    get tasks() : TasksInterfaces[] {
+    get tasks() : TasksInterface[] {
       return this.$store.getters.getTasks;
     }
     created() {
-      this.$store.dispatch('loadTasks', newData);
+      this.$store.dispatch('loadTasks', dataTasks);
       this.prepareData(this.tasks);
     }
 
@@ -75,9 +75,9 @@
       this.prepareData(this.tasks);
     }
     /* prepare data into mount in tables by statuses */
-    prepareData(data: TasksInterfaces[]) {
-      this.formatedData = {todo: [], inprogress: [], done: []};
+    prepareData(data: TasksInterface[]) {
       const keys = Object.keys(this.tableStatus);
+      this.formatedData = {todo: [], inprogress: [], done: []};
       data.map( e => {
         switch (e.status) {
           case keys[0]: this.formatedData.todo.push(e); //todo table

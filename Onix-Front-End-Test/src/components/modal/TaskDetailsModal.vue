@@ -58,8 +58,8 @@ export default class TaskModal extends Vue {
   /* add watcher to set default time value */
   @Watch('tasks', {immediate: true}) onChange() {
     this.taskDate = this.tasks[this.clickedTask[0]].title;
-    this.taskTime = this.tasks[this.clickedTask[0]].subtasks[this.clickedTask[1]].time;
-    this.taskText = this.tasks[this.clickedTask[0]].subtasks[this.clickedTask[1]].description;
+    this.taskTime = this.tasks[this.clickedTask[0]].time;
+    this.taskText = this.tasks[this.clickedTask[0]].description;
   }
   // /* add data-base from the store */
   created() {
@@ -103,8 +103,8 @@ export default class TaskModal extends Vue {
   }
   /* add new data to the data-base */
   confirmChanges(time: string, text: string) {
-    Vue.set(this.tasks[this.clickedTask[0]].subtasks[this.clickedTask[1]], 'description', text);
-    Vue.set(this.tasks[this.clickedTask[0]].subtasks[this.clickedTask[1]], 'time', time);
+    Vue.set(this.tasks[this.clickedTask[0]], 'description', text);
+    Vue.set(this.tasks[this.clickedTask[0]], 'time', time);
   }
 }
 </script>

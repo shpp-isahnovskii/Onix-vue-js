@@ -2,19 +2,19 @@
   section
     div
       button(class="section-button" v-on:click="toggleModal()") Add new task
-    transition-group(tag='div' name='tasks-list' v-on:enter="addBlinkAnimation")
+      //-if uncomment set -1 tab left. transition-group(tag='div' name='tasks-list' v-on:enter="addBlinkAnimation")
       //- outer forEach
       div(v-for='(task, i) in tasks', v-bind:key='i')
         //- inner forEach
-        h3 {{dateFormating(task.title)}}
-        transition-group(tag='div' name='tasks-list' v-on:enter="addBlinkAnimation")
-          .article(v-for='(subtask, j) in task.subtasks', v-bind:key='j' ref="tasksRef")
-            p {{subtask.description}}
-              .article__time 
-                span(class="article_time__text") {{subtask.time}}
-                span(class="article__remove")
-                  div(v-on:click="remove(i, j)") x
-                button(class='article-button__status' v-on:click="changeTaskStatus(i, j, subtask.status)") {{subtask.status}}
+        h3 {{task.title}}
+            //transition-group(tag='div' name='tasks-list' v-on:enter="addBlinkAnimation")
+        .article
+          p {{task.description}}
+            .article__time 
+              span(class="article_time__text") {{task.time}}
+              span(class="article__remove")
+                div(v-on:click="remove(i)") x
+              button(class='article-button__status' v-on:click="changeTaskStatus(i, task.status)") {{task.status}}
     taskModal( v-bind:addTask="modal" v-on:hideModal="toggleModal()")
 </template>
 
@@ -52,16 +52,16 @@ export default class Tasks extends Vue {
     this.$store.dispatch('loadTasks', dataTasks);
   }
   mounted() {
-    this.makeWave();
+    //this.makeWave();
   }
-  /*init wave for once*/
-  makeWave() {
-    this.$root.$on('make-wave', () => {
-      if(this.tasks.length !== 0) {
-        this.waveAnimation(this.$refs.tasksRef);
-      }
-    });
-  }
+  // /*init wave for once*/
+  // makeWave() {
+  //   this.$root.$on('make-wave', () => {
+  //     if(this.tasks.length !== 0) {
+  //       this.waveAnimation(this.$refs.tasksRef);
+  //     }
+  //   });
+  // }
   /* add wave animation to tasks array */
   waveAnimation(refs: HTMLFormElement) {
     //$refs example: https://codingexplained.com/coding/front-end/vue-js/accessing-dom-refs
@@ -70,22 +70,22 @@ export default class Tasks extends Vue {
     });
   }
   /* remove Task */
-  remove(taskIndex: number, subtaskIndex: number) {
-    Vue.delete(this.tasks[taskIndex].subtasks, subtaskIndex);
-    if(this.tasks[taskIndex].subtasks.length === 0) { //remove task if no subtasks inside
-      Vue.delete(this.tasks, taskIndex);
-    }
-    this.reduceTasksCounter();
-  }
+  // remove(taskIndex: number, subtaskIndex: number) {
+  //   Vue.delete(this.tasks[taskIndex].subtasks, subtaskIndex);
+  //   if(this.tasks[taskIndex].subtasks.length === 0) { //remove task if no subtasks inside
+  //     Vue.delete(this.tasks, taskIndex);
+  //   }
+  //   this.reduceTasksCounter();
+  // }
   /* sidebar menu counter -1 */
   reduceTasksCounter() : void {
     userData.tasks.open--;
     userData.tasks.closed++;
   }
-  /* change status: todo inprogress or done */
-  changeTaskStatus(index: number, subindex: number, curStatus: string) {
-    Vue.set(this.tasks[index].subtasks[subindex], 'status',  this.setNextStatus(curStatus));
-  }
+  // /* change status: todo inprogress or done */
+  // changeTaskStatus(index: number, subindex: number, curStatus: string) {
+  //   Vue.set(this.tasks[index].subtasks[subindex], 'status',  this.setNextStatus(curStatus));
+  // }
   setNextStatus(status: string): string {
     const statuses = this.taskStatuses;
     let result = '';
@@ -137,17 +137,17 @@ export default class Tasks extends Vue {
   to {font-size: 1.0em;}
   }
   h3 {
-    margin: 20px 32px 18px;
-    font-size: 20px;
+    margin: 4px 32px;
+    font-size: 16px;
   }
   .article {
-    margin: 24px 26px 0px 34px;
+    margin: 0 26px 0 34px;
     p {
       padding-top: 4px;
     }
   }
   .article:last-child {
-    margin-bottom: 40px;
+    margin-bottom: 15px;
   }
   .fade-enter-active, .fade-leave-active {
   transition: all .2s;
@@ -189,7 +189,7 @@ export default class Tasks extends Vue {
     }
   }
   .section-button {
-    margin: 30px 0 0 32px;
+    margin: 32px;
     height: 40px;
     padding: 0 15px;
     color: white;
