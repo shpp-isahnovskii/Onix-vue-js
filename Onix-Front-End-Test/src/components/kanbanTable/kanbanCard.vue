@@ -7,7 +7,7 @@
     @dragleave="dragLeave"
     @drop.prevent="dragLeave" 
   )
-    div(class="card_time") {{time}}
+    div(class="card_time") {{date}} |   {{time}}
     div(class="card_title") {{title}}
 </template>
 
@@ -18,6 +18,7 @@
   export default class Card extends Vue {
     @Prop({default: 0}) id!: number;
     @Prop({default: ""}) title!: string;
+    @Prop({default: ""}) date!: string;
     @Prop({default: ""}) time!: string;
 
     constructor() {
@@ -59,10 +60,11 @@
     .card_time {
       border-bottom: 1px solid silver;
       padding-bottom: 4px;
+      font-size: 14px;
     }
     .card_title {
       overflow: auto;
-      padding-top: 5px;
+      padding: 10px 5px;
     }
   }
   .card__hover {

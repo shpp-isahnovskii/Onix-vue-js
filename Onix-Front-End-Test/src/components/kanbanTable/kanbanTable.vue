@@ -10,7 +10,8 @@
       kanbanCard(v-for="(card, n) in data" :key="n"
       v-bind:id="card.id"
       v-bind:title="card.title"
-      v-bind:time="card.time"
+      v-bind:date="getDate(card.date)"
+      v-bind:time="getTime(card.date)"
     )
 </template>
 
@@ -18,9 +19,11 @@
   import { Component, Vue, Prop } from "vue-property-decorator";
   import { TasksInterface } from '@/interfaces/TasksInterface';
   import kanbanCard from "./kanbanCard.vue";
+  import { mixins } from "vue-class-component";
+  import DateMixin from "@/mixins/DateMixin"
 
 @Component({components: { kanbanCard }})
-export default class Table extends Vue {
+export default class Table extends mixins(DateMixin) {
   @Prop({default:"..."}) title!: string;
   @Prop({default: 0}) tableId!: string; //value can be: todo inprogress or done
   @Prop({default: []}) data!: TasksInterface[];
@@ -31,13 +34,13 @@ export default class Table extends Vue {
   enter(event: any) {
     const classList = event.target.classList
     if(classList.contains("table_column__title")) {
-      classList.add("column_title__hover")
+      classList.add("column_title__hover");
     }
   }
   leave(event: any) {
     const classList = event.target.classList
     if(classList.contains("column_title__hover")) {
-      classList.remove("column_title__hover")
+      classList.remove("column_title__hover");
     }
   }
   drop(event: any) {
@@ -55,7 +58,7 @@ export default class Table extends Vue {
     margin: 0 2px;
     background-color: rgb(236, 234, 234);
     border-radius: 4px;
-    min-height: 100px;
+    min-height: 74px;
     .table_column__title {
       background-color: ghostwhite;
       text-align: center;

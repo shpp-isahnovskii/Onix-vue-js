@@ -41,14 +41,20 @@ import { dataTasks, userData } from '@/store/database';
       if( !date || !time || !title || !text ) {
         window.alert("please, input something in the task message and set the time");
       } else {
-        const id = this.tasks[this.tasks.length -1].id + 1;
+        const id = this.tasks[this.tasks.length -1].id + 1; //get last id in the database, +1 to it (can be bugged)
         this.tasks.push({id: id, title: title, description: text, date: `${date}T${time}`, status: 'todo'});
 
         this.increaseTasksCounter();
         this.toggleModal();
       }
     }
-
+    created() {
+      this.taskDate = this.setDate();
+    }
+    /* set current day to data input */
+    setDate(): string {
+      return (new Date).toISOString().substr(0, 10);
+    }
     /* sidebar menu counter +1 */
     increaseTasksCounter() : void {
       userData.tasks.open++;

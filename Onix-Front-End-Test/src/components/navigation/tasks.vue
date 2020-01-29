@@ -22,9 +22,11 @@ import { Component, Vue } from 'vue-property-decorator';
 import { TasksInterface } from '@/interfaces/TasksInterface';
 import { dataTasks, userData } from '@/store/database';
 import taskModal from '../modal/TaskModal.vue';
+import { mixins } from 'vue-class-component';
+import DateMixin from '@/mixins/DateMixin';
 
 @Component({ components: { taskModal }})
-export default class Tasks extends Vue {
+export default class Tasks extends mixins(DateMixin) {
   taskStatuses: string[];
   modal: boolean;
   $refs!: {
@@ -39,19 +41,6 @@ export default class Tasks extends Vue {
   get tasks() : TasksInterface[] {
     return this.$store.getters.getTasks;
   }
-  /* return time value from the database */
-  getTime(time: string) {
-    return time.slice(11);
-  }
-  /* return date value from the database */
-  getDate(time: string) {
-    return time.slice(0, 10);
-  }
-  /* return more readable formatting for the date input */
-  dateFormating(date: string) {
-    return date.split("-").reverse().join('.');
-  }
-
   /* show or hide modal window 'add new task' */
   toggleModal() {
     this.modal = !this.modal;
@@ -63,10 +52,9 @@ export default class Tasks extends Vue {
   }
   created() {
     this.$store.dispatch('loadTasks', dataTasks);
-    this.makeWave();
   }
   mounted() {
-    //this.makeWave();
+    this.makeWave();
   }
   /*init wave for once*/
   makeWave() {
