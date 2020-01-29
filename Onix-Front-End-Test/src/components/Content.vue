@@ -3,8 +3,6 @@
     router-view
 </template>
 
-
-
 <script lang="ts">
 import activityPage from './navigation/activity.vue'
 import tasksPage from './navigation/tasks.vue'
@@ -12,7 +10,6 @@ import kanbanPage from './navigation/kanban.vue'
 import calendarPage from './navigation/calendar.vue'
 import filesPage from './navigation/files.vue'
 import pageNotFound from './errors/pageNotFound.vue'
-
 import { Component, Vue } from 'vue-property-decorator'
 
 @Component({

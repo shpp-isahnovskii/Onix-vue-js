@@ -42,7 +42,7 @@ import { dataTasks, userData } from '@/store/database';
         window.alert("please, input something in the task message and set the time");
       } else {
         const id = this.tasks[this.tasks.length -1].id + 1;
-        this.tasks.push({id: id, title: title, description: text, time: `${date}T${time}`, status: 'todo'});
+        this.tasks.push({id: id, title: title, description: text, date: `${date}T${time}`, status: 'todo'});
 
         this.increaseTasksCounter();
         this.toggleModal();
@@ -59,7 +59,7 @@ import { dataTasks, userData } from '@/store/database';
   }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
   h3 {
     text-align: center;
     margin: 0;

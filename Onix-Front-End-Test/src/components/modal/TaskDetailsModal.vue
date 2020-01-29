@@ -58,7 +58,7 @@ export default class TaskModal extends Vue {
   /* add watcher to set default time value */
   @Watch('tasks', {immediate: true}) onChange() {
     this.taskDate = this.tasks[this.clickedTask[0]].title;
-    this.taskTime = this.tasks[this.clickedTask[0]].time;
+    this.taskTime = this.tasks[this.clickedTask[0]].date;
     this.taskText = this.tasks[this.clickedTask[0]].description;
   }
   // /* add data-base from the store */
@@ -104,13 +104,13 @@ export default class TaskModal extends Vue {
   /* add new data to the data-base */
   confirmChanges(time: string, text: string) {
     Vue.set(this.tasks[this.clickedTask[0]], 'description', text);
-    Vue.set(this.tasks[this.clickedTask[0]], 'time', time);
+    Vue.set(this.tasks[this.clickedTask[0]], 'date', time);
   }
 }
 </script>
 
 
-<style lang="scss" scoped>
+<style lang="scss">
   input[type="date"]:disabled, input[type="time"]:disabled {
     color:rgb(200, 200, 200);
     background: none;

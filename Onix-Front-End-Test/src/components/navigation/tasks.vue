@@ -2,20 +2,19 @@
   section
     div
       button(class="section-button" v-on:click="toggleModal()") Add new task
-      //-if uncomment set -1 tab left. transition-group(tag='div' name='tasks-list' v-on:enter="addBlinkAnimation")
-      //- outer forEach
-      div(v-for='(task, i) in tasks', v-bind:key='i')
-        //- inner forEach
-        h3 {{task.title}}
-            //transition-group(tag='div' name='tasks-list' v-on:enter="addBlinkAnimation")
-        .article
-          p {{task.description}}
-            .article__time 
-              span(class="article_time__text") {{task.time}}
-              span(class="article__remove")
-                div(v-on:click="remove(i)") x
-              button(class='article-button__status' v-on:click="changeTaskStatus(i, task.status)") {{task.status}}
-    taskModal( v-bind:addTask="modal" v-on:hideModal="toggleModal()")
+      transition-group(tag='div' name='tasks-list' v-on:enter="addBlinkAnimation")
+        div(v-for='(task, i) in tasks', v-bind:key='task.id' ref="tasksRef")
+          .article
+            div(class="date_wrapper")
+              h3 {{task.title}} 
+              span(class="task_date") {{dateFormating(getDate(task.date))}}
+            p {{task.description}}
+              .article__time
+                span(class="article_time__text") {{getTime(task.date)}}
+                span(class="article__remove")
+                  div(v-on:click="remove(i)") x
+                button(class='article-button__status' v-on:click="changeTaskStatus(i, task.status)") {{task.status}}
+      taskModal( v-bind:addTask="modal" v-on:hideModal="toggleModal()")
 </template>
 
 <script lang="ts">
@@ -36,9 +35,23 @@ export default class Tasks extends Vue {
     this.taskStatuses = ['todo', 'inprogress', 'done'];
     this.modal = false;
   }
+  /* get task datebase */
   get tasks() : TasksInterface[] {
     return this.$store.getters.getTasks;
   }
+  /* return time value from the database */
+  getTime(time: string) {
+    return time.slice(11);
+  }
+  /* return date value from the database */
+  getDate(time: string) {
+    return time.slice(0, 10);
+  }
+  /* return more readable formatting for the date input */
+  dateFormating(date: string) {
+    return date.split("-").reverse().join('.');
+  }
+
   /* show or hide modal window 'add new task' */
   toggleModal() {
     this.modal = !this.modal;
@@ -50,18 +63,19 @@ export default class Tasks extends Vue {
   }
   created() {
     this.$store.dispatch('loadTasks', dataTasks);
+    this.makeWave();
   }
   mounted() {
     //this.makeWave();
   }
-  // /*init wave for once*/
-  // makeWave() {
-  //   this.$root.$on('make-wave', () => {
-  //     if(this.tasks.length !== 0) {
-  //       this.waveAnimation(this.$refs.tasksRef);
-  //     }
-  //   });
-  // }
+  /*init wave for once*/
+  makeWave() {
+    this.$root.$on('make-wave', () => {
+      if(this.tasks.length !== 0) {
+        this.waveAnimation(this.$refs.tasksRef);
+      }
+    });
+  }
   /* add wave animation to tasks array */
   waveAnimation(refs: HTMLFormElement) {
     //$refs example: https://codingexplained.com/coding/front-end/vue-js/accessing-dom-refs
@@ -70,22 +84,19 @@ export default class Tasks extends Vue {
     });
   }
   /* remove Task */
-  // remove(taskIndex: number, subtaskIndex: number) {
-  //   Vue.delete(this.tasks[taskIndex].subtasks, subtaskIndex);
-  //   if(this.tasks[taskIndex].subtasks.length === 0) { //remove task if no subtasks inside
-  //     Vue.delete(this.tasks, taskIndex);
-  //   }
-  //   this.reduceTasksCounter();
-  // }
+  remove(taskIndex: number) {
+    Vue.delete(this.tasks, taskIndex);
+    this.reduceTasksCounter();
+  }
   /* sidebar menu counter -1 */
   reduceTasksCounter() : void {
     userData.tasks.open--;
     userData.tasks.closed++;
   }
   // /* change status: todo inprogress or done */
-  // changeTaskStatus(index: number, subindex: number, curStatus: string) {
-  //   Vue.set(this.tasks[index].subtasks[subindex], 'status',  this.setNextStatus(curStatus));
-  // }
+  changeTaskStatus(index: number, status: string) {
+    Vue.set(this.tasks[index], 'status',  this.setNextStatus(status));
+  }
   setNextStatus(status: string): string {
     const statuses = this.taskStatuses;
     let result = '';
@@ -98,10 +109,6 @@ export default class Tasks extends Vue {
   /* add blink animation */
   addBlinkAnimation() {
     setTimeout( ()=> this.$refs.tasksRef[this.$refs.tasksRef.length - 1].classList.add('task-blink__animation'), 1000 );
-  }
-  /* */
-  dateFormating(date: string) {
-    return date.split("-").reverse().join('.');
   }
 }
 </script>
@@ -136,9 +143,21 @@ export default class Tasks extends Vue {
   50%  {font-size: 1.04em;}
   to {font-size: 1.0em;}
   }
+  .date_wrapper {
+    display: flex;
+    flex-basis: 100%;
+  }
+
   h3 {
-    margin: 4px 32px;
+    display: inline-block;
+    margin: 0px;
     font-size: 16px;
+  }
+  .task_date {
+    display: inline-block;
+    font-size: 12px;
+    font-weight: 100;
+    margin-left: 10px;
   }
   .article {
     margin: 0 26px 0 34px;

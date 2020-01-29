@@ -69,7 +69,7 @@
     cardDrop(tableId: string, id: number): void {
     
       if(this.tasks[id].status == tableId) {
-        return //if card droped to the same table - do nothing
+        return //if card dropped to the same table - do nothing
       }
       this.tasks[id].status = tableId;
       this.prepareData(this.tasks);
