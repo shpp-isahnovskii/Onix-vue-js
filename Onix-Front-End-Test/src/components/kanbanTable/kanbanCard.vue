@@ -1,5 +1,5 @@
 <template lang="pug">
-  div(class="card_wrapper" 
+  div(class="card_wrapper" v-on:click="clickId()"
     @dragover.prevent 
     draggable="true" 
     @dragstart="dragStart" 
@@ -7,7 +7,7 @@
     @dragleave="dragLeave"
     @drop.prevent="dragLeave" 
   )
-    div(class="card_time") {{date}} |   {{time}}
+    div(class="card_time") {{date}} | {{time}}
     div(class="card_title") {{title}}
 </template>
 
@@ -41,6 +41,11 @@
     /* set id of the dragging card */
     dragStart(event: any) {
       event.dataTransfer.setData('card_id', this.id);
+    }
+    clickId() {
+      // eslint-disable-next-line no-console
+      console.log(this.id);
+      
     }
     //drop() function placed in the Table component, it's gives a possibility to drop a card on the title of the table
   }

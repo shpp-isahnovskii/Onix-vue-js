@@ -1,6 +1,5 @@
 <template lang="pug">
   section
-    h3 Kanban
     //- tasks
     div( class="table_wrapper")
       kanbanTable(
@@ -26,7 +25,7 @@
       //-       td(v-for='status, j in tableColumns' :key='j' 
       //-         v-if="element.status === status" draggable="true" @dragstart="dragstart" @click="toggleModal" :class="'id'+n+i+j" ) {{element.description}}
       //-       td(v-else @dragover.prevent @dragenter='enter' @dragleave='leave' @drop="drop" :class="'id'+n+i+j" ) {{''}}
-    //- taskModal( v-bind:editTask="modal" v-bind:clickedTask="clickedTask" v-on:hideModal="toggleModal()")
+      //-taskModal( v-bind:editTask="modal" v-bind:clickedTask="clickedTask" v-on:hideModal="toggleModal()")
 </template>
 
 <script lang="ts">
@@ -146,13 +145,9 @@
     //   this.tasks[oldStatus[0]].subtasks[oldStatus[1]].status = this.tableColumns[newStatus];
     // }
 
-    // toggleModal(event : any) {
-    //   this.modal = !this.modal;
-
-    //   if(this.modal) { //also get task id [0,0,0]
-    //     this.clickedTask = this.stringToArray(event.target.className);
-    //   }
-    // }
+    toggleModal(event : any) {
+      this.modal = !this.modal;
+    }
   }
 </script>
 
@@ -161,6 +156,7 @@
     margin: 40px 32px 18px;
   }
   .table_wrapper {
+    margin-top: 20px;
     display: flex;
     flex-wrap: nowrap;
     align-self: center;
