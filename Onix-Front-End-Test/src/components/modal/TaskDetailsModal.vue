@@ -2,6 +2,7 @@
   .modal-window
     .modal-overlay(v-on:click="hideModal()")
     .form-wrapper
+      h3 Details
       form(class='modal-task-form' @submit.prevent="" @input.once="changedTrigger()")
         .header__wrapper Date: 
           input(type="date" v-model="taskDate" class="task__date" disabled)
@@ -23,7 +24,7 @@ import { ImgInterface } from '@/interfaces/ImgInterface';
 @Component
 export default class TaskModal extends Vue {
   @Prop({default: false}) showModal !: boolean;
-  @Prop({default: undefined}) clickedTask !: number[]; //give an array in format [0, 1, 2]. 0 - date, 1 - time, 2 - description
+  @Prop({default: 0}) clickedTask !: number;
   taskDate: string;
   taskTime: string;
   taskText: string;
@@ -57,9 +58,9 @@ export default class TaskModal extends Vue {
   }
   /* add watcher to set default time value */
   @Watch('tasks', {immediate: true}) onChange() {
-    this.taskDate = this.tasks[this.clickedTask[0]].title;
-    this.taskTime = this.tasks[this.clickedTask[0]].date;
-    this.taskText = this.tasks[this.clickedTask[0]].description;
+    this.taskDate = this.tasks[this.clickedTask].title;
+    this.taskTime = this.tasks[this.clickedTask].date;
+    this.taskText = this.tasks[this.clickedTask].description;
   }
   // /* add data-base from the store */
   created() {
@@ -103,8 +104,8 @@ export default class TaskModal extends Vue {
   }
   /* add new data to the data-base */
   confirmChanges(time: string, text: string) {
-    Vue.set(this.tasks[this.clickedTask[0]], 'description', text);
-    Vue.set(this.tasks[this.clickedTask[0]], 'date', time);
+    Vue.set(this.tasks[this.clickedTask], 'description', text);
+    Vue.set(this.tasks[this.clickedTask], 'date', time);
   }
 }
 </script>

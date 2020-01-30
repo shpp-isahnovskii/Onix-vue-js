@@ -13,7 +13,7 @@
   export default class TaskModal extends Vue {
     @Prop({default: false}) addTask !: boolean;
     @Prop({default: false}) editTask !: boolean;
-    @Prop({default: undefined}) clickedTask !: number[]; // kanban task-id. Example: [0, 1, 2], where 0 - date, 1 - time, 2 - description
+    @Prop({default: undefined}) clickedTask !: number;
 
     constructor() {
       super();

@@ -11,12 +11,6 @@ import { TasksInterface } from './interfaces/TasksInterface';
   components: {layoutComponent}
 })
 export default class App extends Vue {
-  tasks: TasksInterface[];
-
-  constructor() {
-    super();
-    this.tasks = [];
-  }
   mounted() {
     let width = window.innerWidth
     if(width < 970) {

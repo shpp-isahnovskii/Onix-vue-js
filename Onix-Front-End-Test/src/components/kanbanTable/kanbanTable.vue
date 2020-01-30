@@ -12,6 +12,7 @@
       v-bind:title="card.title"
       v-bind:date="getDate(card.date)"
       v-bind:time="getTime(card.date)"
+      v-on:task-clicked="taskClicked"
     )
 </template>
 
@@ -48,6 +49,10 @@ export default class Table extends mixins(DateMixin) {
 
     const id = event.dataTransfer.getData('card_id');
     this.$emit('card-drop', this.tableId, id);
+  }
+  /* emit trigger bubble up */
+  taskClicked(id: number) {
+    this.$emit('task-clicked', id);
   }
 }
 </script>

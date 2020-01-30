@@ -41,8 +41,7 @@ import { dataTasks, userData } from '@/store/database';
       if( !date || !time || !title || !text ) {
         window.alert("please, input something in the task message and set the time");
       } else {
-        const id = this.tasks[this.tasks.length -1].id + 1; //get last id in the database, +1 to it (can be bugged)
-        this.tasks.push({id: id, title: title, description: text, date: `${date}T${time}`, status: 'todo'});
+        this.tasks.push({title: title, description: text, date: `${date}T${time}`, status: 'todo'});
 
         this.increaseTasksCounter();
         this.toggleModal();

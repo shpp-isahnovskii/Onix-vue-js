@@ -3,7 +3,8 @@
     div
       button(class="section-button" v-on:click="toggleModal()") Add new task
       transition-group(tag='div' name='tasks-list' v-on:enter="addBlinkAnimation")
-        div(v-for='(task, i) in tasks', v-bind:key='task.id' ref="tasksRef")
+        // ----using 'task.date' in the transition animation is not save!
+        div(v-for='(task, i) in tasks', v-bind:key='task.date' ref="tasksRef")
           .article
             div(class="date_wrapper")
               h3 {{task.title}} 

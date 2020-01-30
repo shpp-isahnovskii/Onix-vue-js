@@ -1,5 +1,5 @@
 <template lang="pug">
-  div(class="card_wrapper" v-on:click="clickId()"
+  div(class="card_wrapper" v-on:click="getId()"
     @dragover.prevent 
     draggable="true" 
     @dragstart="dragStart" 
@@ -42,10 +42,8 @@
     dragStart(event: any) {
       event.dataTransfer.setData('card_id', this.id);
     }
-    clickId() {
-      // eslint-disable-next-line no-console
-      console.log(this.id);
-      
+    getId() {
+      this.$emit('task-clicked', this.id);
     }
     //drop() function placed in the Table component, it's gives a possibility to drop a card on the title of the table
   }
