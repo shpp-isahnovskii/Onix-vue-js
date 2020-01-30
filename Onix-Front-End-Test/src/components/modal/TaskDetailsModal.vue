@@ -2,16 +2,16 @@
   .modal-window
     .modal-overlay(v-on:click="hideModal()")
     .form-wrapper
-      h3 Details
-      form(class='modal-task-form' @submit.prevent="" @input.once="changedTrigger()")
+      h3 {{taskTitle}}
+      form(class='modal-task-form' @submit.prevent="" @input.once="editTrigger()")
         .header__wrapper Date: 
-          input(type="date" v-model="taskDate" class="task__date" disabled)
+          input(type="date" v-model="taskDate" class="task__date" :disabled="edit == false")
         .time__wrapper Time: 
           input(type='time' v-model="taskTime" class="task__time" :disabled="edit == false")
-          img( v-bind:src="[edit ? lockImg[1].src : lockImg[0].src]" v-bind:alt="[edit ? lockImg[1].alt : lockImg[0].alt]" class="form-lock-img" v-on:click="toggleEdit()")
+          img( v-bind:src="[edit ? lockImg[1].src : lockImg[0].src]" v-bind:alt="[edit ? lockImg[1].alt : lockImg[0].alt]" class="form-lock-img" v-on:click="toggleLock()")
         textarea(rows="12" v-model="taskText" placeholder="Text here.." class="task__text" ref='textInput' :disabled="edit == false")
         .task_btn__wrapper
-          button(type='button' class="task__btn" :class="[changed ? 'btn__submit': (edit ? 'btn__cancel' : 'btn__edit') ]" v-on:click="chooseAction()")
+          button(type='button' class="task__btn" :class="chooseClass()" v-on:click="chooseAction()")
             | {{buttonText}}
 </template>
 
@@ -20,11 +20,14 @@ import { Component, Vue, Prop, Watch } from 'vue-property-decorator';
 import { TasksInterface } from "@/interfaces/TasksInterface";
 import { dataTasks } from '@/store/database';
 import { ImgInterface } from '@/interfaces/ImgInterface';
+import DateMixin from '@/mixins/DateMixin'
+import { mixins } from 'vue-class-component'
 
 @Component
-export default class TaskModal extends Vue {
+export default class TaskModal extends mixins(DateMixin) {
   @Prop({default: false}) showModal !: boolean;
   @Prop({default: 0}) clickedTask !: number;
+  taskTitle: string;
   taskDate: string;
   taskTime: string;
   taskText: string;
@@ -37,6 +40,7 @@ export default class TaskModal extends Vue {
   }
   constructor() {
     super();
+    this.taskTitle = "";
     this.taskDate = "";
     this.taskTime = "";
     this.taskText = "";
@@ -58,8 +62,9 @@ export default class TaskModal extends Vue {
   }
   /* add watcher to set default time value */
   @Watch('tasks', {immediate: true}) onChange() {
-    this.taskDate = this.tasks[this.clickedTask].title;
-    this.taskTime = this.tasks[this.clickedTask].date;
+    this.taskTitle = this.tasks[this.clickedTask].title;
+    this.taskDate = this.getDate(this.tasks[this.clickedTask].date);
+    this.taskTime = this.getTime(this.tasks[this.clickedTask].date);
     this.taskText = this.tasks[this.clickedTask].description;
   }
   // /* add data-base from the store */
@@ -67,13 +72,24 @@ export default class TaskModal extends Vue {
     this.$store.dispatch('loadTasks', dataTasks);
   }
   /* edit trigger, used at the lock img */
-  toggleEdit() {
+  toggleLock(): void {
     this.edit = !this.edit;
   }
   /* if Form areas was changed - set this trigger to true */
-  changedTrigger() {
+  editTrigger() {
     this.changed = true;
-    this.buttonText = "Save";
+  }
+  chooseClass(): string {
+    if(this.edit) {
+      if(this.changed) {
+        this.buttonText = "Save"
+        return "btn__submit";
+      }
+      this.buttonText = "Cancel"
+      return "btn__cancel";
+    }
+    this.buttonText = "Edit"
+    return "btn__edit";
   }
   /* Chose an action. Logic based on 'edit' and 'changed' booleans
    * Base logic:
@@ -90,7 +106,7 @@ export default class TaskModal extends Vue {
       return
     }
     if(this.edit && this.changed) { //if something was edited
-      this.confirmChanges(this.taskTime, this.taskText);
+      this.confirmChanges();
     }
     this.hideModal(); //hide modal if no changes after allow
   }
@@ -103,9 +119,10 @@ export default class TaskModal extends Vue {
     this.$nextTick(() => {this.$refs.textInput.focus()});
   }
   /* add new data to the data-base */
-  confirmChanges(time: string, text: string) {
-    Vue.set(this.tasks[this.clickedTask], 'description', text);
-    Vue.set(this.tasks[this.clickedTask], 'date', time);
+  confirmChanges() {
+    Vue.set(this.tasks[this.clickedTask], 'title', this.taskTitle);
+    Vue.set(this.tasks[this.clickedTask], 'description', this.taskText);
+    Vue.set(this.tasks[this.clickedTask], 'date', `${this.taskDate}T${this.taskTime}`);
   }
 }
 </script>
