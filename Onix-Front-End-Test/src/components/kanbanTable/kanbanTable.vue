@@ -13,7 +13,7 @@
       kanbanCard(v-for="(card, n) in data" :key="n"
       v-bind:id="card.id"
       v-bind:title="card.title"
-      v-bind:date="getDate(card.date)"
+      v-bind:date="dateFormating(getDate(card.date))"
       v-bind:time="getTime(card.date)"
       v-bind:tableId="tableId"
       v-bind:expiration="card.expiration"
