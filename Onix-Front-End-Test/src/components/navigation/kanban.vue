@@ -43,7 +43,8 @@
             description: el.description, 
             date: el.date, 
             status: el.status, 
-            id: index
+            id: index,
+            expiration: this.getExpirationDate(el.date),
           }
         )
       });
@@ -62,6 +63,9 @@
       if(this.tasks[id].status == tableId) {
         return //if card dropped to the same table - do nothing
       }
+      if(this.tasks[id].status == "done" && tableId == "todo") {
+        return // user can't dtop tasks from 
+      }
       this.tasks[id].status = tableId;
     }
     /* prepare data by statuses */
@@ -74,6 +78,19 @@
     taskClicked(id: number) {
       this.clickedTask = id;
       this.toggleModal();
+    }
+
+    /* Returned value can be 2days and more, 1day, 0out of exp */
+    getExpirationDate(date: string): number {
+    const millisInDay : number = 86400000;
+    const timeDifference = new Date (date).getTime() - Date.now();
+    if(timeDifference > millisInDay) {
+      return 2  //expiration more then 1 day
+    }
+    if(timeDifference > 0) { // 1 day expiration
+      return 1
+    }
+    return 0 //out of expiration
     }
   }
 </script>

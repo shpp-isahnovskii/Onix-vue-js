@@ -1,5 +1,5 @@
 <template lang="pug">
-  div(class="card_wrapper" v-on:click="getId()"
+  div(class="card_wrapper" :class="cardColor" v-on:click="getId()" 
     @dragover.prevent 
     draggable="true" 
     @dragstart="dragStart" 
@@ -7,7 +7,9 @@
     @dragleave="dragLeave"
     @drop.prevent="dragLeave" 
   )
-    div(class="card_time") {{date}} | {{time}}
+    div(class="card_time")
+      span {{date}} | {{time}}
+      span(v-if="expiration < 2" class="card_expiration" :class="dotColor")
     div(class="card_title") {{title}}
 </template>
 
@@ -20,9 +22,19 @@
     @Prop({default: ""}) title!: string;
     @Prop({default: ""}) date!: string;
     @Prop({default: ""}) time!: string;
+    @Prop({default: "todo"}) tableId!: string;
+    @Prop({default: 2}) expiration!: number
 
     constructor() {
       super();
+    }
+    /* return card color */
+    get cardColor(): string {
+      return `card_hover__${this.tableId}`;
+    }
+    get dotColor() {
+
+      return `card_color__${ this.expiration > 0 ? 'yellow' : 'red'}`
     }
     /* animation: change background color */
     dragEnter(event: any) {
@@ -38,7 +50,7 @@
         element.classList.remove("card__hover")
       }
     }
-    /* set id of the dragging card */
+    /* set id of the dragging card this.id can be: todo inprogress done */
     dragStart(event: any) {
       event.dataTransfer.setData('card_id', this.id);
     }
@@ -61,6 +73,8 @@
       cursor: pointer;
     }
     .card_time {
+      display: flex;
+      justify-content: space-between;
       border-bottom: 1px solid silver;
       padding-bottom: 4px;
       font-size: 14px;
@@ -70,7 +84,24 @@
       padding: 10px 5px;
     }
   }
-  .card__hover {
-    background-color: rgb(250, 250, 250);
+  .card_hover__todo {
+    background-color: rgb(246, 248, 255);
+  }
+  .card_hover__inprogress {
+    background-color: rgb(255, 252, 232);
+  }
+  .card_hover__done {
+    background-color: rgb(250, 255, 244);
+  }
+  .card_expiration {
+    border-radius: 50%;
+    width: 10px;
+    height: 10px;
+    &.card_color__red {
+      background-color: tomato;
+    }
+    &.card_color__yellow {
+      background-color: $yellow;
+    }
   }
 </style>
