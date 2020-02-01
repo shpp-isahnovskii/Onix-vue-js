@@ -1,6 +1,10 @@
 <template lang="pug">
   section
-    div( class="table_wrapper")
+    vc-date-picker( 
+      value="Filter"
+      mode="range"
+      class="date-picker")
+    .table_wrapper
       kanbanTable(
         v-for="(columnName, n) in tableStatus" :key="n"
         v-bind:tableId="n"
@@ -106,9 +110,7 @@
     align-self: center;
     align-items: flex-start;
   }
-
   table {
-    //border-collapse: collapse;
     margin: 0 10px;
   }
   thead {
@@ -127,14 +129,6 @@
   td:first-child {
     border: none;
   }
-  .task-title {
-    text-align: center;
-    padding: 30px 0 10px 0;
-    text-transform: uppercase;
-    opacity: 0.5;
-    font-size: $secondFontSize;
-    font-weight: bold;
-  }
   .task-header {
     font-weight: bold;
     text-align: center;
@@ -148,5 +142,8 @@
   }
   .task_status__done {
     background-color: rgb(221, 255, 221);
+  }
+  .date-picker {
+    width: 200px;
   }
 </style>

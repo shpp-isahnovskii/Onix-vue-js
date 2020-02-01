@@ -98,10 +98,10 @@
     width: 10px;
     height: 10px;
     &.card_color__red {
-      background-color: tomato;
+      background-color: rgba(255, 99, 71, 0.5);
     }
     &.card_color__yellow {
-      background-color: $yellow;
+      background-color: rgba(255, 196, 0, 0.5);
     }
   }
 </style>
