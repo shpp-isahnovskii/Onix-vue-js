@@ -4,12 +4,12 @@ import Vue from 'vue'
 import App from './App.vue'
 import router from './router/router'
 import store from './store/store'
-import VCalendar from 'v-calendar';
+import Datepicker from 'vuejs-datepicker';
 
 Vue.config.productionTip = false
 
 /* eslint-disable no-new */
-Vue.use(VCalendar, {componentPrefix: 'kanban'});
+Vue.component("kanban-datepicker", Datepicker);
 new Vue({
   router,
   store,

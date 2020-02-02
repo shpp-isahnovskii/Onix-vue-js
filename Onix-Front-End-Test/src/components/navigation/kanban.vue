@@ -1,15 +1,11 @@
 <template lang="pug">
   section
-    kanban-date-picker( 
-      class="date-picker"
-      mode="date"
-      :value="null"
-      placeholder="Please enter your birthday"
-      title-position="right"
-      :min-date="new Date()"
-      v-model="datePick"
-    )
-    div date: {{datePick}}
+    div(class="name-picker")
+      input
+    div(class="date-picker")
+      kanban-datepicker(
+        :clear-button="true"
+      )
     .table_wrapper
       kanbanTable(
         v-for="(columnName, n) in tableStatus" :key="n"
@@ -156,16 +152,36 @@
   .task_status__done {
     background-color: rgb(221, 255, 221);
   }
-  .date-picker {
+
+  .name-picker, .date-picker {
     display: flex;
-    width: 245px;
+    width: 260px;
     margin: 10px 0 0 10px;
-    height: 30px;
-    &:before {
-      content: url("../../assets/images/calendar/date.svg");
+    height: 25px;
+    &::before {
       position: relative;
-      top: 2px;
+      top: 4px;
       margin: 0 8px;
     }
   }
+  .name-picker {
+    input {
+      display: inline-block;
+      width: 300px;
+      height: 30px;
+      border-radius: 4px;
+    }
+    &::before {
+      //Icons made by www.flaticon.com/authors/freepik
+      content: url("../../assets/images/calendar/list.svg");
+    }
+  }
+  .date-picker {
+    &::before {
+      //Icons made by www.flaticon.com/authors/freepik
+      content: url("../../assets/images/calendar/date.svg");
+    }
+    margin-top: 20px;
+  }
+
 </style>
