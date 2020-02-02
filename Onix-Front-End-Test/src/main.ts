@@ -9,7 +9,7 @@ import VCalendar from 'v-calendar';
 Vue.config.productionTip = false
 
 /* eslint-disable no-new */
-Vue.use(VCalendar, {componentPrefix: 'vc'});
+Vue.use(VCalendar, {componentPrefix: 'kanban'});
 new Vue({
   router,
   store,

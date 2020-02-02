@@ -33,7 +33,6 @@
       return `card_hover__${this.tableId}`;
     }
     get dotColor() {
-
       return `card_color__${ this.expiration > 0 ? 'yellow' : 'red'}`
     }
     /* animation: change background color */
@@ -85,7 +84,7 @@
     }
   }
   .card_hover__todo {
-    background-color: rgb(246, 248, 255);
+    background-color: white;
   }
   .card_hover__inprogress {
     background-color: rgb(255, 252, 232);

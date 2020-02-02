@@ -1,9 +1,15 @@
 <template lang="pug">
   section
-    vc-date-picker( 
-      value="Filter"
-      mode="range"
-      class="date-picker")
+    kanban-date-picker( 
+      class="date-picker"
+      mode="date"
+      :value="null"
+      placeholder="Please enter your birthday"
+      title-position="right"
+      :min-date="new Date()"
+      v-model="datePick"
+    )
+    div date: {{datePick}}
     .table_wrapper
       kanbanTable(
         v-for="(columnName, n) in tableStatus" :key="n"
@@ -29,12 +35,14 @@
     tableStatus: Object;
     modal: boolean;
     clickedTask: number;
+    datePick: string;
     
     constructor() {
       super();
       this.tableStatus = {todo: "To do", inprogress: 'In progress', done: 'Done'};
       this.modal = false;
       this.clickedTask = 0;
+      this.datePick = "";
     }
 
     /* set id-s to all tasks ---- think it be better way to use this function after main page load */
@@ -96,6 +104,11 @@
     }
     return 0 //out of expiration
     }
+    log() {
+      // eslint-disable-next-line no-console
+      console.log(this.datePick);
+      
+    }
   }
 </script>
 
@@ -144,6 +157,15 @@
     background-color: rgb(221, 255, 221);
   }
   .date-picker {
-    width: 200px;
+    display: flex;
+    width: 245px;
+    margin: 10px 0 0 10px;
+    height: 30px;
+    &:before {
+      content: url("../../assets/images/calendar/date.svg");
+      position: relative;
+      top: 2px;
+      margin: 0 8px;
+    }
   }
 </style>
