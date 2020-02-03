@@ -1,1 +1,1 @@
-declare module "vuejs-datepicker";
+declare module "v-calendar";

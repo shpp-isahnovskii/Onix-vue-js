@@ -1,17 +1,16 @@
 <template lang="pug">
   section
-    div(class="name-picker")
-      input
-    div(class="date-picker")
-      kanban-datepicker(
-        :clear-button="true"
-      )
+    form(v-on:submit.prevent="" class="kanban-search-form")
+      div(class="name-picker")
+        input(v-model="filtredText")
+      div(class="date-picker")
+        kanban-date-picker(v-model="filtredDates" :value="null" mode="range")
     .table_wrapper
       kanbanTable(
         v-for="(columnName, n) in tableStatus" :key="n"
         v-bind:tableId="n"
         v-bind:title="columnName"
-        v-bind:data="prepareData(n)"
+        v-bind:data="globalFilter(tasksMod, n, filtredText, filtredDates)"
         v-on:card-drop="cardDrop"
         v-on:task-clicked="taskClicked"
       )
@@ -31,14 +30,17 @@
     tableStatus: Object;
     modal: boolean;
     clickedTask: number;
-    datePick: string;
+    filtredDates: Object; // this object have 2 params {start: Date, end: Date}
+    filtredText: string;
+    
     
     constructor() {
       super();
       this.tableStatus = {todo: "To do", inprogress: 'In progress', done: 'Done'};
       this.modal = false;
       this.clickedTask = 0;
-      this.datePick = "";
+      this.filtredDates = {};
+      this.filtredText = "";
     }
 
     /* set id-s to all tasks ---- think it be better way to use this function after main page load */
@@ -76,10 +78,29 @@
       }
       this.tasks[id].status = tableId;
     }
-    /* prepare data by statuses */
-    prepareData(status: string): TasksModInterface[] {
-      return this.tasksMod.filter( e => e.status == status);
+    /* global filter */
+    globalFilter(array: TasksModInterface[], status: string, text: string, dates: any): TasksModInterface[] {
+      return this.filterStatus(this.filterTitle(this.filterDate(array, dates), text), status)
     }
+    /* filter data by statuses */
+    filterStatus(array: TasksModInterface[], status: string): TasksModInterface[] {
+      return array.filter( e => e.status == status);
+    }
+    /* filter data by input name */
+    filterTitle(array: TasksModInterface[], name: string): TasksModInterface[] {
+      return array.filter( e => e.title.indexOf(name) !== -1 );
+    }
+    /* filter data by date in range */
+    filterDate(array: TasksModInterface[], datesRange: any): TasksModInterface[] {
+      if(!datesRange || !datesRange.start) { //.start - object val from V-calendar date
+        return array;
+      }
+      return array.filter( e => {
+        const cardDate = new Date (new Date(e.date).toLocaleString().split(',')[0]); //remove hours and minutes from the date then rebuild it
+        return ( (cardDate >= datesRange.start) && (cardDate <= datesRange.end) );
+      });
+    }
+
     toggleModal() {
       this.modal = !this.modal;
     }
@@ -87,7 +108,6 @@
       this.clickedTask = id;
       this.toggleModal();
     }
-
     /* Returned value can be 2days and more, 1day, 0out of exp */
     getExpirationDate(date: string): number {
     const millisInDay : number = 86400000;
@@ -99,11 +119,6 @@
       return 1
     }
     return 0 //out of expiration
-    }
-    log() {
-      // eslint-disable-next-line no-console
-      console.log(this.datePick);
-      
     }
   }
 </script>
@@ -152,10 +167,11 @@
   .task_status__done {
     background-color: rgb(221, 255, 221);
   }
-
+  .kanban-search-form {
+    display: flex;
+  }
   .name-picker, .date-picker {
     display: flex;
-    width: 260px;
     margin: 10px 0 0 10px;
     height: 25px;
     &::before {
@@ -167,9 +183,16 @@
   .name-picker {
     input {
       display: inline-block;
-      width: 300px;
-      height: 30px;
+      height: 19px;
+      width: 175px;
       border-radius: 4px;
+      border: 1px solid #cbd5e0;
+      outline: none;
+      padding: 8px 12px;
+      font-size: 16px;
+      &:focus {
+        box-shadow: 0 1px 3px 0 rgba(0,0,0,.1), 0 1px 2px 0 rgba(0,0,0,.06);
+      }
     }
     &::before {
       //Icons made by www.flaticon.com/authors/freepik
@@ -181,7 +204,7 @@
       //Icons made by www.flaticon.com/authors/freepik
       content: url("../../assets/images/calendar/date.svg");
     }
-    margin-top: 20px;
+    width: 220px;
   }
 
 </style>
