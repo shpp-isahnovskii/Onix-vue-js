@@ -40,6 +40,7 @@ export default class Content extends Vue {}
 
   .section__wrapper {
     padding-bottom: 100px;
+    height: 100vh;
   }
   .article {
     &.article__icon::before {

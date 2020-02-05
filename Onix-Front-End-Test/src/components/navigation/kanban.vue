@@ -112,15 +112,15 @@
     }
     /* Returned value can be 2days and more, 1day, 0out of exp */
     getExpirationDate(date: string): number {
-    const millisInDay : number = 86400000;
-    const timeDifference = new Date (date).getTime() - Date.now();
-    if(timeDifference > millisInDay) {
-      return 2  //expiration more then 1 day
-    }
-    if(timeDifference > 0) { // 1 day expiration
-      return 1
-    }
-    return 0 //out of expiration
+      const millisInDay : number = 86400000;
+      const timeDifference = new Date (date).getTime() - Date.now();
+      if(timeDifference > millisInDay) {
+        return 2  //expiration more then 1 day
+      }
+      if(timeDifference > 0) { // 1 day expiration
+        return 1
+      }
+      return 0 //out of expiration
     }
   }
 </script>
