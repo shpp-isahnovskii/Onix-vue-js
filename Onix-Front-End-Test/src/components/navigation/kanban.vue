@@ -14,7 +14,7 @@
         v-on:card-drop="cardDrop"
         v-on:task-clicked="taskClicked"
       )
-    taskModal( v-bind:editTask="modal" v-bind:clickedTask="clickedTask" v-on:hideModal="toggleModal()")
+    taskModal( v-bind:editTask="modal" v-bind:id="clickedTask" v-on:hideModal="toggleModal()")
 </template>
 
 <script lang="ts">
@@ -24,6 +24,9 @@
   import taskModal from '../modal/TaskModal.vue';
   import kanbanTable from '../kanbanTable/kanbanTable.vue';
   import TasksModInterface from '@/interfaces/TasksModInterface';
+  import VCalendar from 'v-calendar';
+
+  Vue.use(VCalendar, { componentPrefix: "kanban" }); //add date-picker
 
   @Component({components: {taskModal, kanbanTable}})
   export default class Kanban extends Vue {
@@ -32,7 +35,6 @@
     clickedTask: number;
     filtredDates: Object; // this object have 2 params {start: Date, end: Date}
     filtredText: string;
-    
     
     constructor() {
       super();
@@ -43,17 +45,17 @@
       this.filtredText = "";
     }
 
-    /* set id-s to all tasks ---- think it be better way to use this function after main page load */
+    /* set expiration date to the all tasks */
     get tasksMod(): TasksModInterface[] {
       let result: TasksModInterface[] = [];
-      this.tasks.forEach( (el: TasksInterface, index: number) => {
+      this.tasks.forEach( (el: TasksInterface) => {
         result.push(
           {
             title: el.title, 
             description: el.description, 
             date: el.date, 
             status: el.status, 
-            id: index,
+            id: el.id,
             expiration: this.getExpirationDate(el.date),
           }
         )

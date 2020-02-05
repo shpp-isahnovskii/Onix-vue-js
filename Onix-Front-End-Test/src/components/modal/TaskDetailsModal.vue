@@ -26,7 +26,7 @@ import { mixins } from 'vue-class-component'
 @Component
 export default class TaskModal extends mixins(DateMixin) {
   @Prop({default: false}) showModal !: boolean;
-  @Prop({default: 0}) clickedTask !: number;
+  @Prop({default: 0}) id !: number;
   taskTitle: string;
   taskDate: string;
   taskTime: string;
@@ -62,10 +62,10 @@ export default class TaskModal extends mixins(DateMixin) {
   }
   /* add watcher to set default time value */
   @Watch('tasks', {immediate: true}) onChange() {
-    this.taskTitle = this.tasks[this.clickedTask].title;
-    this.taskDate = this.getDate(this.tasks[this.clickedTask].date);
-    this.taskTime = this.getTime(this.tasks[this.clickedTask].date);
-    this.taskText = this.tasks[this.clickedTask].description;
+    this.taskTitle = this.tasks[this.id].title;
+    this.taskDate = this.getDate(this.tasks[this.id].date);
+    this.taskTime = this.getTime(this.tasks[this.id].date);
+    this.taskText = this.tasks[this.id].description;
   }
   // /* add data-base from the store */
   created() {
@@ -120,9 +120,9 @@ export default class TaskModal extends mixins(DateMixin) {
   }
   /* add new data to the data-base */
   confirmChanges() {
-    Vue.set(this.tasks[this.clickedTask], 'title', this.taskTitle);
-    Vue.set(this.tasks[this.clickedTask], 'description', this.taskText);
-    Vue.set(this.tasks[this.clickedTask], 'date', `${this.taskDate}T${this.taskTime}`);
+    Vue.set(this.tasks[this.id], 'title', this.taskTitle);
+    Vue.set(this.tasks[this.id], 'description', this.taskText);
+    Vue.set(this.tasks[this.id], 'date', `${this.taskDate}T${this.taskTime}`);
   }
 }
 </script>

@@ -3,8 +3,7 @@
     div
       button(class="section-button" v-on:click="toggleModal()") Add new task
       transition-group(tag='div' name='tasks-list' v-on:enter="addBlinkAnimation")
-        // ----using 'task.date' in the transition animation is not save!
-        div(v-for='(task, i) in tasks', v-bind:key='task.date' ref="tasksRef")
+        div(v-for='(task, i) in tasks', v-bind:key='task.id' ref="tasksRef")
           .article
             div(class="date_wrapper")
               h3 {{task.title}} 
@@ -15,7 +14,7 @@
                 span(class="article__remove")
                   div(v-on:click="remove(i)") x
                 button(class='article-button__status' v-on:click="changeTaskStatus(i, task.status)") {{task.status}}
-      taskModal( v-bind:addTask="modal" v-on:hideModal="toggleModal()")
+      taskModal( v-bind:addTask="modal" v-bind:id="dataLength()" v-on:hideModal="toggleModal()")
 </template>
 
 <script lang="ts">
@@ -41,6 +40,9 @@ export default class Tasks extends mixins(DateMixin) {
   /* get task datebase */
   get tasks() : TasksInterface[] {
     return this.$store.getters.getTasks;
+  }
+  dataLength() {
+    return this.tasks.length;
   }
   /* show or hide modal window 'add new task' */
   toggleModal() {

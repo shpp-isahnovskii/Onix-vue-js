@@ -1,7 +1,7 @@
 <template lang="pug">
   div
-    taskCreate(v-if="addTask" v-on:hideModal="hideModal()")
-    taskEdit(v-if="editTask" v-bind:clickedTask="clickedTask" v-on:hideModal="hideModal()")
+    taskCreate(v-if="addTask" v-bind:taskId="id" v-on:hideModal="hideModal()")
+    taskEdit(v-if="editTask" v-bind:id="id" v-on:hideModal="hideModal()")
 </template>
 
 <script lang="ts">
@@ -10,18 +10,19 @@
   import taskEdit from "./TaskDetailsModal.vue";
 
 @Component({components: { taskCreate, taskEdit }})
-  export default class TaskModal extends Vue {
-    @Prop({default: false}) addTask !: boolean;
-    @Prop({default: false}) editTask !: boolean;
-    @Prop({default: undefined}) clickedTask !: number;
+export default class TaskModal extends Vue {
+  @Prop({default: false}) addTask !: boolean;
+  @Prop({default: false}) editTask !: boolean;
+  @Prop({default: undefined}) id !: number;
 
-    constructor() {
-      super();
-    }
-    hideModal(){
-      this.$emit('hideModal');
-    }
+  constructor() {
+    super();
   }
+
+  hideModal(){
+    this.$emit('hideModal');
+  }
+}
 </script>
 
 <style lang="scss">
@@ -39,7 +40,7 @@
   .form-wrapper {
     position: fixed;
     width: 600px;
-    height: 465px;
+    height: 490px;
     top: 100px;
     background-color: white;
     border-radius: 10px;

@@ -3,7 +3,7 @@
     .modal-overlay(v-on:click="toggleModal()")
     .form-wrapper
       h3 New Task
-      form(class='modal-task-form' @submit.prevent="adding(taskDate, taskTime, taskTitle, taskText)")
+      form(class='modal-task-form' @submit.prevent="adding(taskId, taskDate, taskTime, taskTitle, taskText)")
         .header__wrapper Date: 
           input(type="date" v-model="taskDate" class="task__date" required)
         .time__wrapper Time: 
@@ -23,6 +23,7 @@ import { dataTasks, userData } from '@/store/database';
 
 @Component
   export default class TaskCreateModal extends Vue {
+    @Prop({default: 0}) taskId !: number;
     taskDate: string;
     taskTime: string;
     taskTitle: string;
@@ -37,11 +38,11 @@ import { dataTasks, userData } from '@/store/database';
     get tasks() : TasksInterface[] {
       return this.$store.getters.getTasks;
     }
-    adding(date:string, time: string, title: string, text: string) {
+    adding(id: number, date:string, time: string, title: string, text: string) {
       if( !date || !time || !title || !text ) {
         window.alert("please, input something in the task message and set the time");
       } else {
-        this.tasks.push({title: title, description: text, date: `${date}T${time}`, status: 'todo'});
+        this.tasks.push({id: id, title: title, description: text + id, date: `${date}T${time}`, status: 'todo'});
 
         this.increaseTasksCounter();
         this.toggleModal();
