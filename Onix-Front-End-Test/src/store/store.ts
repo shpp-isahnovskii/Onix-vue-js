@@ -13,18 +13,18 @@ export default new Vuex.Store ({
 		getUser : st => st.user
 	},
 	actions: {
-		loadTasks(context, tasks) {
+		loadTasks: (context, tasks) => {
 			context.commit('reloadTasks', tasks);
 		},
-		loadUser(context, user) {
+		loadUser: (context, user) => {
 			context.commit('reloadUser', user);
 		}
 	},
 	mutations: {
-		reloadTasks(state, mutation) {
+		reloadTasks: (state, mutation) => {
 			state.tasks = mutation;
 		},
-		reloadUser(state, mutation) {
+		reloadUser: (state, mutation) => {
 			state.user = mutation;
 		},
 	}

@@ -136,30 +136,6 @@
     align-self: center;
     align-items: flex-start;
   }
-  table {
-    margin: 0 10px;
-  }
-  thead {
-    th {
-      padding-bottom: 12px;
-    }
-  }
-  td {
-    border: solid silver 1px;
-    padding: 4px;
-    border-radius: 4px;
-  }
-  td:not(:first-child) {
-    width: 33.3%;
-  }
-  td:first-child {
-    border: none;
-  }
-  .task-header {
-    font-weight: bold;
-    text-align: center;
-    border: none;
-  }
   .task_status__todo {
     background-color: rgb(250, 242, 242);
   }
