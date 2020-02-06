@@ -11,9 +11,9 @@
         tr
           //- body
           tr(v-for="(n) in rows" v-bind:key="n")
-            td(v-for="day in daysInWeek.length")
-              span(v-if="dayCounter(n, day) <=0 || dayCounter(n, day) >=lastDay") -
-              span(v-else) {{dayCounter(n, day)}}
+            td(v-for="day in daysInWeek.length" class="calendar-cell")
+              div(v-if="dayCounter(n, day) <=0 || dayCounter(n, day) >=lastDay") 
+              div(v-else) {{dayCounter(n, day)}}
         
 </template>
 
@@ -78,9 +78,10 @@
       td {
         border: 1px solid silver;
       }
+      .calendar-cell {
+        width: 80px;
+        height: 80px;
+      }
     }
-  }
-  .calendar_table__header {
-    border: 1px solid silver;
   }
 </style>
