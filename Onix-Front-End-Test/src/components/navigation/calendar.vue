@@ -6,17 +6,18 @@
       div {{fullMonthName}}
       table
         tr
-          //- header
+          //- t-header
           th(v-for="(day, i) in daysInWeek" v-bind:key="i") {{day}}
         tr
-          //- body
+          //- t-body
           tr(v-for="(week) in rows" v-bind:key="week")
             td(v-for="day in daysInWeek.length" class="calendar-cell__wrapper") {{changeDayCounter(week, day)}}
               div(v-if="dayCounter <=0 || dayCounter > lastDay" class="day_invisible") 
               div(v-else class="calendar-cell")
                 div(class="day_val" v-bind:class="{ day_today : (dayCounter == todayDay) }") {{dayCounter}}
                 div(v-for="(task, i) in filteredTasks(dayCounter)" class="day_task") 
-                  span(v-on:click="log(task.id)") {{task.title}}
+                  span(v-on:click="taskClicked(task.id)") {{task.title}}
+    taskModal( v-bind:editTask="modal" v-bind:id="clickedTask" v-on:hideModal="toggleModal()")
 </template>
 
 <script lang="ts">
@@ -24,17 +25,23 @@
   import { TasksInterface } from '@/interfaces/TasksInterface';
   import { dataTasks } from '@/store/database';
 
+  import taskModal from '../modal/TaskModal.vue';
+
   @Component
   export default class Calendar extends Vue {
     daysInWeek: string[];
     timeNow: Date;
     dayCounter: number;
+    modal: boolean;
+    clickedTask: number;
 
     constructor() {
       super();
       this.daysInWeek = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
       this.timeNow = new Date();
       this.dayCounter = 0;
+      this.modal = false;
+      this.clickedTask = 0;
     }
 
     get tasks() : TasksInterface[] {
@@ -81,9 +88,17 @@
       this.dayCounter = ( 7 * (increment - 1) + thisDay - this.startDay + 1 )
     }
 
-    log(e: any) {
-      // eslint-disable-next-line no-console
-      console.log(e);
+    taskClicked(id: number) {
+      this.clickedTask = id;
+      this.toggleModal();
+    }
+    toggleModal() {
+      this.modal = !this.modal;
+      if(this.modal) {
+        document.documentElement.style.overflow = 'hidden';
+      } else {
+        document.documentElement.style.overflow = 'auto';
+      }
     }
   }
 </script>
@@ -92,6 +107,7 @@
   .calendar_wrapper {
     margin: 0 auto;
     table {
+      border-collapse: collapse;
       cursor: default;
       td {
         border: 1px solid silver;
@@ -119,15 +135,17 @@
         }
         .day_today {
           background-color: rgba(255, 197, 71, 0.126);
-        
         }
         .day_task {
           text-align: left;
-          margin: 1px;
+          margin: 2px 4px;
           background-color:#f0efee;
           border-radius: 5px;
-          padding: 3px;
+          padding: 3px 5px;
           cursor: pointer;
+          &:last-child {
+            margin-bottom: 5px;
+          }
         }
       }
     }

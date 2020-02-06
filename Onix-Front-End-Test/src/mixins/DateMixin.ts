@@ -1,7 +1,7 @@
 import { Component, Vue } from 'vue-property-decorator';
 
 @Component
-export default class ListMixin extends Vue {
+export default class DateMixin extends Vue {
   /* return time value from the database */
   getTime(time: string) {
     return time.slice(11);

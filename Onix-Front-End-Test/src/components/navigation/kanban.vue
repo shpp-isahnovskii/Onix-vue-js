@@ -103,12 +103,17 @@
       });
     }
 
-    toggleModal() {
-      this.modal = !this.modal;
-    }
     taskClicked(id: number) {
       this.clickedTask = id;
       this.toggleModal();
+    }
+    toggleModal() {
+      this.modal = !this.modal;
+      if(this.modal) {
+        document.documentElement.style.overflow = 'hidden';
+      } else {
+        document.documentElement.style.overflow = 'auto';
+      }
     }
     /* Returned value can be 2days and more, 1day, 0out of exp */
     getExpirationDate(date: string): number {

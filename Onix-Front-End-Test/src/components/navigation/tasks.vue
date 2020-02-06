@@ -22,6 +22,7 @@ import { Component, Vue } from 'vue-property-decorator';
 import { TasksInterface } from '@/interfaces/TasksInterface';
 import { dataTasks, userData } from '@/store/database';
 import taskModal from '../modal/TaskModal.vue';
+
 import { mixins } from 'vue-class-component';
 import DateMixin from '@/mixins/DateMixin';
 
@@ -43,15 +44,6 @@ export default class Tasks extends mixins(DateMixin) {
   }
   dataLength() {
     return this.tasks.length;
-  }
-  /* show or hide modal window 'add new task' */
-  toggleModal() {
-    this.modal = !this.modal;
-    if(this.modal) {
-      document.documentElement.style.overflow = 'hidden';
-    } else {
-      document.documentElement.style.overflow = 'auto';
-    }
   }
   created() {
     this.$store.dispatch('loadTasks', dataTasks);
@@ -101,6 +93,15 @@ export default class Tasks extends mixins(DateMixin) {
   addBlinkAnimation() {
     setTimeout( ()=> this.$refs.tasksRef[this.$refs.tasksRef.length - 1].classList.add('task-blink__animation'), 1000 );
   }
+
+    toggleModal() {
+      this.modal = !this.modal;
+      if(this.modal) {
+        document.documentElement.style.overflow = 'hidden';
+      } else {
+        document.documentElement.style.overflow = 'auto';
+      }
+    }
 }
 </script>
 
