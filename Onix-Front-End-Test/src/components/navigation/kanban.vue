@@ -56,7 +56,7 @@
             date: el.date, 
             status: el.status, 
             id: el.id,
-            expiration: this.getExpirationDate(el.date),
+            expiration: this.getExpirationDate(el.date), //add this new value
           }
         )
       });
