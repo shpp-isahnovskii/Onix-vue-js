@@ -1,9 +1,11 @@
 <template lang="pug">
   section
-    h3 Calendar
+    h3 Calendar {{year}}
     .calendar_wrapper
-      div {{year}}
-      div {{fullMonthName}}
+      div(class="set_month")
+        button( @click="monthShift(-1)" ) ⯇
+        div {{fullMonthName}}
+        button( @click="monthShift(1)" ) ⯈
       table
         tr
           //- t-header
@@ -11,26 +13,26 @@
         tr
           //- t-body
           tr(v-for="(week) in rows" v-bind:key="week")
-            td(v-for="day in daysInWeek.length" class="calendar-cell__wrapper") {{changeDayCounter(week, day)}}
-              div(v-if="dayCounter <=0 || dayCounter > lastDay" class="day_invisible") 
-              div(v-else class="calendar-cell")
-                div(class="day_val" v-bind:class="{ day_today : (dayCounter == todayDay) }") {{dayCounter}}
-                div(v-for="(task, i) in filteredTasks(dayCounter)" class="day_task") 
+            td(v-for="day in daysInWeek.length" class="calendar-cell__wrapper") 
+              div(v-if="changeDayCounter(week, day) <= 0 || changeDayCounter(week, day) > lastDay" class="day_invisible") {{week}} | {{day}}
+              div(v-else class="calendar-cell") {{week}} | {{day}}
+                div(class="day_val" v-bind:class="{ day_today : (changeDayCounter(week, day) == todayDay) }") {{changeDayCounter(week, day)}}
+                div(v-for="(task, i) in filteredTasks(changeDayCounter(week, day))" class="day_task")
                   span(v-on:click="taskClicked(task.id)") {{task.title}}
-    taskModal( v-bind:editTask="modal" v-bind:id="clickedTask" v-on:hideModal="toggleModal()")
+    //taskModal( v-bind:editTask="modal" v-bind:id="clickedTask" v-on:hideModal="toggleModal()")
 </template>
 
 <script lang="ts">
-  import { Component, Vue } from 'vue-property-decorator';
+  import { Component, Vue, Watch } from 'vue-property-decorator';
   import { TasksInterface } from '@/interfaces/TasksInterface';
   import { dataTasks } from '@/store/database';
 
   import taskModal from '../modal/TaskModal.vue';
 
-  @Component
+  @Component({components: {taskModal}})
   export default class Calendar extends Vue {
     daysInWeek: string[];
-    timeNow: Date;
+    time: Date;
     dayCounter: number;
     modal: boolean;
     clickedTask: number;
@@ -38,12 +40,11 @@
     constructor() {
       super();
       this.daysInWeek = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
-      this.timeNow = new Date();
+      this.time = new Date();
       this.dayCounter = 0;
       this.modal = false;
       this.clickedTask = 0;
     }
-
     get tasks() : TasksInterface[] {
       return this.$store.getters.getTasks;
     }
@@ -51,7 +52,20 @@
       this.$store.dispatch('loadTasks', dataTasks);
     }
 
-    /*  */
+    get timeNow() {
+      return this.time;
+    }
+    monthShift(i: any) {
+      this.time = new Date (this.timeNow.setMonth( this.timeNow.getMonth() + i));
+    }
+
+    @Watch('time')
+    onChangeTime() {
+      // eslint-disable-next-line no-console
+      console.log(this.time);
+    }
+
+    /* Used for loop through all tasks and filtring all tasks for this day in current table cell*/
     filteredTasks( day: number) {
       return this.tasks.filter( (e: TasksInterface) => ( (new Date(e.date).getDate() === day) ) )
     }
@@ -69,7 +83,7 @@
       return (new Date(this.year, this.shortMonthName, 1)).getDay();
     }
     get todayDay() : number {
-      return this.timeNow.getDate();
+      return (new Date).getDate();
     }
     /* last day, means number */
     get lastDay(): number {
@@ -84,8 +98,8 @@
       return Math.ceil( (this.startDay - 1 + this.lastDay) / 7 );
     }
     /* set dayCounter to current day. Can be negative or greater then days in the month, in this case table cell will be empty */
-    changeDayCounter(increment: number, thisDay: number ): void {
-      this.dayCounter = ( 7 * (increment - 1) + thisDay - this.startDay + 1 )
+    changeDayCounter(increment: number, thisDay: number ): number {
+      return ( 7 * (increment - 1) + thisDay - this.startDay + 1 )
     }
 
     taskClicked(id: number) {
@@ -105,6 +119,19 @@
 
 <style lang="scss">
   .calendar_wrapper {
+    .set_month {
+      display: flex;
+      justify-content: center;
+      button {
+        outline: none;
+        border: none;
+        border-radius: 5px;
+        margin: 0 5px;
+        font-size: 16px;
+        background-color: #f8f8f8;
+        cursor: pointer;
+      }
+    }
     margin: 0 auto;
     table {
       border-collapse: collapse;
