@@ -8,6 +8,7 @@
 
 <script lang="ts">
   import { Component, Vue, Prop } from "vue-property-decorator";
+  import { TasksInterface } from "@/interfaces/TasksInterface";
   import calendarCell from "./calendarCell.vue";
 
 @Component({components:{calendarCell}})
@@ -15,6 +16,8 @@
     @Prop({default: undefined}) row !:number;
     @Prop({default: undefined}) mFirstDay !:number;
     @Prop({default: undefined}) mLastDay !:number;
+    //@Prop({default: undefined}) staticToday !: Date;
+    //@Prop({default: undefined}) tasks !:TasksInterface[];
 
     get week() {
       return 7;
@@ -25,9 +28,10 @@
     shift(day: number) {
       return day - this.mFirstDay; 
     }
-    currentDay() {
-      
-    }
+    // /* Used for loop through all tasks and filtring all tasks for this day in current table cell*/
+    // filteredTasks( day: number) {
+    //   return this.tasks.filter( (e: TasksInterface) => ( (new Date(e.date).getDate() === this.staticToday.getDate()) ) )
+    // }
   }
 </script>
 
