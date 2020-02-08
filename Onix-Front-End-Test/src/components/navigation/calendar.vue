@@ -11,7 +11,11 @@
           //- t-header
           th(v-for="(day, i) in daysInWeek" v-bind:key="i") {{day}}
           //- t-body
-        calendarRow(v-for="row in rows" v-bind:key="row" v-bind:row="row" v-bind:monthInfo="monthInfo")
+        calendarRow(v-for="row in rows" v-bind:key="row"
+        v-bind:mLastDay="lastDay"
+        v-bind:mFirstDay="firstDay"
+        v-bind:row="row"
+        v-bind:fullDate="staticToday")
             //td(v-for="day in daysInWeek.length" class="calendar-cell__wrapper") {{week}} | {{day}}
 
               //- div(v-if="changeDayCounter(week, day) <= 0 || changeDayCounter(week, day) > lastDay" class="day_invisible") {{week}} | {{day}}
@@ -25,7 +29,6 @@
 <script lang="ts">
   import { Component, Vue, Watch } from 'vue-property-decorator';
   import { TasksInterface } from '@/interfaces/TasksInterface';
-  import CalendarMonthInfo from "@/interfaces/CalendarMonthInfo";
   import { dataTasks } from '@/store/database';
   import calendarRow from '@/components/calendarTable/calendarRow.vue';
   import taskModal from '../modal/TaskModal.vue';
@@ -33,8 +36,8 @@
   @Component({components: {taskModal, calendarRow}})
   export default class Calendar extends Vue {
     daysInWeek: string[];
-    today: Date;
-    calendarDate: Date;
+    staticToday: Date;
+    todayForChange: Date;
 
     modal: boolean;
     clickedTask: number;
@@ -42,9 +45,9 @@
     constructor() {
       super();
       this.daysInWeek = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
-      this.today = new Date();
+      this.staticToday = new Date();
       
-      this.calendarDate = this.today;
+      this.todayForChange = this.staticToday;
       
       this.modal = false;
       this.clickedTask = 0;
@@ -56,22 +59,18 @@
       this.$store.dispatch('loadTasks', dataTasks);
     }
 
-    get monthInfo(): CalendarMonthInfo {
-      return { today: this.todayDay, firstday: this.firstDay, lastday: this.lastDay }
-    }
+    // monthShift(i: any) {
+    //   this.calendarDate = new Date (this.calendarDate.setMonth(this.calendarDate.getMonth() + i));
+    // }
 
-    monthShift(i: any) {
-      this.calendarDate = new Date (this.calendarDate.setMonth(this.calendarDate.getMonth() + i));
-    }
+    // @Watch('time')
+    // onChangeTime() {
+    //   // eslint-disable-next-line no-console
+    //   console.log(this.today);
+    //   // eslint-disable-next-line no-console
+    //   console.log(this.calendarDate + " " + " reactive");
 
-    @Watch('time')
-    onChangeTime() {
-      // eslint-disable-next-line no-console
-      console.log(this.today);
-      // eslint-disable-next-line no-console
-      console.log(this.calendarDate + " " + " reactive");
-
-    }
+    // }
 
     // /* Used for loop through all tasks and filtring all tasks for this day in current table cell*/
     // filteredTasks( day: number) {
@@ -80,16 +79,16 @@
 
     /* return current year value */
     get year(): number {
-      return this.today.getFullYear();
+      return this.todayForChange.getFullYear();
     }
     /* this month name user see */
     get fullMonthName(): string {
-      return this.today.toLocaleString('default', { month: 'long' });
+      return this.todayForChange.toLocaleString('default', { month: 'long' });
     }
     
     /* return current month in value 0,1,2.. */
     get monthNumber(): number {
-      return this.today.getMonth();
+      return this.todayForChange.getMonth();
     }
 
     //--- month info ---
@@ -99,7 +98,7 @@
       return day === 0 ? 6 : day - 1;
     }
     get todayDay() : number {
-      return this.today.getDate();
+      return this.todayForChange.getDate();
     }
     /* last day, means number */
     get lastDay(): number {

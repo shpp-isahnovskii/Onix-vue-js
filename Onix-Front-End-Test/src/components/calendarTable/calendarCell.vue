@@ -1,9 +1,8 @@
 <template lang="pug">
   td
-    div(v-if="day <= 0 || day > lastday" class="day_invisible")
+    div(v-if="day <= 0 || day > lastDay" class="day_invisible")
     div(v-else class="calendar-cell")
-      div(class="day_val" :class="{ day_today : today === true }") {{day}}
-      div {{today}}
+      div(class="day_val" :class="{ day_today : day === 100 }") {{day}}
 </template>
 
 <script lang="ts">
@@ -12,12 +11,8 @@
 @Component
   export default class CalendarCell extends Vue {
     @Prop({default: undefined}) day !:number;
-    @Prop({default: undefined}) lastday !:number;
-    @Prop({default: false}) today !:boolean;
-
-    constructor() {
-      super();
-    }
+    @Prop({default: undefined}) firstDay !:number;
+    @Prop({default: undefined}) lastDay !:number;
   }
 </script>
 
