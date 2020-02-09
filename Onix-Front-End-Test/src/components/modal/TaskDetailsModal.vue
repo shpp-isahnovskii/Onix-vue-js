@@ -8,11 +8,12 @@
           input(type="date" v-model="taskDate" class="task__date" :disabled="edit == false")
         .time__wrapper Time: 
           input(type='time' v-model="taskTime" class="task__time" :disabled="edit == false")
-          img( v-bind:src="[edit ? lockImg[1].src : lockImg[0].src]" v-bind:alt="[edit ? lockImg[1].alt : lockImg[0].alt]" class="form-lock-img" v-on:click="toggleLock()")
+          img(v-if="editing" v-bind:src="[edit ? lockImg[1].src : lockImg[0].src]" v-bind:alt="[edit ? lockImg[1].alt : lockImg[0].alt]" class="form-lock-img" v-on:click="toggleLock()")
         textarea(rows="12" v-model="taskText" placeholder="Text here.." class="task__text" ref='textInput' :disabled="edit == false")
         .task_btn__wrapper
-          button(type='button' class="task__btn" :class="chooseClass()" v-on:click="chooseAction()")
+          button(v-if="editing" type='button' class="task__btn" :class="chooseClass()" v-on:click="chooseAction()")
             | {{buttonText}}
+          button(v-else type='button' class="task__btn" :class="chooseClass()" v-on:click="hideModal()") Close
 </template>
 
 <script lang="ts">
@@ -25,6 +26,7 @@ import { mixins } from 'vue-class-component'
 
 @Component
 export default class TaskModal extends mixins(DateMixin) {
+  @Prop({default: true}) editing !: boolean;
   @Prop({default: false}) showModal !: boolean;
   @Prop({default: 0}) id !: number;
   taskTitle: string;

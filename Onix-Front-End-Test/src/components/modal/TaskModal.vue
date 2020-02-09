@@ -1,7 +1,7 @@
 <template lang="pug">
   div
     taskCreate(v-if="addTask" v-bind:taskId="id" v-on:hideModal="hideModal()")
-    taskEdit(v-if="editTask" v-bind:id="id" v-on:hideModal="hideModal()")
+    taskEdit(v-if="editTask" v-bind:editing="editing" v-bind:id="id" v-on:hideModal="hideModal()")
 </template>
 
 <script lang="ts">
@@ -13,6 +13,7 @@
 export default class TaskModal extends Vue {
   @Prop({default: false}) addTask !: boolean;
   @Prop({default: false}) editTask !: boolean;
+  @Prop({default: true}) editing !: boolean;
   @Prop({default: undefined}) id !: number;
 
   constructor() {

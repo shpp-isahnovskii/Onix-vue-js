@@ -1,7 +1,7 @@
 <template lang="pug">
   section
     h3 Calendar {{year}}
-    .calendar_wrapper {{staticDate}}  
+    .calendar_wrapper
       div(class="set_month")
         button( @click="monthShift(-1)" ) -
         div {{fullMonthName}}
@@ -17,7 +17,7 @@
         v-bind:row="row"
         v-bind:tasks="monthTasksFilter()"
         v-on:task-click="taskClicked")
-    taskModal( v-bind:editTask="modal" v-bind:id="clickedTask" v-on:hideModal="toggleModal()")
+    taskModal( v-bind:editTask="modal" v-bind:editing="false" v-bind:id="clickedTask" v-on:hideModal="toggleModal()")
 </template>
 
 <script lang="ts">
@@ -30,7 +30,6 @@
   @Component({components: {taskModal, calendarRow}})
   export default class Calendar extends Vue {
     daysInWeek: string[];
-    staticDate: Date;
     dynamicDate: Date;
 
     modal: boolean;
@@ -39,7 +38,6 @@
     constructor() {
       super();
       this.daysInWeek = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
-      this.staticDate = new Date(); //date for tasks filtring
       
       this.dynamicDate = this.staticDate; //date for month changing
 
@@ -52,12 +50,12 @@
     created() {
       this.$store.dispatch('loadTasks', dataTasks);
     }
-    @Watch('dynamicDate')
-    onUpdate() {
-      //eslint-disable-next-line no-console
-      console.log(this.dynamicDate);
-      
+
+    /* date for tasks filtring */
+    get staticDate() {
+      return new Date();
     }
+
     /* - ore + one month to the calendar */
     monthShift(i: any) {
       this.dynamicDate = new Date (this.dynamicDate.setMonth(this.dynamicDate.getMonth() + i));
@@ -112,7 +110,7 @@
     }
     /* Used for loop through all tasks and filtring all tasks for this day in current table cell*/
     monthTasksFilter() {
-      return this.tasks.filter( (e: TasksInterface) => this.staticDate.toISOString().slice(0, 7) === e.date.slice(0, 7) );
+      return this.tasks.filter( (e: TasksInterface) => this.dynamicDate.toISOString().slice(0, 7) === e.date.slice(0, 7) );
     }
   }
 </script>
@@ -138,7 +136,7 @@
       border-collapse: collapse;
       cursor: default;
       td {
-        border: 1px solid silver;
+        border: 2px solid silver;
         vertical-align: top;
       }
     }

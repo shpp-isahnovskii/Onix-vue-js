@@ -36,8 +36,8 @@
     visibility: hidden;
   }
   .day_val {
-    border-left: 1px solid rgba(192, 192, 192, 0.5);
-    border-bottom: 1px solid rgba(192, 192, 192, 0.5);
+    border-left: 2px solid rgba(192, 192, 192, 0.5);
+    border-bottom: 2px solid rgba(192, 192, 192, 0.5);
     width: 18px;
     height: 16px;
     border-radius: 0 0 0 50%;
