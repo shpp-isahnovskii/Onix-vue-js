@@ -1,9 +1,12 @@
 <template lang="pug">
   tr 
     calendarCell(v-for="i in week" v-bind:key="i"
-    v-bind:day="shift(nDay(row, i))"
+    v-bind:day="tableToFirstDay(nDay(row, i))"
     v-bind:firstDay="mFirstDay"
-    v-bind:lastDay="mLastDay") 
+    v-bind:lastDay="mLastDay"
+    v-bind:dailyTasks="dailyTasks( tableToFirstDay(nDay(row, i)) )"
+    v-on:task-click="taskClickEmit"
+    )
 </template>
 
 <script lang="ts">
@@ -16,22 +19,26 @@
     @Prop({default: undefined}) row !:number;
     @Prop({default: undefined}) mFirstDay !:number;
     @Prop({default: undefined}) mLastDay !:number;
-    //@Prop({default: undefined}) staticToday !: Date;
-    //@Prop({default: undefined}) tasks !:TasksInterface[];
+    @Prop({default: undefined}) tasks !:TasksInterface[];
 
     get week() {
       return 7;
     }
+    /* convert current row and position to the date number 1-31 */
     nDay( row: number, cell: number) {
       return (row - 1) * 7 + cell;
     }
-    shift(day: number) {
+    /* shift table to first day position */
+    tableToFirstDay(day: number) {
       return day - this.mFirstDay; 
     }
-    // /* Used for loop through all tasks and filtring all tasks for this day in current table cell*/
-    // filteredTasks( day: number) {
-    //   return this.tasks.filter( (e: TasksInterface) => ( (new Date(e.date).getDate() === this.staticToday.getDate()) ) )
-    // }
+    /* filtring tasks for the current day */
+    dailyTasks(day: number): TasksInterface[] {
+      return this.tasks.filter( (e: TasksInterface)  => parseInt(e.date.slice(8,10)) === day )
+    }
+    taskClickEmit(id: number) {
+      this.$emit("task-click", id)
+    }
   }
 </script>
 

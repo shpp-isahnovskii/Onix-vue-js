@@ -7,10 +7,10 @@ export const dataTasks = [
   {id: 5, title: 'task7', description: 'Writing down two to four important tasks for the day.', date: '2020-02-01T07:50', status: 'todo'},
   {id: 6, title: 'task8', description: 'Suit up.', date: '2020-02-02T08:00', status: 'todo'},
   {id: 7, title: 'task9', description: 'Go out.', date: '2020-02-02T08:10', status: 'todo'},
-  {id: 8, title: 'task10', description: 'Driving to the office.', date: '2020-02-03T08:15', status: 'todo'},
-  {id: 9, title: 'task11', description: 'Talk to the manager.', date: '2020-02-03T08:45', status: 'todo'},
-  {id: 10, title: 'task11', description: 'Planing work day.', date: '2020-02-30T08:50', status: 'todo'},
-  {id: 11, title: 'task12', description: 'Work hard or easy.', date: '2020-02-31T09:00', status: 'todo'},
+  {id: 8, title: 'task10', description: 'Driving to the office.', date: '2020-02-18T08:15', status: 'todo'},
+  {id: 9, title: 'task11', description: 'Talk to the manager.', date: '2020-02-18T08:45', status: 'todo'},
+  {id: 10, title: 'task12', description: 'Planing work day.', date: '2020-03-01T08:50', status: 'todo'},
+  {id: 11, title: 'task13', description: 'Work hard or easy.', date: '2020-03-29T09:00', status: 'todo'},
 ];
 
 export const userData = {

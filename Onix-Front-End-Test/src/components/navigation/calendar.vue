@@ -1,11 +1,11 @@
 <template lang="pug">
   section
     h3 Calendar {{year}}
-    .calendar_wrapper
+    .calendar_wrapper {{staticDate}}  
       div(class="set_month")
-        button( @click="monthShift(-1)" ) ⯇
+        button( @click="monthShift(-1)" ) -
         div {{fullMonthName}}
-        button( @click="monthShift(1)" ) ⯈
+        button( @click="monthShift(1)" ) +
       table
         tr
           //- t-header
@@ -15,15 +15,9 @@
         v-bind:mLastDay="lastDay"
         v-bind:mFirstDay="firstDay"
         v-bind:row="row"
-        v-bind:fullDate="staticToday")
-            //td(v-for="day in daysInWeek.length" class="calendar-cell__wrapper") {{week}} | {{day}}
-
-              //- div(v-if="changeDayCounter(week, day) <= 0 || changeDayCounter(week, day) > lastDay" class="day_invisible") {{week}} | {{day}}
-              //- div(v-else class="calendar-cell") {{week}} | {{day}}
-              //-   div(class="day_val" v-bind:class="{ day_today : (changeDayCounter(week, day) == todayDay) }") {{changeDayCounter(week, day)}}
-              //-   div(v-for="(task, i) in filteredTasks(changeDayCounter(week, day))" class="day_task")
-              //-     span(v-on:click="taskClicked(task.id)") {{task.title}}
-    //taskModal( v-bind:editTask="modal" v-bind:id="clickedTask" v-on:hideModal="toggleModal()")
+        v-bind:tasks="monthTasksFilter()"
+        v-on:task-click="taskClicked")
+    taskModal( v-bind:editTask="modal" v-bind:id="clickedTask" v-on:hideModal="toggleModal()")
 </template>
 
 <script lang="ts">
@@ -36,8 +30,8 @@
   @Component({components: {taskModal, calendarRow}})
   export default class Calendar extends Vue {
     daysInWeek: string[];
-    staticToday: Date;
-    todayForChange: Date;
+    staticDate: Date;
+    dynamicDate: Date;
 
     modal: boolean;
     clickedTask: number;
@@ -45,10 +39,10 @@
     constructor() {
       super();
       this.daysInWeek = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
-      this.staticToday = new Date();
+      this.staticDate = new Date(); //date for tasks filtring
       
-      this.todayForChange = this.staticToday;
-      
+      this.dynamicDate = this.staticDate; //date for month changing
+
       this.modal = false;
       this.clickedTask = 0;
     }
@@ -58,37 +52,29 @@
     created() {
       this.$store.dispatch('loadTasks', dataTasks);
     }
-
-    // monthShift(i: any) {
-    //   this.calendarDate = new Date (this.calendarDate.setMonth(this.calendarDate.getMonth() + i));
-    // }
-
-    // @Watch('time')
-    // onChangeTime() {
-    //   // eslint-disable-next-line no-console
-    //   console.log(this.today);
-    //   // eslint-disable-next-line no-console
-    //   console.log(this.calendarDate + " " + " reactive");
-
-    // }
-
-    // /* Used for loop through all tasks and filtring all tasks for this day in current table cell*/
-    // filteredTasks( day: number) {
-    //   return this.tasks.filter( (e: TasksInterface) => ( (new Date(e.date).getDate() === day) ) )
-    // }
+    @Watch('dynamicDate')
+    onUpdate() {
+      //eslint-disable-next-line no-console
+      console.log(this.dynamicDate);
+      
+    }
+    /* - ore + one month to the calendar */
+    monthShift(i: any) {
+      this.dynamicDate = new Date (this.dynamicDate.setMonth(this.dynamicDate.getMonth() + i));
+    }
 
     /* return current year value */
     get year(): number {
-      return this.todayForChange.getFullYear();
+      return this.dynamicDate.getFullYear();
     }
     /* this month name user see */
     get fullMonthName(): string {
-      return this.todayForChange.toLocaleString('default', { month: 'long' });
+      return this.dynamicDate.toLocaleString('default', { month: 'long' });
     }
     
     /* return current month in value 0,1,2.. */
     get monthNumber(): number {
-      return this.todayForChange.getMonth();
+      return this.dynamicDate.getMonth();
     }
 
     //--- month info ---
@@ -98,7 +84,7 @@
       return day === 0 ? 6 : day - 1;
     }
     get todayDay() : number {
-      return this.todayForChange.getDate();
+      return this.dynamicDate.getDate();
     }
     /* last day, means number */
     get lastDay(): number {
@@ -124,6 +110,10 @@
         document.documentElement.style.overflow = 'auto';
       }
     }
+    /* Used for loop through all tasks and filtring all tasks for this day in current table cell*/
+    monthTasksFilter() {
+      return this.tasks.filter( (e: TasksInterface) => this.staticDate.toISOString().slice(0, 7) === e.date.slice(0, 7) );
+    }
   }
 </script>
 
@@ -132,6 +122,7 @@
     .set_month {
       display: flex;
       justify-content: center;
+      margin-bottom: 20px;
       button {
         outline: none;
         border: none;
