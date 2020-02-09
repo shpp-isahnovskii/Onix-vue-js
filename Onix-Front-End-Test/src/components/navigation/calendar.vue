@@ -4,7 +4,7 @@
     .calendar_wrapper
       div(class="set_month")
         button( @click="monthShift(-1)" ) -
-        div {{fullMonthName}}
+        div(class="calendar_month_name") {{fullMonthName}}
         button( @click="monthShift(1)" ) +
       table
         tr
@@ -95,7 +95,6 @@
       return Math.ceil( (this.firstDay - 1 + this.lastDay) / 7 );
     }
 
-
     taskClicked(id: number) {
       this.clickedTask = id;
       this.toggleModal();
@@ -117,6 +116,10 @@
 
 <style lang="scss">
   .calendar_wrapper {
+    .calendar_month_name {
+      min-width: 90px;
+      text-align: center;
+    }
     .set_month {
       display: flex;
       justify-content: center;

@@ -6,11 +6,13 @@ Vue.use(Vuex);
 export default new Vuex.Store ({
 	state: {
 		tasks: [],
-		user: []
+		user: [],
+		articles: []
 	},
 	getters: {
 		getTasks : st => st.tasks,
-		getUser : st => st.user
+		getUser : st => st.user,
+		getArticles: st => st.articles
 	},
 	actions: {
 		loadTasks: (context, tasks) => {
@@ -18,6 +20,9 @@ export default new Vuex.Store ({
 		},
 		loadUser: (context, user) => {
 			context.commit('reloadUser', user);
+		},
+		loadArticles: (context, articles) => {
+			context.commit('reloadArticle', articles);
 		}
 	},
 	mutations: {
@@ -27,5 +32,8 @@ export default new Vuex.Store ({
 		reloadUser: (state, mutation) => {
 			state.user = mutation;
 		},
+		reloadArticle: (state, mutation) => {
+			state.articles = mutation;
+		}
 	}
 });

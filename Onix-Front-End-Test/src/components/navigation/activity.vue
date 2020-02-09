@@ -17,61 +17,20 @@
 
 
 <script lang="ts">
-import { ActivityInterface } from '../../interfaces/ActivityInterface'
-import { Component, Vue } from 'vue-property-decorator'
+import { ActivityInterface } from '@/interfaces/ActivityInterface';
+import { Component, Vue } from 'vue-property-decorator';
+import { articles } from '@/store/database.ts';
 
 @Component
 export default class Activity extends Vue {
-  articles: ActivityInterface[]
-  constructor() {
-    super()
-    this.articles = [
-      {
-        icon: 0, //"done"
-        text:
-          'Darika Samak mark as done Listing on Product Hunt so that we can reach as many potential users',
-        time: '8:40PM',
-        comment: '',
-        uploads: ''
-      },
-      {
-        icon: 1, //"comment"
-        text:
-          'Emilee Simchenko commented on Account for teams and personal in bottom style',
-        time: '7:32PM',
-        comment:
-          'During a project build, it is necessary to evaluate the product design and development against project requirements and outcomes',
-        uploads: ''
-      },
-      {
-        icon: 2, //"upload"
-        text:
-          'Darika Samak uploaded 4 files on An option to search in current projectsor in all projects',
-        time: '6:02PM',
-        comment: '',
-        uploads: [
-          {
-            url: require('../../assets/images/temporary/0.jpg'),
-            alt: 'first file'
-          },
-          {
-            url: require('../../assets/images/temporary/1.jpg'),
-            alt: 'second file'
-          },
-          {
-            url: require('../../assets/images/temporary/2.jpg'),
-            alt: 'third file'
-          },
-          {
-            url: require('../../assets/images/temporary/3.jpg'),
-            alt: 'fourth file'
-          }
-        ]
-      }
-    ]
+  get articles(): ActivityInterface[] {
+    return this.$store.getters.getArticles;
   }
   sendIndex(index: number) {
-    this.$root.$emit('notify-index', index)
+    this.$root.$emit('notify-index', index);
+  }
+  created() {
+    this.$store.dispatch('loadArticles', articles);
   }
 }
 </script>
