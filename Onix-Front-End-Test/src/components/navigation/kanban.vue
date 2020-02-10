@@ -27,9 +27,14 @@
   import VCalendar from 'v-calendar';
 
   Vue.use(VCalendar, { componentPrefix: "kanban" }); //add date-picker
+  
+  import { namespace } from 'vuex-class'
+  const TaskStore = namespace('tasks');
 
   @Component({components: {taskModal, kanbanTable}})
   export default class Kanban extends Vue {
+    @TaskStore.State('tasksData') tasks !: TasksInterface[];
+    
     tableStatus: Object;
     modal: boolean;
     clickedTask: number;
@@ -61,14 +66,6 @@
         )
       });
       return result;
-    }
-
-    /* get tasks from the store */
-    get tasks() : TasksInterface[] {
-      return this.$store.getters.getTasks;
-    }
-    created() {
-      this.$store.dispatch('loadTasks', dataTasks);
     }
 
     cardDrop(tableId: string, id: number): void {

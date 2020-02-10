@@ -21,16 +21,15 @@ import { ActivityInterface } from '@/interfaces/ActivityInterface';
 import { Component, Vue } from 'vue-property-decorator';
 import { articles } from '@/store/database.ts';
 
+import { namespace } from 'vuex-class';
+const ActivityStore = namespace('activity');
+
 @Component
 export default class Activity extends Vue {
-  get articles(): ActivityInterface[] {
-    return this.$store.getters.getArticles;
-  }
+  @ActivityStore.State('articles') articles !: ActivityInterface;
+
   sendIndex(index: number) {
     this.$root.$emit('notify-index', index);
-  }
-  created() {
-    this.$store.dispatch('loadArticles', articles);
   }
 }
 </script>

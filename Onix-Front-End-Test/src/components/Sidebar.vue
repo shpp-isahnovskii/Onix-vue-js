@@ -40,43 +40,41 @@
   import { UserInterface } from '../interfaces/UserInterface'
   import { Component, Vue, Watch } from 'vue-property-decorator'
   import Tasks from './navigation/tasks.vue';
-  import { userData } from '@/store/database';
+
+  import { namespace } from 'vuex-class'
+  const UserStore = namespace('user');
+  const TaskStore = namespace('tasks');
 
   @Component
   export default class SidebarVue extends Vue {
+    @TaskStore.Mutation('deleteTask') deleteTask !: Function;
+    @UserStore.State('userData') user !: UserInterface;
+    @UserStore.Mutation('removeTaskCounter') removeTaskCounter !: Function;
+
     hideSidebar: boolean;
     constructor() {
       super();
       this.hideSidebar = false;
     }
 
-    get user(): UserInterface {
-      return this.$store.getters.getUser;
-    }
-    created() {
-      this.$store.dispatch('loadUser', userData);
-    }
-
     // open/closed tasks counter
     changeCounter(): void {
       let closeTheTask = 'Are you sure you want to change the number of tasks?';
       if(this.user.tasks.open > 0) {
-        //this.$router.push('/tasks'); //add router pushing
         if(confirm(closeTheTask) ) {
-          userData.tasks.open--;
-          userData.tasks.closed++;
-          this.$store.dispatch('loadTask', userData);
+          this.removeTaskCounter();
+          this.deleteTask(0);
         }
       }
       else {
         alert("You have no tasks to close");
       }
     }
-    //toggle sidebar
+    // //toggle sidebar
     sidebarToggle(): void {
       this.hideSidebar = !this.hideSidebar;
     }
-    //change image index event for notify element
+    // //change image index event for notify element
     mounted() {
       this.$root.$on('notify-index', (index : number) => {
         this.user.notifications = index;

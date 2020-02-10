@@ -21,8 +21,16 @@ import { Component, Vue, Prop } from "vue-property-decorator";
 import { TasksInterface } from "@/interfaces/TasksInterface";
 import { dataTasks, userData } from '@/store/database';
 
+import { namespace } from 'vuex-class';
+const TaskStore = namespace('tasks');
+const UserStore = namespace('user');
+
 @Component
   export default class TaskCreateModal extends Vue {
+    @TaskStore.State('tasksData') tasks !: TasksInterface[];
+    @TaskStore.Mutation('addingTask') addingTask !: Function;
+    @UserStore.Mutation('addTaskCounter') addTaskCounter !: Function;
+
     @Prop({default: 0}) taskId !: number;
     taskDate: string;
     taskTime: string;
@@ -35,16 +43,13 @@ import { dataTasks, userData } from '@/store/database';
       this.taskText = "";
       this.taskTitle = "";
     }
-    get tasks() : TasksInterface[] {
-      return this.$store.getters.getTasks;
-    }
+
     adding(id: number, date:string, time: string, title: string, text: string) {
       if( !date || !time || !title || !text ) {
         window.alert("please, input something in the task message and set the time");
       } else {
-        this.tasks.push({id: id, title: title, description: text + id, date: `${date}T${time}`, status: 'todo'});
-
-        this.increaseTasksCounter();
+        this.addingTask({id: id, title: title, description: text + id, date: `${date}T${time}`, status: 'todo'});
+        this.addTaskCounter();
         this.toggleModal();
       }
     }
@@ -54,10 +59,6 @@ import { dataTasks, userData } from '@/store/database';
     /* set current day to data input */
     setDate(): string {
       return (new Date).toISOString().substr(0, 10);
-    }
-    /* sidebar menu counter +1 */
-    increaseTasksCounter() : void {
-      userData.tasks.open++;
     }
     toggleModal() {
       this.$emit('hideModal');

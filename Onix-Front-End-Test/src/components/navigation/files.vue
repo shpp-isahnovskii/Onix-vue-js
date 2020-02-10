@@ -11,16 +11,14 @@
 <script lang="ts">
   import { Component, Vue } from 'vue-property-decorator';
   import { ActivityInterface } from '@/interfaces/ActivityInterface';
-  import { articles } from '@/store/database.ts'
+  import { articles } from '@/store/database.ts';
+
+  import { namespace } from 'vuex-class';
+  const ActivityStore = namespace('activity');
 
   @Component
   export default class Files extends Vue {
-    get articles(): ActivityInterface {
-      return this.$store.getters.getArticles;
-    }
-    created() {
-      this.$store.dispatch('loadArticles', articles);
-    }
+    @ActivityStore.State('articles') articles !: ActivityInterface;
   }
 </script>
 

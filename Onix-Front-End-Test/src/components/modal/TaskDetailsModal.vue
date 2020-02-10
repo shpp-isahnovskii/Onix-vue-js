@@ -24,8 +24,14 @@ import { ImgInterface } from '@/interfaces/ImgInterface';
 import DateMixin from '@/mixins/DateMixin'
 import { mixins } from 'vue-class-component'
 
+import { namespace } from 'vuex-class'
+const TaskStore = namespace('tasks');
+
 @Component
 export default class TaskModal extends mixins(DateMixin) {
+  @TaskStore.State('tasksData') tasks !: TasksInterface[];
+  @TaskStore.Mutation('changeTaskData') changeTaskData !: Function;
+
   @Prop({default: true}) editing !: boolean;
   @Prop({default: false}) showModal !: boolean;
   @Prop({default: 0}) id !: number;
@@ -58,20 +64,12 @@ export default class TaskModal extends mixins(DateMixin) {
     }];
     this.buttonText = "Edit";
   }
-  /*get tasks from the store*/
-  get tasks(): TasksInterface[] {
-    return this.$store.getters.getTasks;
-  }
   /* add watcher to set default time value */
   @Watch('tasks', {immediate: true}) onChange() {
     this.taskTitle = this.tasks[this.id].title;
     this.taskDate = this.getDate(this.tasks[this.id].date);
     this.taskTime = this.getTime(this.tasks[this.id].date);
     this.taskText = this.tasks[this.id].description;
-  }
-  // /* add data-base from the store */
-  created() {
-    this.$store.dispatch('loadTasks', dataTasks);
   }
   /* edit trigger, used at the lock img */
   toggleLock(): void {
@@ -108,7 +106,8 @@ export default class TaskModal extends mixins(DateMixin) {
       return
     }
     if(this.edit && this.changed) { //if something was edited
-      this.confirmChanges();
+      const task = {id: this.id, description: this.taskText, date: `${this.taskDate}T${this.taskTime}`}
+      this.changeTaskData(task);
     }
     this.hideModal(); //hide modal if no changes after allow
   }
@@ -119,12 +118,6 @@ export default class TaskModal extends mixins(DateMixin) {
   /* if edit mode on - set focus to the text form */
   focusOnText() {
     this.$nextTick(() => {this.$refs.textInput.focus()});
-  }
-  /* add new data to the data-base */
-  confirmChanges() {
-    Vue.set(this.tasks[this.id], 'title', this.taskTitle);
-    Vue.set(this.tasks[this.id], 'description', this.taskText);
-    Vue.set(this.tasks[this.id], 'date', `${this.taskDate}T${this.taskTime}`);
   }
 }
 </script>

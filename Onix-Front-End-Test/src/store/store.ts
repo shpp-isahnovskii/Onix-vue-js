@@ -1,39 +1,16 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
+import { UserStore } from "./modules/userStore";
+import { TaskStore } from "./modules/taskStore";
+import { ActivityStore } from "./modules/activityStore";
+import { extractVuexModule } from "vuex-class-component";
 
 Vue.use(Vuex);
 
 export default new Vuex.Store ({
-	state: {
-		tasks: [],
-		user: [],
-		articles: []
-	},
-	getters: {
-		getTasks : st => st.tasks,
-		getUser : st => st.user,
-		getArticles: st => st.articles
-	},
-	actions: {
-		loadTasks: (context, tasks) => {
-			context.commit('reloadTasks', tasks);
-		},
-		loadUser: (context, user) => {
-			context.commit('reloadUser', user);
-		},
-		loadArticles: (context, articles) => {
-			context.commit('reloadArticle', articles);
-		}
-	},
-	mutations: {
-		reloadTasks: (state, mutation) => {
-			state.tasks = mutation;
-		},
-		reloadUser: (state, mutation) => {
-			state.user = mutation;
-		},
-		reloadArticle: (state, mutation) => {
-			state.articles = mutation;
-		}
-	}
-});
+  modules: {
+    ...extractVuexModule( UserStore ),
+		...extractVuexModule( TaskStore ),
+		...extractVuexModule( ActivityStore )
+  }
+})

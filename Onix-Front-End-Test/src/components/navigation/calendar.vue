@@ -27,8 +27,12 @@
   import calendarRow from '@/components/calendarTable/calendarRow.vue';
   import taskModal from '../modal/TaskModal.vue';
 
+  import { namespace } from 'vuex-class';
+  const TaskStore = namespace('tasks');
+
   @Component({components: {taskModal, calendarRow}})
   export default class Calendar extends Vue {
+    @TaskStore.State('tasksData') tasks !: TasksInterface[];
     daysInWeek: string[];
     dynamicDate: Date;
 
@@ -44,13 +48,7 @@
       this.modal = false;
       this.clickedTask = 0;
     }
-    get tasks() : TasksInterface[] {
-      return this.$store.getters.getTasks;
-    }
-    created() {
-      this.$store.dispatch('loadTasks', dataTasks);
-    }
-
+    
     /* date for tasks filtring */
     get staticDate() {
       return new Date();

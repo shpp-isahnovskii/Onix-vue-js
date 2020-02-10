@@ -13,7 +13,7 @@
                 span(class="article_time__text") {{getTime(task.date)}}
                 span(class="article__remove")
                   div(v-on:click="remove(i)") x
-                button(class='article-button__status' v-on:click="changeTaskStatus(i, task.status)") {{task.status}}
+                button(class='article-button__status' v-on:click="nextTaskStatus(i)") {{task.status}}
       taskModal( v-bind:addTask="modal" v-bind:id="dataLength()" v-on:hideModal="toggleModal()")
 </template>
 
@@ -26,31 +26,33 @@ import taskModal from '../modal/TaskModal.vue';
 import { mixins } from 'vue-class-component';
 import DateMixin from '@/mixins/DateMixin';
 
+import { namespace } from 'vuex-class';
+const TaskStore = namespace('tasks');
+const userStore = namespace('user');
+
 @Component({ components: { taskModal }})
 export default class Tasks extends mixins(DateMixin) {
-  taskStatuses: string[];
+  @userStore.Mutation('removeTaskCounter') removeTaskCounter !: Function;
+  @TaskStore.State('tasksData') tasks !: TasksInterface[];
+  @TaskStore.Mutation('deleteTask') deleteTask !: Function;
+  @TaskStore.Mutation('nextTaskStatus') nextTaskStatus !: Function;
+
   modal: boolean;
   $refs!: {
     tasksRef : HTMLFormElement;
   }
   constructor() {
     super();
-    this.taskStatuses = ['todo', 'inprogress', 'done'];
     this.modal = false;
   }
-  /* get task datebase */
-  get tasks() : TasksInterface[] {
-    return this.$store.getters.getTasks;
-  }
+
   dataLength() {
     return this.tasks.length;
-  }
-  created() {
-    this.$store.dispatch('loadTasks', dataTasks);
   }
   mounted() {
     this.makeWave();
   }
+  
   /*init wave for once*/
   makeWave() {
     this.$root.$on('make-wave', () => {
@@ -68,32 +70,14 @@ export default class Tasks extends mixins(DateMixin) {
   }
   /* remove Task */
   remove(taskIndex: number) {
-    Vue.delete(this.tasks, taskIndex);
-    this.reduceTasksCounter();
+    this.deleteTask(taskIndex); //tasks mutation
+    this.removeTaskCounter(); //user mutation
   }
-  /* sidebar menu counter -1 */
-  reduceTasksCounter() : void {
-    userData.tasks.open--;
-    userData.tasks.closed++;
-  }
-  // /* change status: todo inprogress or done */
-  changeTaskStatus(index: number, status: string) {
-    Vue.set(this.tasks[index], 'status',  this.setNextStatus(status));
-  }
-  setNextStatus(status: string): string {
-    const statuses = this.taskStatuses;
-    let result = '';
-    switch (status) {
-      case statuses[0]: return statuses[1];
-      case statuses[1]: return statuses[2];
-      default: return statuses[0];
-    }
-  }
+
   /* add blink animation */
   addBlinkAnimation() {
     setTimeout( ()=> this.$refs.tasksRef[this.$refs.tasksRef.length - 1].classList.add('task-blink__animation'), 1000 );
   }
-
     toggleModal() {
       this.modal = !this.modal;
       if(this.modal) {
