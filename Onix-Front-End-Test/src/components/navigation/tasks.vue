@@ -20,7 +20,6 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import { TasksInterface } from '@/interfaces/TasksInterface';
-import { dataTasks, userData } from '@/store/database';
 import taskModal from '../modal/TaskModal.vue';
 
 import { mixins } from 'vue-class-component';

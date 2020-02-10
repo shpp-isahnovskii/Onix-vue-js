@@ -43,7 +43,6 @@ export class TaskStore extends VuexModule {
       default: nextStatus = statuses[0];
       break;
     }
-    
     this.tasksData[index].status = nextStatus;
   }
 

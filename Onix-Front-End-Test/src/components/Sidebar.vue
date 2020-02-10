@@ -38,7 +38,7 @@
 
 <script lang="ts">
   import { UserInterface } from '../interfaces/UserInterface'
-  import { Component, Vue, Watch } from 'vue-property-decorator'
+  import { Component, Vue } from 'vue-property-decorator'
   import Tasks from './navigation/tasks.vue';
 
   import { namespace } from 'vuex-class'

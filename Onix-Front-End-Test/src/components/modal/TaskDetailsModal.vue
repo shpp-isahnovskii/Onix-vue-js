@@ -19,7 +19,6 @@
 <script lang="ts">
 import { Component, Vue, Prop, Watch } from 'vue-property-decorator';
 import { TasksInterface } from "@/interfaces/TasksInterface";
-import { dataTasks } from '@/store/database';
 import { ImgInterface } from '@/interfaces/ImgInterface';
 import DateMixin from '@/mixins/DateMixin'
 import { mixins } from 'vue-class-component'

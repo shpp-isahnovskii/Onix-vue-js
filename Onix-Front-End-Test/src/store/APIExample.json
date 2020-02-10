@@ -1,0 +1,147 @@
+[
+  {
+    "tasks": [
+      {
+        "id": 0,
+        "title": "task1",
+        "description": "Making bed.",
+        "date": "2020-01-27T07:00",
+        "status": "done"
+      },
+      {
+        "id": 1,
+        "title": "task2",
+        "description": "Washing face.",
+        "date": "2020-01-27T07:05",
+        "status": "inprogress"
+      },
+      {
+        "id": 2,
+        "title": "task3",
+        "description": "Drinking a pint of lemon water.",
+        "date": "2020-01-27T07:10",
+        "status": "todo"
+      },
+      {
+        "id": 3,
+        "title": "task4",
+        "description": "Making breakfast.",
+        "date": "2020-01-28T07:15",
+        "status": "todo"
+      },
+      {
+        "id": 4,
+        "title": "task5",
+        "description": "Reviewing my goals.",
+        "date": "2020-01-28T07:45",
+        "status": "todo"
+      },
+      {
+        "id": 5,
+        "title": "task7",
+        "description": "Writing down two to four important tasks for the day.",
+        "date": "2020-02-01T07:50",
+        "status": "todo"
+      },
+      {
+        "id": 6,
+        "title": "task8",
+        "description": "Suit up.",
+        "date": "2020-02-02T08:00",
+        "status": "todo"
+      },
+      {
+        "id": 7,
+        "title": "task9",
+        "description": "Go out.",
+        "date": "2020-02-02T08:10",
+        "status": "todo"
+      },
+      {
+        "id": 8,
+        "title": "task10",
+        "description": "Driving to the office.",
+        "date": "2020-02-18T08:15",
+        "status": "todo"
+      },
+      {
+        "id": 9,
+        "title": "task11",
+        "description": "Talk to the manager.",
+        "date": "2020-02-18T08:45",
+        "status": "todo"
+      },
+      {
+        "id": 10,
+        "title": "task12",
+        "description": "Planing work day.",
+        "date": "2020-03-01T08:50",
+        "status": "todo"
+      },
+      {
+        "id": 11,
+        "title": "task13",
+        "description": "Work hard or easy.",
+        "date": "2020-03-29T09:00",
+        "status": "todo"
+      }
+    ]
+  },
+  {
+    "user": {
+      "company": "PROJECTUS",
+      "personal": {
+        "avatar": "/img/avatar.c77b2480.jpg",
+        "name": "Jean Gonzales",
+        "role": "Product Ovner"
+      },
+      "tasks": {
+        "open": 12,
+        "closed": 373
+      },
+      "notifications": 3
+    }
+  },
+  {
+    "activity": [
+      {
+        "icon": 0,
+        "text": "Darika Samak mark as done Listing on Product Hunt so that we can reach as many potential users",
+        "time": "8:40PM",
+        "comment": "",
+        "uploads": ""
+      },
+      {
+        "icon": 1,
+        "text": "Emilee Simchenko commented on Account for teams and personal in bottom style",
+        "time": "7:32PM",
+        "comment": "During a project build, it is necessary to evaluate the product design and development against project requirements and outcomes",
+        "uploads": ""
+      },
+      {
+        "icon": 2,
+        "text": "Darika Samak uploaded 4 files on An option to search in current projectsor in all projects",
+        "time": "6:02PM",
+        "comment": "",
+        "uploads": [
+          {
+            "url": "/img/0.604acb3f.jpg",
+            "alt": "first file"
+          },
+          {
+            "url": "/img/1.d591f2ee.jpg",
+            "alt": "second file"
+          },
+          {
+            "url": "/img/2.f1e440c5.jpg",
+            "alt": "third file"
+          },
+          {
+            "url": "/img/3.cd5d40b1.jpg",
+            "alt": "fourth file"
+          }
+        ]
+      }
+    ]
+  }
+]

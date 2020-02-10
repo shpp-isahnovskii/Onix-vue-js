@@ -21,9 +21,8 @@
 </template>
 
 <script lang="ts">
-  import { Component, Vue, Watch } from 'vue-property-decorator';
+  import { Component, Vue } from 'vue-property-decorator';
   import { TasksInterface } from '@/interfaces/TasksInterface';
-  import { dataTasks } from '@/store/database';
   import calendarRow from '@/components/calendarTable/calendarRow.vue';
   import taskModal from '../modal/TaskModal.vue';
 

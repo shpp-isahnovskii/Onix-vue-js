@@ -11,7 +11,6 @@
 <script lang="ts">
   import { Component, Vue } from 'vue-property-decorator';
   import { ActivityInterface } from '@/interfaces/ActivityInterface';
-  import { articles } from '@/store/database.ts';
 
   import { namespace } from 'vuex-class';
   const ActivityStore = namespace('activity');

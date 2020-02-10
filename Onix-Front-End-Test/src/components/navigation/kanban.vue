@@ -20,7 +20,6 @@
 <script lang="ts">
   import { Component, Vue } from 'vue-property-decorator';
   import { TasksInterface } from '@/interfaces/TasksInterface';
-  import { dataTasks } from '@/store/database';
   import taskModal from '../modal/TaskModal.vue';
   import kanbanTable from '../kanbanTable/kanbanTable.vue';
   import TasksModInterface from '@/interfaces/TasksModInterface';

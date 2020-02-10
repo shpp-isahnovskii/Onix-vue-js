@@ -19,7 +19,6 @@
 
 import { Component, Vue, Prop } from "vue-property-decorator";
 import { TasksInterface } from "@/interfaces/TasksInterface";
-import { dataTasks, userData } from '@/store/database';
 
 import { namespace } from 'vuex-class';
 const TaskStore = namespace('tasks');

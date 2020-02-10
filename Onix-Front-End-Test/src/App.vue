@@ -17,6 +17,7 @@ export default class App extends Vue {
       this.$root.$emit('hide-sidebar', true);
     }
     this.$root.$emit('make-wave'); //add animation wave to the sidebar
+    
   }
 }
 </script>

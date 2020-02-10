@@ -15,11 +15,9 @@
     //- end of wrapper
 </template>
 
-
 <script lang="ts">
 import { ActivityInterface } from '@/interfaces/ActivityInterface';
 import { Component, Vue } from 'vue-property-decorator';
-import { articles } from '@/store/database.ts';
 
 import { namespace } from 'vuex-class';
 const ActivityStore = namespace('activity');
@@ -33,7 +31,6 @@ export default class Activity extends Vue {
   }
 }
 </script>
-
 
 <style lang="scss"  scoped>
   h3 {
