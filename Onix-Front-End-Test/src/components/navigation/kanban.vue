@@ -33,6 +33,7 @@
   @Component({components: {taskModal, kanbanTable}})
   export default class Kanban extends Vue {
     @TaskStore.State('tasksData') tasks !: TasksInterface[];
+    @TaskStore.Mutation('setTaskStatus') setTaskStatus !: Function;
     
     tableStatus: Object;
     modal: boolean;
@@ -67,14 +68,14 @@
       return result;
     }
 
-    cardDrop(tableId: string, id: number): void {
-      if(this.tasks[id].status == tableId) {
+    cardDrop(status: string, id: number): void {
+      if(this.tasks[id].status == status) {
         return //if card dropped to the same table - do nothing
       }
-      if(this.tasks[id].status == "done" && tableId == "todo") {
+      if(this.tasks[id].status == "done" && status == "todo") {
         return // user can't dtop tasks from 
       }
-      this.tasks[id].status = tableId;
+      this.setTaskStatus({id, status});
     }
     /* global filter */
     globalFilter(array: TasksModInterface[], status: string, text: string, dates: any): TasksModInterface[] {

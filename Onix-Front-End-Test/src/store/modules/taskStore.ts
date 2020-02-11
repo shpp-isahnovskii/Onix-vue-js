@@ -29,6 +29,14 @@ export class TaskStore extends VuexModule {
     this.tasksData.splice(index, 1);
   }
 
+  @mutation setTaskStatus(task : {id: number, status: string}) {
+
+    // eslint-disable-next-line no-console
+    console.log(task.id + " " + task.status);
+    
+    this.tasksData[task.id].status = task.status;
+  }
+
   /* change status: todo inprogress or done */
   @mutation nextTaskStatus(index: number) {
     const status = this.tasksData[index].status;
