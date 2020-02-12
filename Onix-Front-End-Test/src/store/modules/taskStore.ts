@@ -1,17 +1,15 @@
 import { createModule, mutation, action, extractVuexModule } from "vuex-class-component";
 import { TasksInterface } from "@/interfaces/TasksInterface.ts";
-import axios from "axios"
 
 
 const VuexModule = createModule({
   namespaced: "tasks",
   strict: false,
-})
+});
 
 export class TaskStore extends VuexModule {
 
   private taskStatuses = ['todo', 'inprogress', 'done'];
-
   private tasksData : TasksInterface[] = [];
 
   @action async fetchTasks(tasks : TasksInterface[]) {

@@ -49,7 +49,7 @@ export default class Tasks extends mixins(DateMixin) {
     return this.tasks.length;
   }
   mounted() {
-    this.makeWave();
+   // this.makeWave();
   }
   
   /*init wave for once*/
