@@ -33,7 +33,10 @@ const userStore = namespace('user');
 export default class Tasks extends mixins(DateMixin) {
   @userStore.Mutation('removeTaskCounter') removeTaskCounter !: Function;
   @TaskStore.State('tasksData') tasks !: TasksInterface[];
-  @TaskStore.Mutation('deleteTask') deleteTask !: Function;
+
+  @TaskStore.Action('fetchDeleteTask') fetchDeleteTask !: Function;
+  @TaskStore.Mutation('delTask') delTask !: Function;
+
   @TaskStore.Mutation('nextTaskStatus') nextTaskStatus !: Function;
 
   modal: boolean;
@@ -70,9 +73,12 @@ export default class Tasks extends mixins(DateMixin) {
     });
   }
   /* remove Task */
-  remove(taskIndex: number) {
-    this.deleteTask(taskIndex); //tasks mutation
-    this.removeTaskCounter(); //user mutation
+  async remove(taskIndex: number) {
+    const fetch = await this.fetchDeleteTask(taskIndex);
+    if(fetch) {
+      this.delTask(taskIndex); //tasks mutation
+      this.removeTaskCounter(); //user mutation
+    }
   }
 
   /* add blink animation */

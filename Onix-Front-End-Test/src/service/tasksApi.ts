@@ -1,18 +1,17 @@
 import axios from "./api";
+import { TasksInterface } from "@/interfaces/TasksInterface"
 
 
 //GET
-const GET_TASKS_API = axios.get('/tasks').then( (responce : any) => responce.data)
-  .catch((err: string)=> {
-    // eslint-disable-next-line no-console
-    console.error(err);
-});
+const getTasks = () => axios.get('/tasks').then( (responce : any) => responce.data);
 
 //POST
+const postTask = (data: TasksInterface) => axios.post('/tasks', data).then( (responce : any) => responce.data);
+
+//DEL
+const deleteTask = (id: number) => axios.delete('/tasks/'+id).then( (responce: any) => responce.data);
 
 //PUT
 
-//DEL
-    
 
-export {GET_TASKS_API};
+export {getTasks, postTask, deleteTask};

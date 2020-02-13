@@ -16,10 +16,10 @@ const TaskStore = namespace('tasks');
 })
 export default class App extends Vue {
   @TaskStore.Action('fetchTasks') fetchTasks !: Function;
-  @TaskStore.Mutation('setTasks') setTasks !: Function;
+  @TaskStore.Mutation('loadTasks') loadTasks !: Function;
 
   created() {
-    this.fetchTasks().then( (responce : any) => this.setTasks(responce));
+    this.fetchTasks().then( (responce : any) => this.loadTasks(responce));
   }
 
   mounted() {

@@ -1,7 +1,6 @@
 import { createModule, mutation, action, extractVuexModule } from "vuex-class-component";
 import { TasksInterface } from "@/interfaces/TasksInterface.ts";
-
-import {GET_TASKS_API} from "@/service/tasksApi";
+import {getTasks, postTask, deleteTask} from "@/service/tasksApi";
 
 const VuexModule = createModule({
   namespaced: "tasks",
@@ -14,15 +13,42 @@ export class TaskStore extends VuexModule {
   private tasksData : TasksInterface[] = [];
 
 
+  //Get
   //get tasks from API
   @action async fetchTasks() {
-      return await GET_TASKS_API;
+    return await getTasks();
   }
-  @mutation setTasks(tasks : any) {
+  //Get
+  //set fetched data to the tasksData
+  @mutation loadTasks(tasks : any) {
     this.tasksData = tasks;
   }
+  
+  //Post
+  //send new task to the server return 'ok' if server got it
+  @action async fetchAddingTask(task : TasksInterface): Promise<boolean> {
+    const status = await postTask(task).then((responce: any) => responce.status);
+    if(status === "ok") {
+      return true;
+    }
+    return false;
+  }
+  //Post
+  @mutation addingTask(task: TasksInterface) {
+    this.tasksData.push(task);
+  }
 
-  @mutation deleteTask(index: number) {
+  //Delete
+  @action async fetchDeleteTask(index: number) {
+    const status = await deleteTask(index).then((responce: any) => responce.status);
+    
+    if(status === "ok") {
+      return true;
+    }
+    return false;
+  }
+  //Delete
+  @mutation delTask(index: number) {
     this.tasksData.splice(index, 1);
   }
 
@@ -45,10 +71,6 @@ export class TaskStore extends VuexModule {
       break;
     }
     this.tasksData[index].status = nextStatus;
-  }
-
-  @mutation addingTask(task : TasksInterface) {
-    this.tasksData.push(task);
   }
 
   /* This mutation can change task description and date by id */
