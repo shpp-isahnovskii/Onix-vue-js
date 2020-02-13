@@ -1,6 +1,7 @@
 import { createModule, mutation, action, extractVuexModule } from "vuex-class-component";
 import { TasksInterface } from "@/interfaces/TasksInterface.ts";
 
+import {GET_TASKS_API} from "@/service/tasksApi";
 
 const VuexModule = createModule({
   namespaced: "tasks",
@@ -12,7 +13,12 @@ export class TaskStore extends VuexModule {
   private taskStatuses = ['todo', 'inprogress', 'done'];
   private tasksData : TasksInterface[] = [];
 
-  @action async fetchTasks(tasks : TasksInterface[]) {
+
+  //get tasks from API
+  @action async fetchTasks() {
+      return await GET_TASKS_API;
+  }
+  @mutation setTasks(tasks : any) {
     this.tasksData = tasks;
   }
 

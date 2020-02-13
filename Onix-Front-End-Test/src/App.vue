@@ -6,28 +6,31 @@
 import { Component, Vue } from 'vue-property-decorator';
 import layoutComponent from './components/Layout.vue';
 import { TasksInterface } from './interfaces/TasksInterface';
-import axios from "axios"
+
+import { namespace } from "vuex-class"
+
+const TaskStore = namespace('tasks');
 
 @Component({
   components: {layoutComponent}
 })
 export default class App extends Vue {
+  @TaskStore.Action('fetchTasks') fetchTasks !: Function;
+  @TaskStore.Mutation('setTasks') setTasks !: Function;
+
   created() {
-    axios.get('https://nameless-leaf-8405.getsandbox.com/api/tasks')
-    .then( response => {
-      // eslint-disable-next-line no-console
-      console.log(response.data);
-      
-    })
+    this.fetchTasks().then( (responce : any) => this.setTasks(responce));
   }
 
   mounted() {
+    this.initWave();
+  }
+  initWave() {
     let width = window.innerWidth
     if(width < 970) {
       this.$root.$emit('hide-sidebar', true);
     }
     this.$root.$emit('make-wave'); //add animation wave to the sidebar
-    
   }
 }
 </script>
