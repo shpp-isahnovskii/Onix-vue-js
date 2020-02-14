@@ -49,12 +49,13 @@ const UserStore = namespace('user');
         window.alert("please, input something in the task message and set the time");
       } else {
         const task = {id: id, title: title, description: text + id, date: `${date}T${time}`, status: 'todo'};
-        const fetch  = await this.fetchAddingTask(task);
-        if(fetch) {
-          this.addingTask(task)
-          this.addTaskCounter();
-          this.toggleModal();
-        }
+        await this.fetchAddingTask(task).then( (response: boolean) => {
+          if(response) {
+            this.addingTask(task)
+            this.addTaskCounter();
+            this.toggleModal();
+          }
+        });
       }
     }
     created() {

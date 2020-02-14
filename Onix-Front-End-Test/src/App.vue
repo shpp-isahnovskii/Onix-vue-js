@@ -19,7 +19,7 @@ export default class App extends Vue {
   @TaskStore.Mutation('loadTasks') loadTasks !: Function;
 
   created() {
-    this.fetchTasks().then( (responce : any) => this.loadTasks(responce));
+    this.fetchTasks().then( (response : any) => this.loadTasks(response));
   }
 
   mounted() {

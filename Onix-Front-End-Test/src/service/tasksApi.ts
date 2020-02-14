@@ -3,15 +3,16 @@ import { TasksInterface } from "@/interfaces/TasksInterface"
 
 
 //GET
-const getTasks = () => axios.get('/tasks').then( (responce : any) => responce.data);
+const getTasks = () => axios.get('/tasks').then( (response : any) => response.data);
 
 //POST
-const postTask = (data: TasksInterface) => axios.post('/tasks', data).then( (responce : any) => responce.data);
+const postTask = (data: TasksInterface) => axios.post('/tasks', data).then( (response : any) => response.data);
 
 //DEL
-const deleteTask = (id: number) => axios.delete('/tasks/'+id).then( (responce: any) => responce.data);
+const deleteTask = (id: number) => axios.delete('/tasks/'+id).then( (response: any) => response.data);
 
 //PUT
+const changeTask = (id: number) => axios.put('/tasks/'+id).then ( (response: any) => response.data);
 
 
-export {getTasks, postTask, deleteTask};
+export {getTasks, postTask, deleteTask, changeTask};

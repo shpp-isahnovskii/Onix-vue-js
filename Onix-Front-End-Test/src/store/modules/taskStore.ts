@@ -1,6 +1,6 @@
 import { createModule, mutation, action, extractVuexModule } from "vuex-class-component";
 import { TasksInterface } from "@/interfaces/TasksInterface.ts";
-import {getTasks, postTask, deleteTask} from "@/service/tasksApi";
+import {getTasks, postTask, deleteTask, changeTask} from "@/service/tasksApi";
 
 const VuexModule = createModule({
   namespaced: "tasks",
@@ -27,11 +27,12 @@ export class TaskStore extends VuexModule {
   //Post
   //send new task to the server return 'ok' if server got it
   @action async fetchAddingTask(task : TasksInterface): Promise<boolean> {
-    const status = await postTask(task).then((responce: any) => responce.status);
-    if(status === "ok") {
-      return true;
-    }
-    return false;
+    return await postTask(task).then((response: any) => {
+      if(response.status === "ok") {
+        return true;
+      }
+      return false;
+    });
   }
   //Post
   @mutation addingTask(task: TasksInterface) {
@@ -39,17 +40,26 @@ export class TaskStore extends VuexModule {
   }
 
   //Delete
-  @action async fetchDeleteTask(index: number) {
-    const status = await deleteTask(index).then((responce: any) => responce.status);
-    
-    if(status === "ok") {
-      return true;
-    }
-    return false;
+  @action async fetchDeleteTask(id: number) {
+    return await deleteTask(id).then((response: any) => {
+      if(response.status === "ok") {
+        return true
+      }
+      return false
+    });
   }
   //Delete
   @mutation delTask(index: number) {
     this.tasksData.splice(index, 1);
+  }
+  //Change
+  @action async fetchChangeTask(id: number) {
+    return await changeTask(id).then((response: any) => {
+      if(response.status === "ok") {
+        return true
+      }
+      return false
+    });
   }
 
   @mutation setTaskStatus(task : {id: number, status: string}) {
