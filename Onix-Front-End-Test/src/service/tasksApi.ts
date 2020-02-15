@@ -8,11 +8,7 @@ const getTasks = () => axios.get('/tasks').then( (response : any) => response.da
 const postTask = (data: TasksInterface) => axios.post('/tasks', data).then( (response : any) => response.data);
 
 //DEL
-const deleteTask = (id: number) => axios.delete('/tasks/'+id).then( (response: any) => {
-  // eslint-disable-next-line no-console
-  console.log(response);
-  
-  return response.data});
+const deleteTask = (id: number) => axios.delete('/tasks/'+id).then( (response: any) => response.data);
 
 //PUT (change something in task)
 const changeTask = (id: number) => axios.put('/tasks/'+id).then ( (response: any) => response.data);

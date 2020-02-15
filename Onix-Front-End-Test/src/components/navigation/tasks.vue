@@ -81,8 +81,6 @@ export default class Tasks extends mixins(DateMixin) {
   async remove(index: number) {
     
     const id = this.tasks[index].id;
-    // eslint-disable-next-line no-console
-    console.log(index);
     await this.fetchDeleteTask(id).then((response: boolean) => {
       if(response) {
         this.delTask(index); //tasks mutation

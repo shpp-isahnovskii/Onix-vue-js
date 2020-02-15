@@ -50,9 +50,9 @@ const UserStore = namespace('user');
         window.alert("please, input something in the task message and set the time");
       } else {
         let task = {id: id, title: title, description: text + id, date: `${date}T${time}`, status: 'todo'};
-        await this.fetchAddingTask(task).then( (response: {status: boolean, id: number } ) => {
+        await this.fetchAddingTask(task).then( (response: {status: boolean, id: string } ) => {
           if(response.status) {
-            task.id = response.id;
+            task.id = parseInt(response.id);
             this.addingTask(task)
             this.addTaskCounter();
             this.toggleModal();
