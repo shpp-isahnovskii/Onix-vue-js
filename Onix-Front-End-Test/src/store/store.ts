@@ -14,5 +14,5 @@ export default new Vuex.Store ({
 		...extractVuexModule( TaskStore ),
 		...extractVuexModule( ActivityStore )
   },
-  //plugins: [createPersistedState()]
+  plugins: [createPersistedState()]
 })
