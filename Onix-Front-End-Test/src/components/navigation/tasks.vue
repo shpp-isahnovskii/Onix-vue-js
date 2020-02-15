@@ -78,17 +78,21 @@ export default class Tasks extends mixins(DateMixin) {
     });
   }
   /* remove Task */
-  async remove(taskIndex: number) {
-    await this.fetchDeleteTask(taskIndex).then((response: boolean) => {
+  async remove(index: number) {
+    
+    const id = this.tasks[index].id;
+    // eslint-disable-next-line no-console
+    console.log(index);
+    await this.fetchDeleteTask(id).then((response: boolean) => {
       if(response) {
-        this.delTask(taskIndex); //tasks mutation
-        this.removeTaskCounter(); //user mutation
+        this.delTask(index); //tasks mutation
+        this.removeTaskCounter();//user mutation
       }
     });
   }
   /* change status for the task */
   async changeTaskStatus(index: number) {
-    const id = 0;
+    const id = this.tasks[index].id;
     await this.fetchChangeTask(id).then((response: boolean) => {
       if(response) {
         this.nextTaskStatus(index);

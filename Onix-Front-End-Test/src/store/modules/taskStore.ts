@@ -29,9 +29,9 @@ export class TaskStore extends VuexModule {
   @action async fetchAddingTask(task : TasksInterface): Promise<boolean> {
     return await postTask(task).then((response: any) => {
       if(response.status === "ok") {
-        return true;
+        return {status: true, id: response.id};
       }
-      return false;
+      return {status: false, id: 0};
     });
   }
   //Post
@@ -40,12 +40,12 @@ export class TaskStore extends VuexModule {
   }
 
   //Delete
-  @action async fetchDeleteTask(id: number) {
+  @action async fetchDeleteTask(id: number): Promise<Object> {
     return await deleteTask(id).then((response: any) => {
       if(response.status === "ok") {
-        return true
+        return true;
       }
-      return false
+      return false;
     });
   }
   //Delete

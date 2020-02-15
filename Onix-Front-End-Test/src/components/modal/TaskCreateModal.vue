@@ -27,6 +27,7 @@ const UserStore = namespace('user');
 @Component
   export default class TaskCreateModal extends Vue {
     @TaskStore.State('tasksData') tasks !: TasksInterface[];
+    
     @TaskStore.Action('fetchAddingTask') fetchAddingTask !: Function;
     @TaskStore.Mutation('addingTask') addingTask !: Function;
     @UserStore.Mutation('addTaskCounter') addTaskCounter !: Function;
@@ -48,9 +49,10 @@ const UserStore = namespace('user');
       if( !date || !time || !title || !text ) {
         window.alert("please, input something in the task message and set the time");
       } else {
-        const task = {id: id, title: title, description: text + id, date: `${date}T${time}`, status: 'todo'};
-        await this.fetchAddingTask(task).then( (response: boolean) => {
-          if(response) {
+        let task = {id: id, title: title, description: text + id, date: `${date}T${time}`, status: 'todo'};
+        await this.fetchAddingTask(task).then( (response: {status: boolean, id: number } ) => {
+          if(response.status) {
+            task.id = response.id;
             this.addingTask(task)
             this.addTaskCounter();
             this.toggleModal();
