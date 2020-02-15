@@ -34,12 +34,13 @@ export default class Tasks extends mixins(DateMixin) {
   @userStore.Mutation("removeTaskCounter") removeTaskCounter !: Function;
   @TaskStore.State("tasksData") tasks!: TasksInterface[];
 
-  //action and mutation for deleting the task
+  //delete the task
   @TaskStore.Action("fetchDeleteTask") fetchDeleteTask !: Function;
   @TaskStore.Mutation("delTask") delTask!: Function;
 
+  //change status of the task
   @TaskStore.Action("fetchChangeTask") fetchChangeTask !: Function;
-  @TaskStore.Mutation("nextTaskStatus") nextTaskStatus !: Function;
+  @TaskStore.Mutation("changeTaskData") changeTaskData !: Function;
 
   modal: boolean;
   $refs!: {
@@ -89,13 +90,29 @@ export default class Tasks extends mixins(DateMixin) {
     });
   }
   /* change status for the task */
-  async changeTaskStatus(index: number) {
-    const id = this.tasks[index].id;
-    await this.fetchChangeTask(id).then((response: boolean) => {
+  async changeTaskStatus(index: number, status: string) {
+    const task : TasksInterface = this.tasks[index];
+    task.status = this.nextStatus(task.status);
+    await this.fetchChangeTask(task).then((response: boolean) => {
       if(response) {
-        this.nextTaskStatus(index);
+        this.changeTaskData(task); 
       }
     });
+  }
+  /* next status for the current task */
+  nextStatus(status: string): string {
+    const statuses = ['todo', 'inprogress', 'done'];
+    let nextStatus = "";
+
+    switch (status) {
+      case statuses[0]: nextStatus = statuses[1];
+      break;
+      case statuses[1]: nextStatus = statuses[2];
+      break;
+      default: nextStatus = statuses[0];
+      break;
+    }
+    return nextStatus;
   }
 
   /* add blink animation */

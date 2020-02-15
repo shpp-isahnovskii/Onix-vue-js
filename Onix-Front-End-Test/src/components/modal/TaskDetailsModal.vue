@@ -29,6 +29,7 @@ const TaskStore = namespace('tasks');
 @Component
 export default class TaskModal extends mixins(DateMixin) {
   @TaskStore.State('tasksData') tasks !: TasksInterface[];
+  @TaskStore.Action("fetchChangeTask") fetchChangeTask !: Function;
   @TaskStore.Mutation('changeTaskData') changeTaskData !: Function;
 
   @Prop({default: true}) editing !: boolean;
@@ -96,7 +97,7 @@ export default class TaskModal extends mixins(DateMixin) {
    * 2. submit Form and close modal window
    * 3. just close modal window
    */
-  chooseAction(): void {
+  async chooseAction() {
     if(!this.edit) { //first click 
       this.edit = true; //allow editing
       if(!this.changed) {
@@ -105,10 +106,18 @@ export default class TaskModal extends mixins(DateMixin) {
       return
     }
     if(this.edit && this.changed) { //if something was edited
-      const task = {id: this.id, description: this.taskText, date: `${this.taskDate}T${this.taskTime}`}
-      this.changeTaskData(task);
+      let task : TasksInterface = this.tasks[this.id];
+      task.title = this.taskTitle;
+      task.description = this.taskText
+      task.date = `${this.taskDate}T${this.taskTime}`;
+
+      await this.fetchChangeTask(task).then((response: boolean) => {
+        if(response) {
+          this.changeTaskData(task); 
+          this.hideModal(); //hide modal if no changes after allow
+        }
+      });
     }
-    this.hideModal(); //hide modal if no changes after allow
   }
   /* hide modal action, emited to TaskModal */
   hideModal() {

@@ -11,7 +11,6 @@ const postTask = (data: TasksInterface) => axios.post('/tasks', data).then( (res
 const deleteTask = (id: number) => axios.delete('/tasks/'+id).then( (response: any) => response.data);
 
 //PUT (change something in task)
-const changeTask = (id: number) => axios.put('/tasks/'+id).then ( (response: any) => response.data);
-
+const changeTask = (data: TasksInterface) => axios.put('/tasks', data).then ( (response: any) => response.data);
 
 export {getTasks, postTask, deleteTask, changeTask};
