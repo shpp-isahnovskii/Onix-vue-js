@@ -53,9 +53,6 @@ export class TaskStore extends VuexModule {
   @action async fetchChangeTask(task: TasksInterface) {
     return await changeTask(task).then((response: any) => {
 
-      // eslint-disable-next-line no-console
-      console.log(response.data);
-      
       if(response.status === "ok") {
         return true
       }
