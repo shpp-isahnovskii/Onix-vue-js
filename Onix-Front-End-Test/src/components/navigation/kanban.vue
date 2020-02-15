@@ -71,9 +71,10 @@
     }
 
     async cardDrop(status: string, id: number) {
-      let task = this.tasks[id];
-      
+      const index = this.tasks.findIndex( e=> e.id == id);
+      let task = this.tasks[index];
       if(task.status == status) {
+
         return //if card dropped to the same table - do nothing
       }
       if(task.status == "done" && status == "todo") {
