@@ -66,10 +66,11 @@ export default class TaskModal extends mixins(DateMixin) {
   }
   /* add watcher to set default time value */
   @Watch('tasks', {immediate: true}) onChange() {
-    this.taskTitle = this.tasks[this.id].title;
-    this.taskDate = this.getDate(this.tasks[this.id].date);
-    this.taskTime = this.getTime(this.tasks[this.id].date);
-    this.taskText = this.tasks[this.id].description;
+    const index = this.tasks.map( (el: TasksInterface) => el.id).indexOf(this.id);
+    this.taskTitle = this.tasks[index].title;
+    this.taskDate = this.getDate(this.tasks[index].date);
+    this.taskTime = this.getTime(this.tasks[index].date);
+    this.taskText = this.tasks[index].description;
   }
   /* edit trigger, used at the lock img */
   toggleLock(): void {
