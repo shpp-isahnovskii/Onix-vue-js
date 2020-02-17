@@ -78,7 +78,7 @@
         return //if card dropped to the same table - do nothing
       }
       if(task.status == "done" && status == "todo") {
-        return // user can't dtop tasks from 
+        return // user can't drop tasks from done to todo
       }
       task.status = status;
       await this.fetchChangeTask(task).then((response: boolean) => {

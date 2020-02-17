@@ -66,7 +66,7 @@ export default class TaskModal extends mixins(DateMixin) {
   }
   /* add watcher to set default time value */
   @Watch('tasks', {immediate: true}) onChange() {
-    const index = this.tasks.map( (el: TasksInterface) => el.id).indexOf(this.id);
+    const index = this.taskIndex;
     this.taskTitle = this.tasks[index].title;
     this.taskDate = this.getDate(this.tasks[index].date);
     this.taskTime = this.getTime(this.tasks[index].date);
@@ -107,7 +107,7 @@ export default class TaskModal extends mixins(DateMixin) {
       return
     }
     if(this.edit && this.changed) { //if something was edited
-      let task : TasksInterface = this.tasks[this.id];
+      let task : TasksInterface = this.tasks[this.taskIndex];
       task.title = this.taskTitle;
       task.description = this.taskText
       task.date = `${this.taskDate}T${this.taskTime}`;
@@ -119,6 +119,10 @@ export default class TaskModal extends mixins(DateMixin) {
         }
       });
     }
+  }
+  //return index of the current task. Found by ID
+  get taskIndex(): number {
+    return this.tasks.map( (el: TasksInterface) => el.id).indexOf(this.id);
   }
   /* hide modal action, emited to TaskModal */
   hideModal() {

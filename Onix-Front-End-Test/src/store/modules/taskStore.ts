@@ -63,7 +63,7 @@ export class TaskStore extends VuexModule {
   /* change task data */
   @mutation changeTaskData(task: TasksInterface) {
     const index = this.tasksData.findIndex( (element: TasksInterface) => element.id === task.id);
-
+    
     if(index !== -1) {
       this.tasksData[index] = task;
     }
